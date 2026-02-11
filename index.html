@@ -1009,6 +1009,17 @@
             
             <div id="btc-realtime-error" class="btc-error" style="display: none;">
                 Unable to fetch data. Retrying...
+                <div style="margin-top: 12px; padding: 12px; background: rgba(0,0,0,0.3); border-radius: 8px; font-size: 0.8rem; line-height: 1.6;">
+                    <strong>Common causes:</strong><br>
+                    • <strong>CORS blocking:</strong> Browser security blocking external APIs (common on GitHub Pages)<br>
+                    • <strong>Rate limit:</strong> Too many requests to CoinGecko (wait 1 minute)<br>
+                    • <strong>Network:</strong> Your firewall/VPN blocking API access<br>
+                    <strong>Solutions:</strong><br>
+                    • Wait 60 seconds for auto-retry<br>
+                    • Try different browser (Chrome/Firefox)<br>
+                    • Disable browser extensions temporarily<br>
+                    • Check console (F12) for detailed error logs
+                </div>
             </div>
             
             <div class="btc-data-grid">
@@ -1806,45 +1817,52 @@
     
     async function fetchCryptoData() {
         try {
-            // Fetch basic price data
-            const btcParams = 'ids=bitcoin&vs_currencies=usd&include_24hr_vol=true&include_24hr_change=true&include_market_cap=true&include_last_updated_at=true';
-            const btcUrl = REALTIME_CONFIG.apis.coinGecko.simple + '?' + btcParams;
-            const btcResponse = await fetchWithTimeout(btcUrl, REALTIME_CONFIG.fetchTimeout);
+            // Use ONLY the detailed endpoint which has ALL data we need
+            // This reduces API calls from 3 to 1, avoiding rate limits
+            const detailUrl = 'https://api.coingecko.com/api/v3/coins/bitcoin?localization=false&tickers=false&community_data=false&developer_data=false&sparkline=false';
+            const detailResponse = await fetchWithTimeout(detailUrl, REALTIME_CONFIG.fetchTimeout);
             
-            if (!btcResponse.ok) {
-                throw new Error('API HTTP ' + btcResponse.status);
+            if (!detailResponse.ok) {
+                throw new Error('HTTP ' + detailResponse.status + ': ' + detailResponse.statusText);
             }
             
-            const btcData = await btcResponse.json();
+            const data = await detailResponse.json();
             
-            // Fetch detailed data including ATH
-            const detailUrl = 'https://api.coingecko.com/api/v3/coins/bitcoin?localization=false&tickers=false&community_data=false&developer_data=false';
-            const detailResponse = await fetchWithTimeout(detailUrl, REALTIME_CONFIG.fetchTimeout);
-            const detailData = await detailResponse.json();
-            
-            // Fetch global data
-            const globalUrl = REALTIME_CONFIG.apis.coinGecko.global;
-            const globalResponse = await fetchWithTimeout(globalUrl, REALTIME_CONFIG.fetchTimeout);
-            const globalData = await globalResponse.json();
-            
-            const bitcoin = btcData.bitcoin;
-            const marketData = globalData.data;
-            const athData = detailData.market_data;
+            // Extract all needed data from single endpoint
+            const marketData = data.market_data;
             
             return {
-                btcPrice: bitcoin.usd,
-                btcChange24h: bitcoin.usd_24h_change,
-                btcVolume24h: bitcoin.usd_24h_vol,
-                btcMarketCap: bitcoin.usd_market_cap,
-                btcDominance: marketData.market_cap_percentage.btc,
-                btcATH: athData.ath.usd,
-                btcATHDate: athData.ath_date.usd,
-                btcATHChangePercent: athData.ath_change_percentage.usd,
-                totalCryptoMarketCap: marketData.total_market_cap.usd,
-                lastUpdate: bitcoin.last_updated_at
+                btcPrice: marketData.current_price.usd,
+                btcChange24h: marketData.price_change_percentage_24h,
+                btcVolume24h: marketData.total_volume.usd,
+                btcMarketCap: marketData.market_cap.usd,
+                btcDominance: marketData.market_cap_percentage || 50, // Fallback
+                btcATH: marketData.ath.usd,
+                btcATHDate: marketData.ath_date.usd,
+                btcATHChangePercent: marketData.ath_change_percentage.usd,
+                totalCryptoMarketCap: marketData.market_cap.usd,
+                lastUpdate: Date.now() / 1000
             };
         } catch (error) {
             console.error('[Realtime] Crypto data fetch error:', error);
+            
+            // If we have cached data, return it
+            if (realtimeDataState.btcPrice !== null) {
+                console.warn('[Realtime] Using cached data due to fetch error');
+                return {
+                    btcPrice: realtimeDataState.btcPrice,
+                    btcChange24h: realtimeDataState.btcChange24h,
+                    btcVolume24h: realtimeDataState.btcVolume24h,
+                    btcMarketCap: realtimeDataState.btcMarketCap,
+                    btcDominance: realtimeDataState.btcDominance,
+                    btcATH: realtimeDataState.btcATH,
+                    btcATHDate: realtimeDataState.btcATHDate,
+                    btcATHChangePercent: realtimeDataState.btcATHChangePercent,
+                    totalCryptoMarketCap: realtimeDataState.totalCryptoMarketCap,
+                    lastUpdate: realtimeDataState.lastUpdate
+                };
+            }
+            
             throw error;
         }
     }
@@ -2043,22 +2061,51 @@
             Object.assign(realtimeDataState, cryptoData);
             Object.assign(realtimeDataState, stablecoinData);
             
+            // Reset retry counter on success
+            realtimeDataState.retryCount = 0;
+            
             updateAllDOMElements();
             
             // Hide error message on success
             const errorEl = document.getElementById('btc-realtime-error');
             if (errorEl) errorEl.style.display = 'none';
             
-            console.log('[Realtime] Crypto data updated successfully');
+            console.log('[Realtime] ✅ Crypto data updated successfully');
         } catch (error) {
-            console.error('[Realtime] Crypto update failed:', error);
+            console.error('[Realtime] ❌ Crypto update failed:', error);
+            
+            // Increment retry counter
+            if (!realtimeDataState.retryCount) realtimeDataState.retryCount = 0;
+            realtimeDataState.retryCount++;
+            
             realtimeDataState.errors.crypto = error.message;
             
-            // Show error message
+            // Determine error type for better user messaging
+            let errorMessage = '⚠️ ';
+            if (error.message.includes('CORS') || error.message.includes('fetch')) {
+                errorMessage += 'Network error: Cannot connect to CoinGecko API. ';
+                errorMessage += 'This may be due to browser CORS policy or network blocking. ';
+            } else if (error.message.includes('429')) {
+                errorMessage += 'Rate limit exceeded: Too many requests to CoinGecko. ';
+            } else if (error.message.includes('timeout')) {
+                errorMessage += 'Request timeout: CoinGecko API taking too long. ';
+            } else {
+                errorMessage += 'Error: ' + error.message + '. ';
+            }
+            
+            errorMessage += `Retry ${realtimeDataState.retryCount}/5 in 60s...`;
+            
+            // Show error message with details
             const errorEl = document.getElementById('btc-realtime-error');
             if (errorEl) {
-                errorEl.textContent = '⚠️ Error updating data: ' + error.message + '. Will retry automatically...';
+                errorEl.innerHTML = errorMessage;
                 errorEl.style.display = 'block';
+            }
+            
+            // If we have cached data, keep showing it
+            if (realtimeDataState.btcPrice !== null) {
+                console.warn('[Realtime] Using last known data while retrying...');
+                updateAllDOMElements(); // Update with cached data
             }
         }
     }
