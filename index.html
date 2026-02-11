@@ -521,6 +521,43 @@
             border: 1px solid rgba(251, 191, 36, 0.3);
         }
         
+        /* ========== DATA ACCURACY BADGES ========== */
+        .data-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 8px;
+        }
+        
+        .data-badge.live {
+            background: rgba(16, 185, 129, 0.15);
+            color: #10b981;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+        
+        .data-badge.live::before {
+            content: '●';
+            animation: pulse-dot 2s ease-in-out infinite;
+        }
+        
+        .data-badge.static {
+            background: rgba(59, 130, 246, 0.15);
+            color: #3b82f6;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+        
+        .data-badge.estimated {
+            background: rgba(245, 158, 11, 0.15);
+            color: #f59e0b;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+        
         /* ========== KEY LEVELS ========== */
         .key-levels {
             display: grid;
@@ -905,11 +942,18 @@
     <div class="container">
         <!-- HEADER -->
         <header class="header">
-            <div class="version-badge">Version 4.0 - Multi-Layer Intelligence</div>
-            <h1>Bitcoin Cycle<br>Analysis</h1>
-            <p class="subtitle">Macro • On-Chain • Institutional • Derivatives</p>
+            <div class="version-badge" data-lang-en="Version 4.0 - Multi-Layer Intelligence" data-lang-id="Versi 4.0 - Analisis Multi-Layer">Version 4.0 - Multi-Layer Intelligence</div>
+            
+            <!-- Language Toggle -->
+            <div style="position: absolute; top: 40px; right: 40px; display: flex; gap: 8px; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 6px;">
+                <button id="lang-en" onclick="setLanguage('en')" style="padding: 8px 16px; background: rgba(59, 130, 246, 0.2); border: 1px solid rgba(59, 130, 246, 0.4); border-radius: 8px; color: #3b82f6; font-size: 0.875rem; font-weight: 600; cursor: pointer; transition: all 0.3s;">EN</button>
+                <button id="lang-id" onclick="setLanguage('id')" style="padding: 8px 16px; background: transparent; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; color: var(--text-tertiary); font-size: 0.875rem; font-weight: 600; cursor: pointer; transition: all 0.3s;">ID</button>
+            </div>
+            
+            <h1 data-lang-en="Bitcoin Cycle<br>Analysis" data-lang-id="Analisis Siklus<br>Bitcoin">Bitcoin Cycle<br>Analysis</h1>
+            <p class="subtitle" data-lang-en="Macro • On-Chain • Institutional • Derivatives" data-lang-id="Makro • On-Chain • Institusi • Derivatif">Macro • On-Chain • Institutional • Derivatives</p>
             <div class="author-credit">
-                <span class="label">Analysis by</span>
+                <span class="label" data-lang-en="Analysis by" data-lang-id="Analisis oleh">Analysis by</span>
                 <span class="name">0xnextzy</span>
             </div>
             <p class="data-source">
@@ -918,6 +962,43 @@
                 Auto-updates: Crypto (60s) | Macro (5min) | ETF (5min) | <span id="global-last-update">Initializing...</span>
             </p>
         </header>
+        
+        <!-- COMPREHENSIVE LIMITATIONS & DISCLAIMERS -->
+        <div class="alert-banner" style="background: linear-gradient(135deg, rgba(239, 68, 68, 0.12) 0%, rgba(249, 115, 22, 0.12) 100%); border: 2px solid rgba(239, 68, 68, 0.4); margin-bottom: 60px;">
+            <div class="alert-title" style="font-size: clamp(1.25rem, 3vw, 1.75rem);" data-lang-en="⚠️ CRITICAL: Read Limitations Before Use" data-lang-id="⚠️ PENTING: Baca Keterbatasan Sebelum Menggunakan">
+                ⚠️ CRITICAL: Read Limitations Before Use
+            </div>
+            <div class="alert-content" style="font-size: 0.9375rem; line-height: 1.9;">
+                <strong style="display: block; margin-bottom: 16px; font-size: 1.05rem; color: var(--accent-yellow);">This analysis has significant statistical and methodological limitations:</strong>
+                
+                <strong>📊 STATISTICAL LIMITATIONS:</strong><br>
+                • <strong>Sample Size N=4:</strong> Only ~4 Bitcoin halving cycles since 2009. Statisticians require minimum N≥30 for reliable patterns. With N=4, apparent patterns could be random chance (p-value likely >0.05), not predictive signals.<br>
+                • <strong>No Confidence Intervals:</strong> Price predictions like "$200K-$220K by 2029" are point estimates without standard error, probability distributions, or margin of error. Proper forecasting requires ±50% confidence intervals.<br>
+                • <strong>No Formal Backtesting:</strong> Indicators haven't been validated on out-of-sample data. All historical data used to create model = guaranteed overfitting risk. Unknown if these would have predicted 2021-2024 ahead of time.<br>
+                • <strong>Curve Fitting Risk:</strong> Seeing patterns in limited data that may not actually exist or repeat in future.<br><br>
+                
+                <strong>🌍 EXTERNAL FACTORS NOT QUANTIFIED:</strong><br>
+                • <strong>Macro Policy:</strong> Fed QE/QT, interest rates, money supply changes<br>
+                • <strong>Regulatory:</strong> Government regulations, SEC decisions, tax policy<br>
+                • <strong>Institutional:</strong> ETF flows, corporate adoption, whale behavior<br>
+                • <strong>Geopolitical:</strong> Wars, elections, global economic conditions<br>
+                → These factors can override historical cycle patterns entirely<br><br>
+                
+                <strong>⚠️ STRUCTURAL CHANGE RISK (Non-Stationarity):</strong><br>
+                • <strong>2013-2020:</strong> Retail-driven, low correlation with traditional markets<br>
+                • <strong>2024+:</strong> ETFs launched, institutional dominated, high S&P500 correlation (0.5-0.88)<br>
+                → Market structure fundamentally different. Historical patterns may not apply.<br><br>
+                
+                <strong>💾 DATA ACCURACY TRANSPARENCY:</strong><br>
+                • <span style="color: #10b981; font-weight: 600;">✅ LIVE (100% Accurate):</span> Bitcoin price, 24h change, volume, market cap (CoinGecko) | Stablecoins USDT/USDC/USDe (DeFiLlama on-chain data)<br>
+                • <span style="color: #3b82f6; font-weight: 600;">📊 STATIC (Historical/Technical):</span> 200W MA, Realized Price, Cycle indicators | Fed RRP, M2, Balance Sheet<br>
+                • <span style="color: #f59e0b; font-weight: 600;">⚠️ ESTIMATED (~90-95%):</span> ETF AUM (calculated from BTC price × holdings) | DXY, S&P500, VIX, Gold (simulated for demo - NOT production-ready)<br><br>
+                
+                <strong style="display: block; margin-top: 16px; padding: 16px; background: rgba(239, 68, 68, 0.15); border-radius: 8px; border-left: 4px solid var(--accent-red); font-size: 1.05rem;">
+                ⚠️ NOT FINANCIAL ADVICE</strong>
+                <span style="display: block; margin-top: 12px;">This is for <strong>EDUCATIONAL PURPOSES ONLY</strong>. Past performance does not guarantee future results. Always do your own research (DYOR) and consult licensed financial advisors before making investment decisions. The creator accepts no liability for trading/investment decisions based on this analysis.</span>
+            </div>
+        </div>
         
         <!-- REALTIME DATA MODULE -->
         <div id="btc-realtime-container" class="btc-realtime-module">
@@ -954,58 +1035,62 @@
             </div>
         </div>
         
-        <!-- CRITICAL ALERT -->
-        <div class="alert-banner">
-            <div class="alert-title">
-                🚨 CRITICAL: Multi-Layer Analysis Shows Overleveraged Market
+        <!-- MARKET ALERT -->
+        <div class="alert-banner" style="margin-top: 20px;">
+            <div class="alert-title" data-lang-en="🚨 CURRENT MARKET ANALYSIS: Multi-Layer Signals" data-lang-id="🚨 ANALISIS PASAR SAAT INI: Sinyal Multi-Layer">
+                🚨 CURRENT MARKET ANALYSIS: Multi-Layer Signals
             </div>
             <div class="alert-content">
                 <strong>MACRO LIQUIDITY DRAINING:</strong> Fed RRP collapsed to $6B (from $2.5T peak) - liquidity buffer GONE<br>
                 <strong>DERIVATIVES RISK:</strong> Funding Rate +0.51% (elevated) | Open Interest $180-200B (institutional concentration)<br>
                 <strong>CORRELATION SPIKE:</strong> BTC-VIX correlation 0.88 (record high) | BTC-S&P500 0.5-0.88 (institutional selling in tandem)<br>
-                <strong>STABLECOIN SIGNAL:</strong> $318B market cap (growing) but ETF outflows -$1B in single day (Jan 30)<br><br>
+                <strong>STABLECOIN SIGNAL:</strong> Growing market cap but ETF outflows -$1B in single day (Jan 30) = mixed signals<br><br>
                 <strong>PRIMARY SUPPORT ZONE: $55K-$58K (200W MA + Realized Price) - 45% probability</strong><br>
-                Agunan long terlalu tinggi, liquidity Fed mengering, korelasi dengan ekuitas pada rekor tertinggi = TUNGGU KONFIRMASI SUPPORT!
+                Overleveraged market, liquidity draining, high correlation with equities = WAIT FOR CONFIRMATION BEFORE ENTRY
             </div>
         </div>
         
         <!-- LAYER 1: PRICE & CYCLE METRICS -->
         <div class="category-header">
-            <h2 class="category-title">🎯 Layer 1: Price & Cycle Indicators</h2>
-            <p class="category-description">Traditional technical analysis & halving cycle metrics</p>
+            <h2 class="category-title" data-lang-en="🎯 Layer 1: Price & Cycle Indicators" data-lang-id="🎯 Layer 1: Indikator Harga & Siklus">🎯 Layer 1: Price & Cycle Indicators</h2>
+            <p class="category-description" data-lang-en="Traditional technical analysis & halving cycle metrics" data-lang-id="Analisis teknikal tradisional & metrik siklus halving">Traditional technical analysis & halving cycle metrics</p>
         </div>
         
         <div class="stats-grid">
             <div class="stat-card">
                 <div class="stat-icon">₿</div>
-                <div class="stat-label">Current Price</div>
+                <div class="stat-label" data-lang-en="Current Price" data-lang-id="Harga Saat Ini">Current Price</div>
                 <div id="stat-btc-price" class="stat-value blue">--</div>
-                <div class="stat-subtext">BTC/USD (Live)</div>
+                <div class="stat-subtext">BTC/USD</div>
                 <div id="stat-btc-change" class="stat-trend neutral">Loading...</div>
+                <span class="data-badge live" data-lang-en="LIVE" data-lang-id="LANGSUNG">LIVE</span>
             </div>
             
             <div class="stat-card">
                 <div class="stat-icon">🎯</div>
-                <div class="stat-label">Cycle Top (Pi Cycle)</div>
-                <div class="stat-value green">$126,000</div>
-                <div class="stat-subtext">Dec 2024</div>
-                <div class="stat-trend down">-45.4% from ATH</div>
+                <div class="stat-label" data-lang-en="All-Time High (ATH)" data-lang-id="Harga Tertinggi Sepanjang Masa">All-Time High (ATH)</div>
+                <div id="stat-btc-ath" class="stat-value green">--</div>
+                <div id="stat-btc-ath-date" class="stat-subtext">Loading...</div>
+                <div id="stat-btc-ath-change" class="stat-trend down">--</div>
+                <span class="data-badge live" data-lang-en="LIVE" data-lang-id="LANGSUNG">LIVE</span>
             </div>
             
             <div class="stat-card">
                 <div class="stat-icon">📊</div>
-                <div class="stat-label">200-Week MA</div>
+                <div class="stat-label" data-lang-en="200-Week MA" data-lang-id="MA 200-Minggu">200-Week MA</div>
                 <div class="stat-value yellow">$57,926</div>
-                <div class="stat-subtext">Primary Support Floor</div>
-                <div class="stat-trend neutral">Static (Technical)</div>
+                <div class="stat-subtext" data-lang-en="Primary Support Floor" data-lang-id="Zona Support Utama">Primary Support Floor</div>
+                <div class="stat-trend neutral" data-lang-en="Technical Indicator" data-lang-id="Indikator Teknikal">Technical Indicator</div>
+                <span class="data-badge static" data-lang-en="STATIC" data-lang-id="STATIS">STATIC</span>
             </div>
             
             <div class="stat-card">
                 <div class="stat-icon">⛓️</div>
-                <div class="stat-label">Realized Price</div>
+                <div class="stat-label" data-lang-en="Realized Price" data-lang-id="Realized Price">Realized Price</div>
                 <div class="stat-value purple">$55,000</div>
-                <div class="stat-subtext">On-Chain Cost Basis</div>
-                <div class="stat-trend neutral">Static (On-Chain)</div>
+                <div class="stat-subtext" data-lang-en="On-Chain Cost Basis" data-lang-id="Basis Biaya On-Chain">On-Chain Cost Basis</div>
+                <div class="stat-trend neutral" data-lang-en="On-Chain Metric" data-lang-id="Metrik On-Chain">On-Chain Metric</div>
+                <span class="data-badge static" data-lang-en="STATIC" data-lang-id="STATIS">STATIC</span>
             </div>
             
             <div class="stat-card">
@@ -1013,7 +1098,8 @@
                 <div class="stat-label">Next Cycle Target</div>
                 <div class="stat-value green">$200K - $220K</div>
                 <div class="stat-subtext">Q4 2029 Projection</div>
-                <div class="stat-trend up">+190% - +220%</div>
+                <div class="stat-trend warning">⚠️ Speculative (No CI)</div>
+                <span class="data-badge estimated">PROJECTION</span>
             </div>
             
             <div class="stat-card">
@@ -1022,6 +1108,7 @@
                 <div class="stat-value orange">651</div>
                 <div class="stat-subtext">Apr 2024 Halving</div>
                 <div class="stat-trend neutral">Mid-cycle position</div>
+                <span class="data-badge static">STATIC</span>
             </div>
         </div>
         
@@ -1651,6 +1738,7 @@
         etfUpdateInterval: 300000,
         apis: {
             coinGecko: {
+                // Include ATH data in the API call
                 simple: 'https://api.coingecko.com/api/v3/simple/price',
                 global: 'https://api.coingecko.com/api/v3/global'
             },
@@ -1718,17 +1806,30 @@
     
     async function fetchCryptoData() {
         try {
+            // Fetch basic price data
             const btcParams = 'ids=bitcoin&vs_currencies=usd&include_24hr_vol=true&include_24hr_change=true&include_market_cap=true&include_last_updated_at=true';
             const btcUrl = REALTIME_CONFIG.apis.coinGecko.simple + '?' + btcParams;
             const btcResponse = await fetchWithTimeout(btcUrl, REALTIME_CONFIG.fetchTimeout);
+            
+            if (!btcResponse.ok) {
+                throw new Error('API HTTP ' + btcResponse.status);
+            }
+            
             const btcData = await btcResponse.json();
             
+            // Fetch detailed data including ATH
+            const detailUrl = 'https://api.coingecko.com/api/v3/coins/bitcoin?localization=false&tickers=false&community_data=false&developer_data=false';
+            const detailResponse = await fetchWithTimeout(detailUrl, REALTIME_CONFIG.fetchTimeout);
+            const detailData = await detailResponse.json();
+            
+            // Fetch global data
             const globalUrl = REALTIME_CONFIG.apis.coinGecko.global;
             const globalResponse = await fetchWithTimeout(globalUrl, REALTIME_CONFIG.fetchTimeout);
             const globalData = await globalResponse.json();
             
             const bitcoin = btcData.bitcoin;
             const marketData = globalData.data;
+            const athData = detailData.market_data;
             
             return {
                 btcPrice: bitcoin.usd,
@@ -1736,6 +1837,9 @@
                 btcVolume24h: bitcoin.usd_24h_vol,
                 btcMarketCap: bitcoin.usd_market_cap,
                 btcDominance: marketData.market_cap_percentage.btc,
+                btcATH: athData.ath.usd,
+                btcATHDate: athData.ath_date.usd,
+                btcATHChangePercent: athData.ath_change_percentage.usd,
                 totalCryptoMarketCap: marketData.total_market_cap.usd,
                 lastUpdate: bitcoin.last_updated_at
             };
@@ -1832,6 +1936,7 @@
         const updates = [
             { id: 'btc-realtime-price', value: '$' + formatNumber(realtimeDataState.btcPrice, 2) },
             { id: 'stat-btc-price', value: '$' + formatNumber(realtimeDataState.btcPrice, 2) },
+            { id: 'stat-btc-ath', value: '$' + formatNumber(realtimeDataState.btcATH, 2) },
             { id: 'btc-realtime-volume', value: formatLargeNumber(realtimeDataState.btcVolume24h) },
             { id: 'btc-realtime-marketcap', value: formatLargeNumber(realtimeDataState.btcMarketCap) },
             { id: 'stat-dxy', value: formatNumber(realtimeDataState.dxy, 2) },
@@ -1847,6 +1952,7 @@
         ];
         
         updateChangeIndicator();
+        updateATHInfo();
         
         updates.forEach(update => {
             const element = document.getElementById(update.id);
@@ -1858,6 +1964,37 @@
         });
         
         updateTimestamp();
+    }
+    
+    function updateATHInfo() {
+        // Update ATH price
+        const athPriceEl = document.getElementById('stat-btc-ath');
+        if (athPriceEl && realtimeDataState.btcATH) {
+            athPriceEl.textContent = '$' + formatNumber(realtimeDataState.btcATH, 0);
+        }
+        
+        // Update ATH date
+        const athDateEl = document.getElementById('stat-btc-ath-date');
+        if (athDateEl && realtimeDataState.btcATHDate) {
+            const date = new Date(realtimeDataState.btcATHDate);
+            const lang = document.documentElement.lang || 'en';
+            const formatted = date.toLocaleDateString(lang === 'id' ? 'id-ID' : 'en-US', { 
+                year: 'numeric', 
+                month: 'short', 
+                day: 'numeric' 
+            });
+            athDateEl.textContent = formatted;
+        }
+        
+        // Update ATH change
+        const athChangeEl = document.getElementById('stat-btc-ath-change');
+        if (athChangeEl && realtimeDataState.btcATHChangePercent !== null) {
+            const changePercent = realtimeDataState.btcATHChangePercent;
+            const lang = document.documentElement.lang || 'en';
+            const text = changePercent.toFixed(1) + '% ' + (lang === 'id' ? 'dari ATH' : 'from ATH');
+            athChangeEl.textContent = text;
+            athChangeEl.className = 'stat-trend down';
+        }
     }
     
     function updateChangeIndicator() {
@@ -1908,10 +2045,21 @@
             
             updateAllDOMElements();
             
+            // Hide error message on success
+            const errorEl = document.getElementById('btc-realtime-error');
+            if (errorEl) errorEl.style.display = 'none';
+            
             console.log('[Realtime] Crypto data updated successfully');
         } catch (error) {
             console.error('[Realtime] Crypto update failed:', error);
             realtimeDataState.errors.crypto = error.message;
+            
+            // Show error message
+            const errorEl = document.getElementById('btc-realtime-error');
+            if (errorEl) {
+                errorEl.textContent = '⚠️ Error updating data: ' + error.message + '. Will retry automatically...';
+                errorEl.style.display = 'block';
+            }
         }
     }
     
@@ -1956,6 +2104,12 @@
         
         realtimeDataState.isLoading = true;
         
+        // Show loading, hide error
+        const loadingEl = document.getElementById('btc-realtime-loading');
+        const errorEl = document.getElementById('btc-realtime-error');
+        if (loadingEl) loadingEl.style.display = 'flex';
+        if (errorEl) errorEl.style.display = 'none';
+        
         try {
             await Promise.all([
                 updateCryptoData(),
@@ -1964,10 +2118,21 @@
             ]);
             
             realtimeDataState.isLoading = false;
-            console.log('[Realtime] Initial data load complete');
+            
+            // Hide loading after successful load
+            if (loadingEl) loadingEl.style.display = 'none';
+            
+            console.log('[Realtime] Initial data load complete - data should be visible now');
         } catch (error) {
             console.error('[Realtime] Initial load failed:', error);
             realtimeDataState.isLoading = false;
+            
+            // Hide loading, show error
+            if (loadingEl) loadingEl.style.display = 'none';
+            if (errorEl) {
+                errorEl.textContent = '⚠️ Error loading data: ' + error.message + '. Retrying in 60s...';
+                errorEl.style.display = 'block';
+            }
         }
     }
     
@@ -2044,7 +2209,74 @@
     };
     
     console.log('[Realtime] Comprehensive module loaded successfully');
+    
+    // ============================================================================
+    // LANGUAGE SWITCHING
+    // ============================================================================
+    
+    let currentLanguage = 'en';
+    
+    const translations = {
+        en: {
+            loading: 'Loading live Bitcoin data...',
+            error: 'Unable to fetch data. Retrying...',
+            updated: 'Updated',
+            fromATH: 'from ATH',
+            live: 'LIVE',
+            static: 'STATIC',
+            historical: 'HISTORICAL',
+            projection: 'PROJECTION',
+            estimated: 'ESTIMATED'
+        },
+        id: {
+            loading: 'Memuat data Bitcoin...',
+            error: 'Gagal memuat data. Mencoba lagi...',
+            updated: 'Diperbarui',
+            fromATH: 'dari ATH',
+            live: 'LANGSUNG',
+            static: 'STATIS',
+            historical: 'HISTORIS',
+            projection: 'PROYEKSI',
+            estimated: 'ESTIMASI'
+        }
+    };
+    
+    function setLanguage(lang) {
+        currentLanguage = lang;
+        
+        // Update button states
+        document.getElementById('lang-en').style.background = lang === 'en' ? 'rgba(59, 130, 246, 0.2)' : 'transparent';
+        document.getElementById('lang-en').style.borderColor = lang === 'en' ? 'rgba(59, 130, 246, 0.4)' : 'rgba(255, 255, 255, 0.1)';
+        document.getElementById('lang-en').style.color = lang === 'en' ? '#3b82f6' : 'var(--text-tertiary)';
+        
+        document.getElementById('lang-id').style.background = lang === 'id' ? 'rgba(59, 130, 246, 0.2)' : 'transparent';
+        document.getElementById('lang-id').style.borderColor = lang === 'id' ? 'rgba(59, 130, 246, 0.4)' : 'rgba(255, 255, 255, 0.1)';
+        document.getElementById('lang-id').style.color = lang === 'id' ? '#3b82f6' : 'var(--text-tertiary)';
+        
+        // Update all elements with data-lang attributes
+        document.querySelectorAll('[data-lang-en]').forEach(element => {
+            const enText = element.getAttribute('data-lang-en');
+            const idText = element.getAttribute('data-lang-id');
+            
+            if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
+                element.placeholder = lang === 'en' ? enText : idText;
+            } else {
+                element.innerHTML = lang === 'en' ? enText : idText;
+            }
+        });
+        
+        // Update dynamic text
+        const loadingText = document.querySelector('.btc-loading span');
+        if (loadingText) {
+            loadingText.textContent = translations[lang].loading;
+        }
+        
+        console.log('[Language] Switched to:', lang);
+    }
+    
+    // Initialize with English
+    window.setLanguage = setLanguage;
+    
     </script>
-  <script src="realtime-data.js"></script>
 </body>
 </html>
