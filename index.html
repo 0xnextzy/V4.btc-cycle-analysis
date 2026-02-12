@@ -421,7 +421,7 @@
             backdrop-filter: blur(20px);
             border: 1px solid var(--glass-border);
             border-radius: 20px;
-            padding: 32px;
+            padding: 36px;
             position: relative;
             overflow: hidden;
             transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
@@ -457,20 +457,22 @@
         }
         
         .stat-label {
-            font-size: 0.75rem;
+            font-size: 0.85rem;
             color: var(--text-tertiary);
             text-transform: uppercase;
             letter-spacing: 1.5px;
-            font-weight: 600;
-            margin-bottom: 12px;
+            font-weight: 700;
+            margin-bottom: 14px;
+            line-height: 1.4;
         }
         
         .stat-value {
             font-family: 'JetBrains Mono', monospace;
-            font-size: clamp(1.75rem, 4vw, 2.5rem);
+            font-size: clamp(2rem, 4vw, 2.75rem);
             font-weight: 700;
             line-height: 1.2;
-            margin-bottom: 12px;
+            margin-bottom: 14px;
+            letter-spacing: -0.02em;
         }
         
         .stat-value.green { color: var(--accent-green); }
@@ -481,9 +483,10 @@
         .stat-value.orange { color: var(--accent-orange); }
         
         .stat-subtext {
-            font-size: 0.875rem;
-            color: var(--text-muted);
-            margin-bottom: 12px;
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            margin-bottom: 14px;
+            line-height: 1.5;
         }
         
         .stat-trend {
@@ -945,9 +948,13 @@
             <div class="version-badge" data-lang-en="Version 4.0 - Multi-Layer Intelligence" data-lang-id="Versi 4.0 - Analisis Multi-Layer">Version 4.0 - Multi-Layer Intelligence</div>
             
             <!-- Language Toggle -->
-            <div style="position: absolute; top: 40px; right: 40px; display: flex; gap: 8px; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 6px;">
-                <button id="lang-en" onclick="setLanguage('en')" style="padding: 8px 16px; background: rgba(59, 130, 246, 0.2); border: 1px solid rgba(59, 130, 246, 0.4); border-radius: 8px; color: #3b82f6; font-size: 0.875rem; font-weight: 600; cursor: pointer; transition: all 0.3s;">EN</button>
-                <button id="lang-id" onclick="setLanguage('id')" style="padding: 8px 16px; background: transparent; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; color: var(--text-tertiary); font-size: 0.875rem; font-weight: 600; cursor: pointer; transition: all 0.3s;">ID</button>
+            <div style="position: absolute; top: 40px; right: 40px; display: flex; gap: 10px; background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 12px; padding: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.3);">
+                <button id="lang-en" onclick="setLanguage('en')" style="padding: 10px 20px; background: rgba(59, 130, 246, 0.25); border: 1px solid rgba(59, 130, 246, 0.5); border-radius: 8px; color: #3b82f6; font-size: 0.9rem; font-weight: 700; cursor: pointer; transition: all 0.3s ease; font-family: 'Space Grotesk', sans-serif;">
+                    🇬🇧 EN
+                </button>
+                <button id="lang-id" onclick="setLanguage('id')" style="padding: 10px 20px; background: transparent; border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 8px; color: var(--text-tertiary); font-size: 0.9rem; font-weight: 700; cursor: pointer; transition: all 0.3s ease; font-family: 'Space Grotesk', sans-serif;">
+                    🇮🇩 ID
+                </button>
             </div>
             
             <h1 data-lang-en="Bitcoin Cycle<br>Analysis" data-lang-id="Analisis Siklus<br>Bitcoin">Bitcoin Cycle<br>Analysis</h1>
@@ -1106,20 +1113,20 @@
             
             <div class="stat-card">
                 <div class="stat-icon">🚀</div>
-                <div class="stat-label">Next Cycle Target</div>
+                <div class="stat-label" data-lang-en="Next Cycle Target" data-lang-id="Target Siklus Berikutnya">Next Cycle Target</div>
                 <div class="stat-value green">$200K - $220K</div>
-                <div class="stat-subtext">Q4 2029 Projection</div>
-                <div class="stat-trend warning">⚠️ Speculative (No CI)</div>
-                <span class="data-badge estimated">PROJECTION</span>
+                <div class="stat-subtext" data-lang-en="Q4 2029 Projection" data-lang-id="Proyeksi Q4 2029">Q4 2029 Projection</div>
+                <div class="stat-trend warning" data-lang-en="⚠️ Speculative (No CI)" data-lang-id="⚠️ Spekulatif (Tanpa CI)">⚠️ Speculative (No CI)</div>
+                <span class="data-badge estimated" data-lang-en="PROJECTION" data-lang-id="PROYEKSI">PROJECTION</span>
             </div>
             
             <div class="stat-card">
                 <div class="stat-icon">⏰</div>
-                <div class="stat-label">Days Since Halving</div>
-                <div class="stat-value orange">651</div>
-                <div class="stat-subtext">Apr 2024 Halving</div>
-                <div class="stat-trend neutral">Mid-cycle position</div>
-                <span class="data-badge static">STATIC</span>
+                <div class="stat-label" data-lang-en="Days Since Halving" data-lang-id="Hari Sejak Halving">Days Since Halving</div>
+                <div id="days-since-halving" class="stat-value orange">--</div>
+                <div class="stat-subtext" data-lang-en="Apr 2024 Halving Event" data-lang-id="Halving April 2024">Apr 2024 Halving</div>
+                <div id="halving-phase" class="stat-trend neutral" data-lang-en="Mid-cycle position" data-lang-id="Posisi pertengahan siklus">Mid-cycle position</div>
+                <span class="data-badge live" data-lang-en="LIVE" data-lang-id="LANGSUNG">LIVE</span>
             </div>
         </div>
         
@@ -1789,6 +1796,8 @@
         etf: null
     };
     
+    let currentLanguage = 'en'; // Default language
+    
     function formatNumber(num, decimals = 0) {
         if (num === null || num === undefined || isNaN(num)) return '--';
         return num.toLocaleString('en-US', {
@@ -2047,6 +2056,42 @@
         if (timestampEl) {
             timestampEl.textContent = 'Updated ' + timeString;
         }
+        
+        // Update Days Since Halving
+        updateDaysSinceHalving();
+    }
+    
+    function updateDaysSinceHalving() {
+        // Bitcoin halving date: April 20, 2024 at 00:09 UTC
+        const halvingDate = new Date('2024-04-20T00:09:00Z');
+        const now = new Date();
+        
+        // Calculate difference in days
+        const diffMs = now - halvingDate;
+        const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+        
+        // Update DOM
+        const daysEl = document.getElementById('days-since-halving');
+        if (daysEl) {
+            daysEl.textContent = diffDays.toString();
+        }
+        
+        // Update phase description
+        const phaseEl = document.getElementById('halving-phase');
+        const lang = currentLanguage || 'en';
+        if (phaseEl && diffDays) {
+            let phaseText = '';
+            if (diffDays < 365) {
+                phaseText = lang === 'en' ? 'Early cycle (Year 1)' : 'Siklus awal (Tahun 1)';
+            } else if (diffDays < 730) {
+                phaseText = lang === 'en' ? 'Mid-cycle (Year 2)' : 'Pertengahan siklus (Tahun 2)';
+            } else if (diffDays < 1095) {
+                phaseText = lang === 'en' ? 'Late cycle (Year 3)' : 'Siklus akhir (Tahun 3)';
+            } else {
+                phaseText = lang === 'en' ? 'Pre-halving (Year 4)' : 'Pra-halving (Tahun 4)';
+            }
+            phaseEl.textContent = phaseText;
+        }
     }
     
     async function updateCryptoData() {
@@ -2261,8 +2306,6 @@
     // LANGUAGE SWITCHING
     // ============================================================================
     
-    let currentLanguage = 'en';
-    
     const translations = {
         en: {
             loading: 'Loading live Bitcoin data...',
@@ -2290,15 +2333,31 @@
     
     function setLanguage(lang) {
         currentLanguage = lang;
+        document.documentElement.lang = lang;
         
-        // Update button states
-        document.getElementById('lang-en').style.background = lang === 'en' ? 'rgba(59, 130, 246, 0.2)' : 'transparent';
-        document.getElementById('lang-en').style.borderColor = lang === 'en' ? 'rgba(59, 130, 246, 0.4)' : 'rgba(255, 255, 255, 0.1)';
-        document.getElementById('lang-en').style.color = lang === 'en' ? '#3b82f6' : 'var(--text-tertiary)';
+        // Update button states with better styling
+        const enBtn = document.getElementById('lang-en');
+        const idBtn = document.getElementById('lang-id');
         
-        document.getElementById('lang-id').style.background = lang === 'id' ? 'rgba(59, 130, 246, 0.2)' : 'transparent';
-        document.getElementById('lang-id').style.borderColor = lang === 'id' ? 'rgba(59, 130, 246, 0.4)' : 'rgba(255, 255, 255, 0.1)';
-        document.getElementById('lang-id').style.color = lang === 'id' ? '#3b82f6' : 'var(--text-tertiary)';
+        if (enBtn && idBtn) {
+            if (lang === 'en') {
+                enBtn.style.background = 'rgba(59, 130, 246, 0.25)';
+                enBtn.style.borderColor = 'rgba(59, 130, 246, 0.5)';
+                enBtn.style.color = '#3b82f6';
+                
+                idBtn.style.background = 'transparent';
+                idBtn.style.borderColor = 'rgba(255, 255, 255, 0.15)';
+                idBtn.style.color = 'var(--text-tertiary)';
+            } else {
+                idBtn.style.background = 'rgba(59, 130, 246, 0.25)';
+                idBtn.style.borderColor = 'rgba(59, 130, 246, 0.5)';
+                idBtn.style.color = '#3b82f6';
+                
+                enBtn.style.background = 'transparent';
+                enBtn.style.borderColor = 'rgba(255, 255, 255, 0.15)';
+                enBtn.style.color = 'var(--text-tertiary)';
+            }
+        }
         
         // Update all elements with data-lang attributes
         document.querySelectorAll('[data-lang-en]').forEach(element => {
@@ -2318,11 +2377,19 @@
             loadingText.textContent = translations[lang].loading;
         }
         
+        // Update halving phase text
+        updateDaysSinceHalving();
+        
         console.log('[Language] Switched to:', lang);
     }
     
-    // Initialize with English
+    // Expose setLanguage globally immediately
     window.setLanguage = setLanguage;
+    
+    // Initialize on DOM ready
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('[Language] Language switching ready');
+    });
     
     </script>
 </body>
