@@ -1,17 +1,17 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bitcoin Cycle Analysis V4.0 - Multi-Layer Intelligence | 0xnextzy</title>
+    <title>Bitcoin Cycle Analysis - Professional Dashboard | 0xnextzy</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Playfair+Display:wght@700;900&display=swap');
         
         :root {
             /* Base Colors */
-            --bg-primary: #0f0f0f;
-            --bg-secondary: #1a1a1a;
-            --bg-tertiary: #252525;
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #151515;
+            --bg-tertiary: #1f1f1f;
             --bg-elevated: #2a2a2a;
             
             /* Accent Colors */
@@ -23,6 +23,7 @@
             --accent-red: #ef4444;
             --accent-purple: #a855f7;
             --accent-orange: #f97316;
+            --accent-cyan: #06b6d4;
             
             /* Text Colors */
             --text-primary: #ffffff;
@@ -36,16 +37,15 @@
             --glass-bg: rgba(255, 255, 255, 0.05);
             --glass-border: rgba(255, 255, 255, 0.1);
             
-            /* Shadows */
+            /* Shadows & Glows */
             --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
             --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
             --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.5);
             --shadow-xl: 0 24px 60px rgba(0, 0, 0, 0.6);
-            
-            /* Glow Effects */
             --glow-green: 0 0 40px rgba(0, 255, 136, 0.3);
             --glow-blue: 0 0 40px rgba(14, 165, 233, 0.3);
             --glow-red: 0 0 40px rgba(239, 68, 68, 0.3);
+            --glow-purple: 0 0 40px rgba(168, 85, 247, 0.3);
         }
         
         * {
@@ -64,8 +64,31 @@
             -moz-osx-font-smoothing: grayscale;
         }
         
-        /* Background Grid Effect */
+        /* Animated Background */
         body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(0, 255, 136, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(14, 165, 233, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(168, 85, 247, 0.05) 0%, transparent 50%);
+            background-size: 200% 200%;
+            animation: gradient-shift 15s ease infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        @keyframes gradient-shift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        /* Grid Pattern */
+        body::after {
             content: '';
             position: fixed;
             top: 0;
@@ -80,38 +103,85 @@
             z-index: 0;
         }
         
-        /* Gradient Orbs */
-        body::after {
-            content: '';
-            position: fixed;
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, rgba(0, 255, 136, 0.08) 0%, transparent 70%);
-            top: -300px;
-            right: -300px;
-            pointer-events: none;
-            z-index: 0;
-            animation: float 20s ease-in-out infinite;
-        }
-        
-        @keyframes float {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(-50px, 50px) scale(1.1); }
-        }
-        
         .container {
-            max-width: 1600px;
+            max-width: 1800px;
             margin: 0 auto;
-            padding: 80px 40px;
+            padding: 60px 40px;
             position: relative;
             z-index: 1;
         }
         
-        /* ========== HEADER ========== */
-        .header {
-            text-align: center;
-            margin-bottom: 100px;
+        /* ========== MODE SWITCHER ========== */
+        .mode-switcher {
+            position: sticky;
+            top: 20px;
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 60px;
+            padding: 16px;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(30px);
+            border-radius: 24px;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        }
+        
+        .mode-btn {
+            padding: 18px 48px;
+            background: transparent;
+            border: 2px solid var(--border-medium);
+            border-radius: 16px;
+            color: var(--text-tertiary);
+            font-size: 1.05rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            font-family: 'Space Grotesk', sans-serif;
+            letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .mode-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s;
+        }
+        
+        .mode-btn:hover::before {
+            left: 100%;
+        }
+        
+        .mode-btn:hover {
+            border-color: var(--accent-blue);
+            color: var(--text-primary);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(14, 165, 233, 0.3);
+        }
+        
+        .mode-btn.active {
+            background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-green) 100%);
+            border-color: transparent;
+            color: var(--bg-primary);
+            box-shadow: var(--glow-blue);
+            transform: scale(1.05);
+        }
+        
+        .mode-content {
+            display: none;
             animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .mode-content.active {
+            display: block;
         }
         
         @keyframes fadeInUp {
@@ -125,285 +195,286 @@
             }
         }
         
-        .version-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: var(--glass-bg);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border);
-            color: var(--accent-green);
-            padding: 10px 24px;
-            border-radius: 100px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            margin-bottom: 32px;
-            box-shadow: var(--shadow-sm);
+        /* ========== HEADER ========== */
+        .header {
+            text-align: center;
+            margin-bottom: 80px;
+            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         }
         
-        .version-badge::before {
+        .framework-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.15) 0%, rgba(14, 165, 233, 0.15) 100%);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--accent-green);
+            color: var(--accent-green);
+            padding: 12px 28px;
+            border-radius: 100px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 32px;
+            box-shadow: var(--glow-green);
+        }
+        
+        .framework-badge::before {
             content: '●';
             color: var(--accent-green);
             animation: pulse-dot 2s ease-in-out infinite;
         }
         
         @keyframes pulse-dot {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.4; }
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(0.8); }
         }
         
         h1 {
             font-family: 'Playfair Display', serif;
-            font-size: clamp(3rem, 8vw, 6rem);
+            font-size: clamp(3.5rem, 10vw, 7rem);
             font-weight: 900;
-            line-height: 1.1;
-            margin-bottom: 24px;
-            letter-spacing: -0.03em;
-            background: linear-gradient(135deg, #ffffff 0%, var(--accent-green) 100%);
+            line-height: 1;
+            margin-bottom: 28px;
+            letter-spacing: -0.04em;
+            background: linear-gradient(135deg, #ffffff 0%, var(--accent-green) 50%, var(--accent-blue) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            text-shadow: 0 0 80px rgba(0, 255, 136, 0.2);
         }
         
         .subtitle {
-            font-size: clamp(1rem, 2vw, 1.25rem);
+            font-size: clamp(1.1rem, 2.5vw, 1.4rem);
             color: var(--text-secondary);
             font-weight: 400;
-            letter-spacing: 0.05em;
-            margin-bottom: 24px;
+            letter-spacing: 0.08em;
+            margin-bottom: 28px;
         }
         
         .author-credit {
             display: inline-flex;
             align-items: center;
-            gap: 12px;
+            gap: 14px;
             background: var(--glass-bg);
             backdrop-filter: blur(20px);
             border: 1px solid var(--glass-border);
-            padding: 16px 32px;
-            border-radius: 16px;
-            margin-top: 32px;
+            padding: 18px 36px;
+            border-radius: 18px;
+            margin-top: 36px;
+            transition: all 0.3s ease;
+        }
+        
+        .author-credit:hover {
+            border-color: var(--accent-green);
+            transform: translateY(-2px);
+            box-shadow: var(--glow-green);
         }
         
         .author-credit .label {
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             color: var(--text-tertiary);
             text-transform: uppercase;
-            letter-spacing: 1.5px;
+            letter-spacing: 1.8px;
         }
         
         .author-credit .name {
             font-family: 'JetBrains Mono', monospace;
-            font-size: 1.25rem;
+            font-size: 1.35rem;
             font-weight: 700;
             color: var(--accent-green);
         }
         
-        .data-source {
-            margin-top: 24px;
-            font-size: 0.875rem;
-            color: var(--text-tertiary);
-            line-height: 1.8;
-        }
-        
-        .data-source strong {
-            color: var(--text-secondary);
-        }
-        
-        /* ========== REALTIME DATA MODULE ========== */
-        .btc-realtime-module {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 32px;
-            position: relative;
-            min-height: 180px;
-            margin-bottom: 60px;
-            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s backwards;
-        }
-        
-        .btc-loading {
+        /* Language Toggle */
+        .lang-toggle {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
-            color: var(--text-secondary);
-            font-size: 0.875rem;
+            top: 40px;
+            right: 40px;
+            display: flex;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 14px;
+            padding: 10px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
         }
         
-        .btc-loading-spinner {
-            width: 40px;
-            height: 40px;
-            border: 3px solid rgba(255, 255, 255, 0.1);
-            border-top-color: var(--accent-green);
-            border-radius: 50%;
-            animation: btc-spin 1s linear infinite;
-            margin: 0 auto 16px;
+        .lang-btn {
+            padding: 12px 24px;
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: var(--text-tertiary);
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Space Grotesk', sans-serif;
         }
         
-        @keyframes btc-spin {
+        .lang-btn.active {
+            background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-cyan) 100%);
+            border-color: transparent;
+            color: var(--bg-primary);
+            box-shadow: 0 4px 16px rgba(14, 165, 233, 0.4);
+        }
+        
+        .lang-btn:hover:not(.active) {
+            border-color: var(--accent-blue);
+            color: var(--text-primary);
+        }
+        
+        /* ========== REALTIME PRICE MODULE ========== */
+        .btc-hero-price {
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.08) 0%, rgba(14, 165, 233, 0.08) 100%);
+            backdrop-filter: blur(30px);
+            border: 2px solid rgba(0, 255, 136, 0.3);
+            border-radius: 32px;
+            padding: 48px;
+            margin-bottom: 60px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--glow-green);
+        }
+        
+        .btc-hero-price::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 255, 136, 0.1) 0%, transparent 70%);
+            animation: rotate-glow 20s linear infinite;
+        }
+        
+        @keyframes rotate-glow {
+            from { transform: rotate(0deg); }
             to { transform: rotate(360deg); }
         }
         
-        .btc-realtime-module.loading .btc-data-grid {
-            opacity: 0.3;
-            pointer-events: none;
+        .price-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 32px;
+            position: relative;
+            z-index: 1;
         }
         
-        .btc-error {
-            background: rgba(239, 68, 68, 0.15);
-            border: 1px solid rgba(239, 68, 68, 0.3);
-            color: var(--accent-red);
-            padding: 12px 20px;
-            border-radius: 12px;
-            font-size: 0.875rem;
-            margin-bottom: 24px;
+        .price-item {
             text-align: center;
         }
         
-        .btc-data-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 24px;
-            transition: opacity 0.3s ease;
-        }
-        
-        .btc-data-item {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-        
-        .btc-label {
-            font-size: 0.75rem;
+        .price-label {
+            font-size: 0.85rem;
             color: var(--text-tertiary);
             text-transform: uppercase;
-            letter-spacing: 1.5px;
-            font-weight: 600;
-        }
-        
-        .btc-value {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 1.75rem;
+            letter-spacing: 2px;
             font-weight: 700;
-            color: var(--text-primary);
-            line-height: 1.2;
+            margin-bottom: 12px;
         }
         
-        .btc-price-item {
-            grid-column: 1 / -1;
-        }
-        
-        .btc-price {
-            font-size: 2.5rem;
+        .price-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 3rem;
+            font-weight: 900;
             color: var(--accent-green);
+            line-height: 1;
+            margin-bottom: 12px;
+            text-shadow: 0 0 30px rgba(0, 255, 136, 0.5);
         }
         
-        .btc-change {
+        .price-change {
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            padding: 6px 14px;
+            gap: 8px;
+            padding: 8px 18px;
             border-radius: 100px;
-            font-size: 0.875rem;
-            font-weight: 600;
+            font-size: 1rem;
+            font-weight: 700;
             backdrop-filter: blur(10px);
-            width: fit-content;
         }
         
-        .btc-change.positive {
-            background: rgba(0, 255, 136, 0.15);
+        .price-change.positive {
+            background: rgba(0, 255, 136, 0.2);
             color: var(--accent-green);
-            border: 1px solid rgba(0, 255, 136, 0.3);
+            border: 1px solid rgba(0, 255, 136, 0.4);
         }
         
-        .btc-change.positive::before {
-            content: '↑ ';
-        }
-        
-        .btc-change.negative {
-            background: rgba(239, 68, 68, 0.15);
+        .price-change.negative {
+            background: rgba(239, 68, 68, 0.2);
             color: var(--accent-red);
-            border: 1px solid rgba(239, 68, 68, 0.3);
+            border: 1px solid rgba(239, 68, 68, 0.4);
         }
         
-        .btc-change.negative::before {
-            content: '↓ ';
-        }
-        
-        .btc-timestamp {
-            font-size: 0.875rem;
-            color: var(--text-tertiary);
-        }
+        .price-change.positive::before { content: '↑ '; }
+        .price-change.negative::before { content: '↓ '; }
         
         /* ========== ALERT BANNER ========== */
         .alert-banner {
-            background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(249, 115, 22, 0.1) 100%);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(239, 68, 68, 0.3);
-            border-radius: 24px;
-            padding: 40px;
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.12) 0%, rgba(249, 115, 22, 0.12) 100%);
+            backdrop-filter: blur(30px);
+            border: 2px solid rgba(239, 68, 68, 0.4);
+            border-radius: 28px;
+            padding: 44px;
             margin-bottom: 80px;
             position: relative;
             overflow: hidden;
             animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s backwards;
         }
         
-        .alert-banner::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, transparent 0%, rgba(239, 68, 68, 0.05) 100%);
-            pointer-events: none;
-        }
-        
         .alert-title {
-            font-size: clamp(1.25rem, 3vw, 1.75rem);
-            font-weight: 700;
+            font-size: clamp(1.3rem, 3.5vw, 1.9rem);
+            font-weight: 800;
             color: var(--accent-red);
-            margin-bottom: 20px;
+            margin-bottom: 24px;
             display: flex;
             align-items: center;
-            gap: 12px;
-            position: relative;
+            gap: 14px;
         }
         
         .alert-content {
-            font-size: 1rem;
+            font-size: 1.05rem;
             color: var(--text-secondary);
-            line-height: 1.8;
-            position: relative;
+            line-height: 2;
         }
         
         .alert-content strong {
             color: var(--text-primary);
-            font-weight: 600;
+            font-weight: 700;
         }
         
         /* ========== CATEGORY HEADER ========== */
         .category-header {
-            margin: 120px 0 60px 0;
+            margin: 140px 0 70px 0;
             animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+        }
+        
+        .category-header::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -20px;
+            width: 120px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-green) 0%, transparent 100%);
+            border-radius: 2px;
         }
         
         .category-title {
             font-family: 'Playfair Display', serif;
-            font-size: clamp(2rem, 4vw, 3rem);
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
             font-weight: 900;
             color: var(--text-primary);
-            margin-bottom: 12px;
-            letter-spacing: -0.02em;
+            margin-bottom: 16px;
+            letter-spacing: -0.03em;
         }
         
         .category-description {
-            font-size: 1.125rem;
+            font-size: 1.2rem;
             color: var(--text-tertiary);
             font-weight: 400;
         }
@@ -411,20 +482,20 @@
         /* ========== STATS GRID ========== */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 24px;
-            margin-bottom: 80px;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 28px;
+            margin-bottom: 100px;
         }
         
         .stat-card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(20px);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+            backdrop-filter: blur(30px);
             border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            padding: 36px;
+            border-radius: 24px;
+            padding: 40px;
             position: relative;
             overflow: hidden;
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
         
         .stat-card::before {
@@ -433,115 +504,131 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 3px;
+            height: 4px;
             background: linear-gradient(90deg, transparent 0%, var(--accent-green) 50%, transparent 100%);
             opacity: 0;
             transition: opacity 0.4s ease;
         }
         
+        .stat-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at top right, rgba(0, 255, 136, 0.05) 0%, transparent 60%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        
         .stat-card:hover {
-            transform: translateY(-8px);
-            border-color: rgba(0, 255, 136, 0.3);
+            transform: translateY(-10px);
+            border-color: rgba(0, 255, 136, 0.4);
             box-shadow: var(--glow-green);
         }
         
-        .stat-card:hover::before {
+        .stat-card:hover::before,
+        .stat-card:hover::after {
             opacity: 1;
         }
         
         .stat-icon {
-            font-size: 2.5rem;
-            margin-bottom: 16px;
-            opacity: 0.6;
-            filter: grayscale(0.3);
+            font-size: 2.8rem;
+            margin-bottom: 18px;
+            opacity: 0.7;
+            filter: drop-shadow(0 4px 12px rgba(0, 255, 136, 0.3));
         }
         
         .stat-label {
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             color: var(--text-tertiary);
             text-transform: uppercase;
-            letter-spacing: 1.5px;
+            letter-spacing: 1.8px;
             font-weight: 700;
-            margin-bottom: 14px;
+            margin-bottom: 16px;
             line-height: 1.4;
         }
         
         .stat-value {
             font-family: 'JetBrains Mono', monospace;
-            font-size: clamp(2rem, 4vw, 2.75rem);
-            font-weight: 700;
+            font-size: clamp(2.2rem, 4.5vw, 3rem);
+            font-weight: 800;
             line-height: 1.2;
-            margin-bottom: 14px;
-            letter-spacing: -0.02em;
+            margin-bottom: 16px;
+            letter-spacing: -0.03em;
+            position: relative;
+            z-index: 1;
         }
         
-        .stat-value.green { color: var(--accent-green); }
-        .stat-value.red { color: var(--accent-red); }
-        .stat-value.blue { color: var(--accent-blue); }
-        .stat-value.yellow { color: var(--accent-yellow); }
-        .stat-value.purple { color: var(--accent-purple); }
-        .stat-value.orange { color: var(--accent-orange); }
+        .stat-value.green { color: var(--accent-green); text-shadow: 0 0 20px rgba(0, 255, 136, 0.4); }
+        .stat-value.red { color: var(--accent-red); text-shadow: 0 0 20px rgba(239, 68, 68, 0.4); }
+        .stat-value.blue { color: var(--accent-blue); text-shadow: 0 0 20px rgba(14, 165, 233, 0.4); }
+        .stat-value.yellow { color: var(--accent-yellow); text-shadow: 0 0 20px rgba(251, 191, 36, 0.4); }
+        .stat-value.purple { color: var(--accent-purple); text-shadow: 0 0 20px rgba(168, 85, 247, 0.4); }
+        .stat-value.orange { color: var(--accent-orange); text-shadow: 0 0 20px rgba(249, 115, 22, 0.4); }
         
         .stat-subtext {
-            font-size: 0.95rem;
+            font-size: 1rem;
             color: var(--text-secondary);
-            margin-bottom: 14px;
-            line-height: 1.5;
+            margin-bottom: 16px;
+            line-height: 1.6;
         }
         
         .stat-trend {
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            padding: 6px 14px;
+            gap: 8px;
+            padding: 8px 16px;
             border-radius: 100px;
-            font-size: 0.75rem;
-            font-weight: 600;
+            font-size: 0.8rem;
+            font-weight: 700;
             backdrop-filter: blur(10px);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         
         .stat-trend.up {
-            background: rgba(0, 255, 136, 0.15);
+            background: rgba(0, 255, 136, 0.2);
             color: var(--accent-green);
-            border: 1px solid rgba(0, 255, 136, 0.3);
+            border: 1px solid rgba(0, 255, 136, 0.4);
         }
         
         .stat-trend.down {
-            background: rgba(239, 68, 68, 0.15);
+            background: rgba(239, 68, 68, 0.2);
             color: var(--accent-red);
-            border: 1px solid rgba(239, 68, 68, 0.3);
+            border: 1px solid rgba(239, 68, 68, 0.4);
         }
         
         .stat-trend.neutral {
-            background: rgba(14, 165, 233, 0.15);
+            background: rgba(14, 165, 233, 0.2);
             color: var(--accent-blue);
-            border: 1px solid rgba(14, 165, 233, 0.3);
+            border: 1px solid rgba(14, 165, 233, 0.4);
         }
         
         .stat-trend.warning {
-            background: rgba(251, 191, 36, 0.15);
+            background: rgba(251, 191, 36, 0.2);
             color: var(--accent-yellow);
-            border: 1px solid rgba(251, 191, 36, 0.3);
+            border: 1px solid rgba(251, 191, 36, 0.4);
         }
         
-        /* ========== DATA ACCURACY BADGES ========== */
         .data-badge {
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            padding: 4px 10px;
-            border-radius: 6px;
+            padding: 5px 12px;
+            border-radius: 8px;
             font-size: 0.7rem;
-            font-weight: 700;
+            font-weight: 800;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-top: 8px;
+            letter-spacing: 0.8px;
+            margin-top: 10px;
         }
         
         .data-badge.live {
-            background: rgba(16, 185, 129, 0.15);
+            background: rgba(16, 185, 129, 0.2);
             color: #10b981;
-            border: 1px solid rgba(16, 185, 129, 0.3);
+            border: 1px solid rgba(16, 185, 129, 0.4);
         }
         
         .data-badge.live::before {
@@ -550,34 +637,94 @@
         }
         
         .data-badge.static {
-            background: rgba(59, 130, 246, 0.15);
+            background: rgba(59, 130, 246, 0.2);
             color: #3b82f6;
-            border: 1px solid rgba(59, 130, 246, 0.3);
+            border: 1px solid rgba(59, 130, 246, 0.4);
         }
         
-        .data-badge.estimated {
-            background: rgba(245, 158, 11, 0.15);
-            color: #f59e0b;
-            border: 1px solid rgba(245, 158, 11, 0.3);
+        /* ========== COMPOSITE INDEX ========== */
+        .composite-index {
+            background: linear-gradient(135deg, rgba(14, 165, 233, 0.15) 0%, rgba(0, 255, 136, 0.15) 100%);
+            backdrop-filter: blur(30px);
+            border: 3px solid rgba(14, 165, 233, 0.5);
+            border-radius: 32px;
+            padding: 60px;
+            margin: 80px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--glow-blue);
         }
         
-        /* ========== KEY LEVELS ========== */
-        .key-levels {
+        .composite-index::before {
+            content: '';
+            position: absolute;
+            top: -100%;
+            left: -100%;
+            width: 300%;
+            height: 300%;
+            background: conic-gradient(from 0deg, transparent, rgba(14, 165, 233, 0.1), transparent);
+            animation: rotate-conic 15s linear infinite;
+        }
+        
+        @keyframes rotate-conic {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .composite-score {
+            font-size: clamp(5rem, 12vw, 10rem);
+            font-weight: 900;
+            font-family: 'JetBrains Mono', monospace;
+            background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-green) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+            margin-bottom: 24px;
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 0 60px rgba(0, 255, 136, 0.5);
+        }
+        
+        .composite-label {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 36px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .composite-interpretation {
+            font-size: 1.2rem;
+            color: var(--text-primary);
+            max-width: 900px;
+            margin: 0 auto;
+            line-height: 2;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* ========== SUPPORT LEVELS ========== */
+        .support-levels {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 24px;
-            margin-bottom: 80px;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 28px;
+            margin-bottom: 100px;
         }
         
         .level-card {
             background: var(--glass-bg);
-            backdrop-filter: blur(20px);
+            backdrop-filter: blur(30px);
             border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            padding: 32px;
+            border-radius: 24px;
+            padding: 36px;
             position: relative;
             overflow: hidden;
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
         
         .level-card::before {
@@ -585,31 +732,31 @@
             position: absolute;
             left: 0;
             top: 0;
-            width: 4px;
+            width: 6px;
             height: 100%;
             transition: width 0.4s ease;
         }
         
-        .level-card.resistance::before { background: var(--accent-red); }
-        .level-card.support::before { background: var(--accent-green); }
-        .level-card.current::before { background: var(--accent-blue); }
-        .level-card.primary::before { background: var(--accent-yellow); }
+        .level-card.resistance::before { background: linear-gradient(180deg, var(--accent-red) 0%, rgba(239, 68, 68, 0.3) 100%); }
+        .level-card.support::before { background: linear-gradient(180deg, var(--accent-green) 0%, rgba(0, 255, 136, 0.3) 100%); }
+        .level-card.current::before { background: linear-gradient(180deg, var(--accent-blue) 0%, rgba(14, 165, 233, 0.3) 100%); }
+        .level-card.primary::before { background: linear-gradient(180deg, var(--accent-yellow) 0%, rgba(251, 191, 36, 0.3) 100%); }
         
         .level-card:hover {
-            transform: translateX(8px);
-            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateX(10px);
+            border-color: rgba(255, 255, 255, 0.3);
         }
         
         .level-card:hover::before {
-            width: 8px;
+            width: 12px;
         }
         
         .level-type {
-            font-size: 0.75rem;
+            font-size: 0.85rem;
             text-transform: uppercase;
-            letter-spacing: 1.5px;
-            font-weight: 700;
-            margin-bottom: 16px;
+            letter-spacing: 2px;
+            font-weight: 800;
+            margin-bottom: 18px;
         }
         
         .level-card.resistance .level-type { color: var(--accent-red); }
@@ -619,151 +766,41 @@
         
         .level-price {
             font-family: 'JetBrains Mono', monospace;
-            font-size: 2rem;
-            font-weight: 700;
+            font-size: 2.2rem;
+            font-weight: 800;
             color: var(--text-primary);
-            margin-bottom: 12px;
+            margin-bottom: 14px;
         }
         
         .level-description {
-            font-size: 0.875rem;
+            font-size: 0.95rem;
             color: var(--text-tertiary);
-            line-height: 1.6;
+            line-height: 1.7;
         }
         
-        /* ========== ANALYSIS CARDS ========== */
-        .analysis-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-            gap: 32px;
-            margin-bottom: 80px;
-        }
-        
-        .analysis-card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border);
-            border-radius: 24px;
-            padding: 40px;
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        
-        .analysis-card:hover {
-            transform: translateY(-8px);
-            border-color: rgba(14, 165, 233, 0.4);
-            box-shadow: var(--glow-blue);
-        }
-        
-        .analysis-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--accent-blue);
-            margin-bottom: 24px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        
-        .analysis-content {
-            font-size: 0.9375rem;
-            color: var(--text-secondary);
-            line-height: 1.8;
-        }
-        
-        .analysis-content strong {
-            color: var(--text-primary);
-            font-weight: 600;
-        }
-        
-        .analysis-list {
-            list-style: none;
-            margin-top: 20px;
-        }
-        
-        .analysis-list li {
-            padding: 14px 0 14px 32px;
-            position: relative;
-            border-bottom: 1px solid var(--border-subtle);
-            transition: all 0.3s ease;
-        }
-        
-        .analysis-list li:last-child {
-            border-bottom: none;
-        }
-        
-        .analysis-list li:hover {
-            padding-left: 40px;
-            color: var(--text-primary);
-        }
-        
-        .analysis-list li::before {
-            content: '▸';
-            position: absolute;
-            left: 0;
-            color: var(--accent-green);
-            font-weight: 700;
-            transition: all 0.3s ease;
-        }
-        
-        .analysis-list li:hover::before {
-            left: 8px;
-        }
-        
-        /* ========== INFO BOXES ========== */
+        /* ========== INFO BOX ========== */
         .info-box {
             background: var(--glass-bg);
-            backdrop-filter: blur(20px);
-            border-radius: 24px;
-            padding: 40px;
-            margin-bottom: 40px;
+            backdrop-filter: blur(30px);
+            border-radius: 28px;
+            padding: 48px;
+            margin-bottom: 50px;
             border: 2px solid;
             position: relative;
             overflow: hidden;
         }
         
-        .info-box::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            opacity: 0.05;
-            pointer-events: none;
-        }
-        
-        .info-box.warning {
-            border-color: rgba(239, 68, 68, 0.4);
-        }
-        
-        .info-box.warning::before {
-            background: linear-gradient(135deg, var(--accent-red) 0%, transparent 100%);
-        }
-        
-        .info-box.info {
-            border-color: rgba(14, 165, 233, 0.4);
-        }
-        
-        .info-box.info::before {
-            background: linear-gradient(135deg, var(--accent-blue) 0%, transparent 100%);
-        }
-        
-        .info-box.success {
-            border-color: rgba(0, 255, 136, 0.4);
-        }
-        
-        .info-box.success::before {
-            background: linear-gradient(135deg, var(--accent-green) 0%, transparent 100%);
-        }
+        .info-box.warning { border-color: rgba(239, 68, 68, 0.5); }
+        .info-box.info { border-color: rgba(14, 165, 233, 0.5); }
+        .info-box.success { border-color: rgba(0, 255, 136, 0.5); }
         
         .info-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 20px;
+            font-size: 1.7rem;
+            font-weight: 800;
+            margin-bottom: 24px;
             display: flex;
             align-items: center;
-            gap: 12px;
-            position: relative;
+            gap: 14px;
         }
         
         .info-box.warning .info-title { color: var(--accent-red); }
@@ -771,1105 +808,967 @@
         .info-box.success .info-title { color: var(--accent-green); }
         
         .info-text {
-            font-size: 0.9375rem;
+            font-size: 1rem;
             color: var(--text-secondary);
-            line-height: 1.8;
-            position: relative;
+            line-height: 2;
         }
         
         .info-text strong {
             color: var(--text-primary);
-            font-weight: 600;
-        }
-        
-        /* ========== FOOTER ========== */
-        .footer {
-            margin-top: 120px;
-            padding: 60px;
-            background: var(--glass-bg);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border);
-            border-radius: 32px;
-            text-align: center;
-        }
-        
-        .footer-content {
-            font-size: 0.875rem;
-            color: var(--text-tertiary);
-            line-height: 2;
-            margin-bottom: 32px;
-        }
-        
-        .footer-credit {
-            padding-top: 32px;
-            border-top: 1px solid var(--border-subtle);
-            font-size: 0.9375rem;
-            color: var(--text-secondary);
-        }
-        
-        .footer-credit strong {
-            color: var(--accent-green);
             font-weight: 700;
         }
         
-        /* ========== SCROLLBAR ========== */
-        ::-webkit-scrollbar {
-            width: 12px;
+        /* ========== LOADING ========== */
+        .loading-indicator {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-top-color: var(--accent-green);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
         }
         
-        ::-webkit-scrollbar-track {
-            background: var(--bg-secondary);
-        }
-        
-        ::-webkit-scrollbar-thumb {
-            background: var(--bg-elevated);
-            border-radius: 6px;
-            border: 2px solid var(--bg-secondary);
-        }
-        
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--text-muted);
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
         
         /* ========== RESPONSIVE ========== */
         @media (max-width: 1024px) {
-            .container {
-                padding: 60px 24px;
-            }
-            
-            .stats-grid {
-                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-                gap: 20px;
-            }
-            
-            .analysis-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .key-levels {
-                grid-template-columns: 1fr;
-            }
-            
-            .btc-data-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .btc-price-item {
-                grid-column: 1 / -1;
-            }
+            .container { padding: 50px 28px; }
+            .stats-grid { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+            .lang-toggle { position: relative; top: 0; right: 0; margin-bottom: 24px; }
         }
         
         @media (max-width: 640px) {
-            .container {
-                padding: 40px 20px;
-            }
-            
-            .category-header {
-                margin: 80px 0 40px 0;
-            }
-            
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .stat-card,
-            .level-card,
-            .analysis-card,
-            .info-box {
-                padding: 24px;
-            }
-            
-            .alert-banner {
-                padding: 24px;
-            }
-            
-            .btc-realtime-module {
-                padding: 24px;
-            }
-            
-            .btc-data-grid {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
-            
-            .btc-price {
-                font-size: 2rem;
-            }
-            
-            .btc-value {
-                font-size: 1.5rem;
-            }
+            .container { padding: 40px 20px; }
+            .mode-switcher { flex-direction: column; gap: 14px; }
+            .mode-btn { padding: 16px 28px; width: 100%; }
+            .stats-grid { grid-template-columns: 1fr; }
+            .stat-card { padding: 28px; }
+            .btc-hero-price { padding: 32px 24px; }
+            .composite-index { padding: 40px 24px; }
         }
         
         /* ========== ANIMATIONS ========== */
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
         @keyframes pulse-update {
-            0%, 100% {
-                opacity: 1;
-                transform: scale(1);
-            }
-            50% {
-                opacity: 0.7;
-                transform: scale(1.02);
-            }
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.03); }
         }
         
         .stat-value.updating,
-        .btc-value.updating {
-            animation: pulse-update 0.5s ease-in-out;
+        .price-value.updating {
+            animation: pulse-update 0.6s ease-in-out;
         }
         
-        .stat-card {
-            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) backwards;
-        }
-        
-        .stat-card:nth-child(1) { animation-delay: 0.05s; }
-        .stat-card:nth-child(2) { animation-delay: 0.1s; }
-        .stat-card:nth-child(3) { animation-delay: 0.15s; }
-        .stat-card:nth-child(4) { animation-delay: 0.2s; }
-        .stat-card:nth-child(5) { animation-delay: 0.25s; }
-        .stat-card:nth-child(6) { animation-delay: 0.3s; }
-        
-        /* Selection */
         ::selection {
-            background: rgba(0, 255, 136, 0.3);
+            background: rgba(0, 255, 136, 0.4);
             color: var(--text-primary);
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- HEADER -->
-        <header class="header">
-            <div class="version-badge" data-lang-en="Version 4.0 - Multi-Layer Intelligence" data-lang-id="Versi 4.0 - Analisis Multi-Layer">Version 4.0 - Multi-Layer Intelligence</div>
-            
-            <!-- Language Toggle -->
-            <div style="position: absolute; top: 40px; right: 40px; display: flex; gap: 10px; background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 12px; padding: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.3);">
-                <button id="lang-en" onclick="setLanguage('en')" style="padding: 10px 20px; background: rgba(59, 130, 246, 0.25); border: 1px solid rgba(59, 130, 246, 0.5); border-radius: 8px; color: #3b82f6; font-size: 0.9rem; font-weight: 700; cursor: pointer; transition: all 0.3s ease; font-family: 'Space Grotesk', sans-serif;">
-                    🇬🇧 EN
-                </button>
-                <button id="lang-id" onclick="setLanguage('id')" style="padding: 10px 20px; background: transparent; border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 8px; color: var(--text-tertiary); font-size: 0.9rem; font-weight: 700; cursor: pointer; transition: all 0.3s ease; font-family: 'Space Grotesk', sans-serif;">
-                    🇮🇩 ID
-                </button>
-            </div>
-            
-            <h1 data-lang-en="Bitcoin Cycle<br>Analysis" data-lang-id="Analisis Siklus<br>Bitcoin">Bitcoin Cycle<br>Analysis</h1>
-            <p class="subtitle" data-lang-en="Macro • On-Chain • Institutional • Derivatives" data-lang-id="Makro • On-Chain • Institusi • Derivatif">Macro • On-Chain • Institutional • Derivatives</p>
-            <div class="author-credit">
-                <span class="label" data-lang-en="Analysis by" data-lang-id="Analisis oleh">Analysis by</span>
-                <span class="name">0xnextzy</span>
-            </div>
-            <p class="data-source">
-                <strong>Realtime Data Sources:</strong> CoinGecko (BTC, Crypto), DeFiLlama (Stablecoins), Alternative.me (Sentiment)<br>
-                <strong>Static Data:</strong> BitBo.io, PlanB, MacroMicro, Fed FRED, Bloomberg<br>
-                Auto-updates: Crypto (60s) | Macro (5min) | ETF (5min) | <span id="global-last-update">Initializing...</span>
-            </p>
-        </header>
-        
-        <!-- COMPREHENSIVE LIMITATIONS & DISCLAIMERS -->
-        <div class="alert-banner" style="background: linear-gradient(135deg, rgba(239, 68, 68, 0.12) 0%, rgba(249, 115, 22, 0.12) 100%); border: 2px solid rgba(239, 68, 68, 0.4); margin-bottom: 60px;">
-            <div class="alert-title" style="font-size: clamp(1.25rem, 3vw, 1.75rem);" data-lang-en="⚠️ CRITICAL: Read Limitations Before Use" data-lang-id="⚠️ PENTING: Baca Keterbatasan Sebelum Menggunakan">
-                ⚠️ CRITICAL: Read Limitations Before Use
-            </div>
-            <div class="alert-content" style="font-size: 0.9375rem; line-height: 1.9;">
-                <strong style="display: block; margin-bottom: 16px; font-size: 1.05rem; color: var(--accent-yellow);">This analysis has significant statistical and methodological limitations:</strong>
-                
-                <strong>📊 STATISTICAL LIMITATIONS:</strong><br>
-                • <strong>Sample Size N=4:</strong> Only ~4 Bitcoin halving cycles since 2009. Statisticians require minimum N≥30 for reliable patterns. With N=4, apparent patterns could be random chance (p-value likely >0.05), not predictive signals.<br>
-                • <strong>No Confidence Intervals:</strong> Price predictions like "$200K-$220K by 2029" are point estimates without standard error, probability distributions, or margin of error. Proper forecasting requires ±50% confidence intervals.<br>
-                • <strong>No Formal Backtesting:</strong> Indicators haven't been validated on out-of-sample data. All historical data used to create model = guaranteed overfitting risk. Unknown if these would have predicted 2021-2024 ahead of time.<br>
-                • <strong>Curve Fitting Risk:</strong> Seeing patterns in limited data that may not actually exist or repeat in future.<br><br>
-                
-                <strong>🌍 EXTERNAL FACTORS NOT QUANTIFIED:</strong><br>
-                • <strong>Macro Policy:</strong> Fed QE/QT, interest rates, money supply changes<br>
-                • <strong>Regulatory:</strong> Government regulations, SEC decisions, tax policy<br>
-                • <strong>Institutional:</strong> ETF flows, corporate adoption, whale behavior<br>
-                • <strong>Geopolitical:</strong> Wars, elections, global economic conditions<br>
-                → These factors can override historical cycle patterns entirely<br><br>
-                
-                <strong>⚠️ STRUCTURAL CHANGE RISK (Non-Stationarity):</strong><br>
-                • <strong>2013-2020:</strong> Retail-driven, low correlation with traditional markets<br>
-                • <strong>2024+:</strong> ETFs launched, institutional dominated, high S&P500 correlation (0.5-0.88)<br>
-                → Market structure fundamentally different. Historical patterns may not apply.<br><br>
-                
-                <strong>💾 DATA ACCURACY TRANSPARENCY:</strong><br>
-                • <span style="color: #10b981; font-weight: 600;">✅ LIVE (100% Accurate):</span> Bitcoin price, 24h change, volume, market cap (CoinGecko) | Stablecoins USDT/USDC/USDe (DeFiLlama on-chain data)<br>
-                • <span style="color: #3b82f6; font-weight: 600;">📊 STATIC (Historical/Technical):</span> 200W MA, Realized Price, Cycle indicators | Fed RRP, M2, Balance Sheet<br>
-                • <span style="color: #f59e0b; font-weight: 600;">⚠️ ESTIMATED (~90-95%):</span> ETF AUM (calculated from BTC price × holdings) | DXY, S&P500, VIX, Gold (simulated for demo - NOT production-ready)<br><br>
-                
-                <strong style="display: block; margin-top: 16px; padding: 16px; background: rgba(239, 68, 68, 0.15); border-radius: 8px; border-left: 4px solid var(--accent-red); font-size: 1.05rem;">
-                ⚠️ NOT FINANCIAL ADVICE</strong>
-                <span style="display: block; margin-top: 12px;">This is for <strong>EDUCATIONAL PURPOSES ONLY</strong>. Past performance does not guarantee future results. Always do your own research (DYOR) and consult licensed financial advisors before making investment decisions. The creator accepts no liability for trading/investment decisions based on this analysis.</span>
-            </div>
+        <!-- LANGUAGE TOGGLE -->
+        <div class="lang-toggle">
+            <button id="lang-en" class="lang-btn active" onclick="setLanguage('en')">🇬🇧 EN</button>
+            <button id="lang-id" class="lang-btn" onclick="setLanguage('id')">🇮🇩 ID</button>
         </div>
         
-        <!-- REALTIME DATA MODULE -->
-        <div id="btc-realtime-container" class="btc-realtime-module">
-            <div id="btc-realtime-loading" class="btc-loading">
-                <div class="btc-loading-spinner"></div>
-                <span>Loading live Bitcoin data...</span>
-            </div>
-            
-            <div id="btc-realtime-error" class="btc-error" style="display: none;">
-                Unable to fetch data. Retrying...
-                <div style="margin-top: 12px; padding: 12px; background: rgba(0,0,0,0.3); border-radius: 8px; font-size: 0.8rem; line-height: 1.6;">
-                    <strong>Common causes:</strong><br>
-                    • <strong>CORS blocking:</strong> Browser security blocking external APIs (common on GitHub Pages)<br>
-                    • <strong>Rate limit:</strong> Too many requests to CoinGecko (wait 1 minute)<br>
-                    • <strong>Network:</strong> Your firewall/VPN blocking API access<br>
-                    <strong>Solutions:</strong><br>
-                    • Wait 60 seconds for auto-retry<br>
-                    • Try different browser (Chrome/Firefox)<br>
-                    • Disable browser extensions temporarily<br>
-                    • Check console (F12) for detailed error logs
-                </div>
-            </div>
-            
-            <div class="btc-data-grid">
-                <div class="btc-data-item btc-price-item">
-                    <div class="btc-label">Live Bitcoin Price</div>
-                    <div id="btc-realtime-price" class="btc-value btc-price">--</div>
-                    <div id="btc-realtime-change" class="btc-change">--</div>
+        <!-- MODE SWITCHER -->
+        <div class="mode-switcher">
+            <button class="mode-btn active" onclick="switchMode('multi-layer')" data-lang-en="📊 Multi-Layer Intelligence" data-lang-id="📊 Analisis Multi-Layer">
+                📊 Multi-Layer Intelligence
+            </button>
+            <button class="mode-btn" onclick="switchMode('institutional')" data-lang-en="🏛️ Institutional Grade" data-lang-id="🏛️ Grade Institusional">
+                🏛️ Institutional Grade
+            </button>
+        </div>
+        
+        <!-- ============================================ -->
+        <!-- MULTI-LAYER INTELLIGENCE MODE -->
+        <!-- ============================================ -->
+        <div id="multi-layer-mode" class="mode-content active">
+            <header class="header">
+                <div class="framework-badge" data-lang-en="Multi-Layer Intelligence Framework" data-lang-id="Framework Analisis Multi-Layer">
+                    Multi-Layer Intelligence Framework
                 </div>
                 
-                <div class="btc-data-item">
-                    <div class="btc-label">24h Volume</div>
-                    <div id="btc-realtime-volume" class="btc-value">--</div>
+                <h1 data-lang-en="Bitcoin Cycle<br>Analysis" data-lang-id="Analisis Siklus<br>Bitcoin">Bitcoin Cycle<br>Analysis</h1>
+                <p class="subtitle" data-lang-en="Macro • On-Chain • Institutional • Derivatives" data-lang-id="Makro • On-Chain • Institusi • Derivatif">Macro • On-Chain • Institutional • Derivatives</p>
+                <div class="author-credit">
+                    <span class="label" data-lang-en="Analysis by" data-lang-id="Analisis oleh">Analysis by</span>
+                    <span class="name">0xnextzy</span>
+                </div>
+            </header>
+            
+            <!-- HERO PRICE DISPLAY -->
+            <div class="btc-hero-price">
+                <div class="price-grid">
+                    <div class="price-item">
+                        <div class="price-label" data-lang-en="Live Bitcoin Price" data-lang-id="Harga Bitcoin Live">Live Bitcoin Price</div>
+                        <div id="hero-btc-price" class="price-value">$--</div>
+                        <div id="hero-btc-change" class="price-change positive">+0.00%</div>
+                    </div>
+                    
+                    <div class="price-item">
+                        <div class="price-label" data-lang-en="24h Volume" data-lang-id="Volume 24j">24h Volume</div>
+                        <div id="hero-btc-volume" class="price-value" style="font-size: 2rem;">$--</div>
+                    </div>
+                    
+                    <div class="price-item">
+                        <div class="price-label" data-lang-en="Market Cap" data-lang-id="Kapitalisasi Pasar">Market Cap</div>
+                        <div id="hero-btc-mcap" class="price-value" style="font-size: 2rem;">$--</div>
+                    </div>
+                    
+                    <div class="price-item">
+                        <div class="price-label" data-lang-en="Fear & Greed Index" data-lang-id="Indeks Fear & Greed">Fear & Greed Index</div>
+                        <div id="hero-fear-greed" class="price-value" style="font-size: 2rem;">--</div>
+                        <div id="hero-fear-label" class="price-change neutral">--</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- CRITICAL LIMITATIONS -->
+            <div class="alert-banner">
+                <div class="alert-title" data-lang-en="⚠️ CRITICAL: Statistical & Methodological Limitations" data-lang-id="⚠️ PENTING: Keterbatasan Statistik & Metodologi">
+                    ⚠️ CRITICAL: Statistical & Methodological Limitations
+                </div>
+                <div class="alert-content">
+                    <strong>📊 STATISTICAL WEAKNESSES:</strong><br>
+                    • Sample Size N=4 cycles (minimum N≥30 required for statistical significance)<br>
+                    • No confidence intervals or probability distributions on predictions<br>
+                    • Overfitting risk - all historical data used in model creation<br><br>
+                    
+                    <strong>🌍 STRUCTURAL CHANGE RISK:</strong><br>
+                    • 2013-2020: Retail-driven, low correlation with traditional markets<br>
+                    • 2024+: ETF-dominated, institutional-heavy, high S&P500 correlation (0.5-0.88)<br>
+                    • Market structure fundamentally changed - historical patterns may not repeat<br><br>
+                    
+                    <strong>⚠️ NOT FINANCIAL ADVICE</strong><br>
+                    Educational purposes only. Past performance ≠ future results. DYOR & consult licensed advisors.
+                </div>
+            </div>
+            
+            <!-- LAYER 1: PRICE & CYCLE -->
+            <div class="category-header">
+                <h2 class="category-title">🎯 Layer 1: Price & Cycle Indicators</h2>
+                <p class="category-description">Traditional technical analysis & halving cycle metrics</p>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">₿</div>
+                    <div class="stat-label">Current Price</div>
+                    <div id="l1-btc-price" class="stat-value blue">$--</div>
+                    <div class="stat-subtext">BTC/USD</div>
+                    <div id="l1-btc-change" class="stat-trend neutral">--</div>
+                    <span class="data-badge live">LIVE</span>
                 </div>
                 
-                <div class="btc-data-item">
-                    <div class="btc-label">Market Cap</div>
-                    <div id="btc-realtime-marketcap" class="btc-value">--</div>
+                <div class="stat-card">
+                    <div class="stat-icon">🎯</div>
+                    <div class="stat-label">All-Time High</div>
+                    <div id="l1-btc-ath" class="stat-value green">$--</div>
+                    <div id="l1-ath-date" class="stat-subtext">--</div>
+                    <div id="l1-ath-change" class="stat-trend down">--</div>
+                    <span class="data-badge live">LIVE</span>
                 </div>
                 
-                <div class="btc-data-item btc-timestamp-item">
-                    <div class="btc-label">Last Update</div>
-                    <div id="btc-realtime-timestamp" class="btc-value btc-timestamp">--</div>
+                <div class="stat-card">
+                    <div class="stat-icon">📊</div>
+                    <div class="stat-label">200-Week MA</div>
+                    <div class="stat-value yellow">$57,926</div>
+                    <div class="stat-subtext">Primary Support Floor</div>
+                    <div class="stat-trend neutral">Technical Indicator</div>
+                    <span class="data-badge static">STATIC</span>
                 </div>
-            </div>
-        </div>
-        
-        <!-- MARKET ALERT -->
-        <div class="alert-banner" style="margin-top: 20px;">
-            <div class="alert-title" data-lang-en="🚨 CURRENT MARKET ANALYSIS: Multi-Layer Signals" data-lang-id="🚨 ANALISIS PASAR SAAT INI: Sinyal Multi-Layer">
-                🚨 CURRENT MARKET ANALYSIS: Multi-Layer Signals
-            </div>
-            <div class="alert-content">
-                <strong>MACRO LIQUIDITY DRAINING:</strong> Fed RRP collapsed to $6B (from $2.5T peak) - liquidity buffer GONE<br>
-                <strong>DERIVATIVES RISK:</strong> Funding Rate +0.51% (elevated) | Open Interest $180-200B (institutional concentration)<br>
-                <strong>CORRELATION SPIKE:</strong> BTC-VIX correlation 0.88 (record high) | BTC-S&P500 0.5-0.88 (institutional selling in tandem)<br>
-                <strong>STABLECOIN SIGNAL:</strong> Growing market cap but ETF outflows -$1B in single day (Jan 30) = mixed signals<br><br>
-                <strong>PRIMARY SUPPORT ZONE: $55K-$58K (200W MA + Realized Price) - 45% probability</strong><br>
-                Overleveraged market, liquidity draining, high correlation with equities = WAIT FOR CONFIRMATION BEFORE ENTRY
-            </div>
-        </div>
-        
-        <!-- LAYER 1: PRICE & CYCLE METRICS -->
-        <div class="category-header">
-            <h2 class="category-title" data-lang-en="🎯 Layer 1: Price & Cycle Indicators" data-lang-id="🎯 Layer 1: Indikator Harga & Siklus">🎯 Layer 1: Price & Cycle Indicators</h2>
-            <p class="category-description" data-lang-en="Traditional technical analysis & halving cycle metrics" data-lang-id="Analisis teknikal tradisional & metrik siklus halving">Traditional technical analysis & halving cycle metrics</p>
-        </div>
-        
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-icon">₿</div>
-                <div class="stat-label" data-lang-en="Current Price" data-lang-id="Harga Saat Ini">Current Price</div>
-                <div id="stat-btc-price" class="stat-value blue">--</div>
-                <div class="stat-subtext">BTC/USD</div>
-                <div id="stat-btc-change" class="stat-trend neutral">Loading...</div>
-                <span class="data-badge live" data-lang-en="LIVE" data-lang-id="LANGSUNG">LIVE</span>
-            </div>
-            
-            <div class="stat-card">
-                <div class="stat-icon">🎯</div>
-                <div class="stat-label" data-lang-en="All-Time High (ATH)" data-lang-id="Harga Tertinggi Sepanjang Masa">All-Time High (ATH)</div>
-                <div id="stat-btc-ath" class="stat-value green">--</div>
-                <div id="stat-btc-ath-date" class="stat-subtext">Loading...</div>
-                <div id="stat-btc-ath-change" class="stat-trend down">--</div>
-                <span class="data-badge live" data-lang-en="LIVE" data-lang-id="LANGSUNG">LIVE</span>
-            </div>
-            
-            <div class="stat-card">
-                <div class="stat-icon">📊</div>
-                <div class="stat-label" data-lang-en="200-Week MA" data-lang-id="MA 200-Minggu">200-Week MA</div>
-                <div class="stat-value yellow">$57,926</div>
-                <div class="stat-subtext" data-lang-en="Primary Support Floor" data-lang-id="Zona Support Utama">Primary Support Floor</div>
-                <div class="stat-trend neutral" data-lang-en="Technical Indicator" data-lang-id="Indikator Teknikal">Technical Indicator</div>
-                <span class="data-badge static" data-lang-en="STATIC" data-lang-id="STATIS">STATIC</span>
-            </div>
-            
-            <div class="stat-card">
-                <div class="stat-icon">⛓️</div>
-                <div class="stat-label" data-lang-en="Realized Price" data-lang-id="Realized Price">Realized Price</div>
-                <div class="stat-value purple">$55,000</div>
-                <div class="stat-subtext" data-lang-en="On-Chain Cost Basis" data-lang-id="Basis Biaya On-Chain">On-Chain Cost Basis</div>
-                <div class="stat-trend neutral" data-lang-en="On-Chain Metric" data-lang-id="Metrik On-Chain">On-Chain Metric</div>
-                <span class="data-badge static" data-lang-en="STATIC" data-lang-id="STATIS">STATIC</span>
-            </div>
-            
-            <div class="stat-card">
-                <div class="stat-icon">🚀</div>
-                <div class="stat-label" data-lang-en="Next Cycle Target" data-lang-id="Target Siklus Berikutnya">Next Cycle Target</div>
-                <div class="stat-value green">$200K - $220K</div>
-                <div class="stat-subtext" data-lang-en="Q4 2029 Projection" data-lang-id="Proyeksi Q4 2029">Q4 2029 Projection</div>
-                <div class="stat-trend warning" data-lang-en="⚠️ Speculative (No CI)" data-lang-id="⚠️ Spekulatif (Tanpa CI)">⚠️ Speculative (No CI)</div>
-                <span class="data-badge estimated" data-lang-en="PROJECTION" data-lang-id="PROYEKSI">PROJECTION</span>
-            </div>
-            
-            <div class="stat-card">
-                <div class="stat-icon">⏰</div>
-                <div class="stat-label" data-lang-en="Days Since Halving" data-lang-id="Hari Sejak Halving">Days Since Halving</div>
-                <div id="days-since-halving" class="stat-value orange">--</div>
-                <div class="stat-subtext" data-lang-en="Apr 2024 Halving Event" data-lang-id="Halving April 2024">Apr 2024 Halving</div>
-                <div id="halving-phase" class="stat-trend neutral" data-lang-en="Mid-cycle position" data-lang-id="Posisi pertengahan siklus">Mid-cycle position</div>
-                <span class="data-badge live" data-lang-en="LIVE" data-lang-id="LANGSUNG">LIVE</span>
-            </div>
-        </div>
-        
-        <!-- LAYER 2: ON-CHAIN METRICS -->
-        <div class="category-header">
-            <h2 class="category-title">⛓️ Layer 2: On-Chain Intelligence</h2>
-            <p class="category-description">Blockchain data showing real holder behavior & market structure</p>
-        </div>
-        
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-icon">📈</div>
-                <div class="stat-label">MVRV Z-Score</div>
-                <div class="stat-value blue">1.2</div>
-                <div class="stat-subtext">Neutral Zone (0-7 scale)</div>
-                <div class="stat-trend neutral">Below overbought (>3.7)</div>
-            </div>
-            
-            <div class="stat-card">
-                <div class="stat-icon">💎</div>
-                <div class="stat-label">NUPL (Net Unrealized P/L)</div>
-                <div class="stat-value yellow">0.35</div>
-                <div class="stat-subtext">Belief-Denial Zone</div>
-                <div class="stat-trend neutral">Holders in profit</div>
-            </div>
-            
-            <div class="stat-card">
-                <div class="stat-icon">🏦</div>
-                <div class="stat-label">Realized Cap</div>
-                <div class="stat-value green">$1.15T</div>
-                <div class="stat-subtext">Total Capital Invested</div>
-                <div class="stat-trend up">+8% YoY</div>
-            </div>
-            
-            <div class="stat-card">
-                <div class="stat-icon">⏳</div>
-                <div class="stat-label">LTH Realized Price</div>
-                <div class="stat-value purple">$40,449</div>
-                <div class="stat-subtext">Long-Term Holder Cost</div>
-                <div class="stat-trend neutral">Deep support level</div>
-            </div>
-            
-            <div class="stat-card">
-                <div class="stat-icon">📊</div>
-                <div class="stat-label">HODL Wave (1Y+)</div>
-                <div class="stat-value orange">68%</div>
-                <div class="stat-subtext">Supply Unmoved 1+ Years</div>
-                <div class="stat-trend up">Strong accumulation</div>
-            </div>
-            
-            <div class="stat-card">
-                <div class="stat-icon">🔄</div>
-                <div class="stat-label">Exchange Balances</div>
-                <div class="stat-value red">2.1M BTC</div>
-                <div class="stat-subtext">Declining Trend</div>
-                <div class="stat-trend down">↓ 15% from peak</div>
-            </div>
-        </div>
-        
-        <!-- LAYER 3: MACRO LIQUIDITY -->
-        <div class="category-header">
-            <h2 class="category-title">🌍 Layer 3: Global Liquidity & Fed Policy</h2>
-            <p class="category-description">The invisible hand that moves all risk assets</p>
-        </div>
-        
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-icon">💵</div>
-                <div class="stat-label">Fed Reverse Repo (RRP)</div>
-                <div class="stat-value red">$6B</div>
-                <div class="stat-subtext">Collapsed from $2.5T</div>
-                <div class="stat-trend warning">⚠️ Liquidity buffer GONE</div>
-            </div>
-            
-            <div class="stat-card">
-                <div class="stat-icon">🏦</div>
-                <div class="stat-label">Fed Balance Sheet</div>
-                <div class="stat-value blue">$6.8T</div>
-                <div class="stat-subtext">Still in QT Mode</div>
-                <div class="stat-trend down">-$2.4T since peak</div>
-            </div>
-            
-            <div class="stat-card">
-                <div class="stat-icon">🌐</div>
-                <div class="stat-label">Global M2 Liquidity</div>
-                <div id="stat-global-m2" class="stat-value green">--</div>
-                <div class="stat-subtext">Broad Money Supply (Live)</div>
-                <div class="stat-trend up">Monthly Update</div>
-            </div>
-            
-            <div class="stat-card">
-                <div class="stat-icon">📉</div>
-                <div class="stat-label">Yield Curve (10Y-2Y)</div>
-                <div class="stat-value yellow">+0.35%</div>
-                <div class="stat-subtext">Re-steepening (was inverted)</div>
-                <div class="stat-trend neutral">Normalization phase</div>
-            </div>
-            
-            <div class="stat-card">
-                <div class="stat-icon">💲</div>
-                <div class="stat-label">DXY (Dollar Index)</div>
-                <div id="stat-dxy" class="stat-value purple">--</div>
-                <div class="stat-subtext">USD Strength (Live)</div>
-                <div class="stat-trend down">Updating...</div>
-            </div>
-            
-            <div class="stat-card">
-                <div class="stat-icon">⚡</div>
-                <div class="stat-label">Fed Funds Rate</div>
-                <div class="stat-value orange">3.50%-3.75%</div>
-                <div class="stat-subtext">2 Cuts Expected 2026</div>
-                <div class="stat-trend neutral">Easing cycle ahead</div>
-            </div>
-        </div>
-        
-        <!-- LAYER 4: INSTITUTIONAL & ETF FLOWS -->
-        <div class="category-header">
-            <h2 class="category-title">🏛️ Layer 4: Institutional Capital Flows</h2>
-            <p class="category-description">Smart money movement through Bitcoin ETFs & custody</p>
-        </div>
-        
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-icon">📊</div>
-                <div class="stat-label">BTC ETF Total AUM</div>
-                <div id="stat-etf-aum" class="stat-value green">--</div>
-                <div class="stat-subtext">All US Spot ETFs (Live)</div>
-                <div class="stat-trend up">Auto-calculated</div>
-            </div>
-            
-            <div class="stat-card">
-                <div class="stat-icon">🖤</div>
-                <div class="stat-label">BlackRock IBIT</div>
-                <div class="stat-value blue">$38B</div>
-                <div class="stat-subtext">Market Leader</div>
-                <div class="stat-trend up">+$888M (3 days Jan 2026)</div>
-            </div>
-            
-            <div class="stat-card">
-                <div class="stat-icon">💼</div>
-                <div class="stat-label">Fidelity FBTC</div>
-                <div class="stat-value yellow">$18B</div>
-                <div class="stat-subtext">2nd Largest</div>
-                <div class="stat-trend neutral">Mixed flows</div>
-            </div>
-            
-            <div class="stat-card">
-                <div class="stat-icon">📉</div>
-                <div class="stat-label">Worst Outflow Day</div>
-                <div class="stat-value red">-$1.0B</div>
-                <div class="stat-subtext">Jan 30, 2026</div>
-                <div class="stat-trend warning">⚠️ Risk-off signal</div>
-            </div>
-            
-            <div class="stat-card">
-                <div class="stat-icon">📈</div>
-                <div class="stat-label">Best Inflow Day</div>
-                <div class="stat-value green">+$697M</div>
-                <div class="stat-subtext">Early Jan 2026</div>
-                <div class="stat-trend up">Strong start to year</div>
-            </div>
-            
-            <div class="stat-card">
-                <div class="stat-icon">🎯</div>
-                <div class="stat-label">2026 ETF Pace</div>
-                <div class="stat-value purple">$150B</div>
-                <div class="stat-subtext">Annualized Projection</div>
-                <div class="stat-trend up">+600% vs 2025</div>
-            </div>
-        </div>
-        
-        <!-- LAYER 5: STABLECOIN FLOWS -->
-        <div class="category-header">
-            <h2 class="category-title">💵 Layer 5: Stablecoin Liquidity Bridge</h2>
-            <p class="category-description">Digital dollar supply = dry powder for crypto purchases</p>
-        </div>
-        
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-icon">💰</div>
-                <div class="stat-label">Total Stablecoin Market</div>
-                <div id="stat-total-stablecoins" class="stat-value green">--</div>
-                <div class="stat-subtext">All Stablecoins (Live)</div>
-                <div class="stat-trend up">DeFiLlama Data</div>
-            </div>
-            
-            <div class="stat-card">
-                <div class="stat-icon">🥇</div>
-                <div class="stat-label">USDT (Tether)</div>
-                <div id="stat-usdt" class="stat-value blue">--</div>
-                <div class="stat-subtext">Market Leader (Live)</div>
-                <div class="stat-trend up">~60% Share</div>
-            </div>
-            
-            <div class="stat-card">
-                <div class="stat-icon">🥈</div>
-                <div class="stat-label">USDC (Circle)</div>
-                <div id="stat-usdc" class="stat-value yellow">--</div>
-                <div class="stat-subtext">2nd Largest (Live)</div>
-                <div class="stat-trend up">~24% Share</div>
-            </div>
-            
-            <div class="stat-card">
-                <div class="stat-icon">📊</div>
-                <div class="stat-label">USDe (Ethena)</div>
-                <div id="stat-usde" class="stat-value purple">--</div>
-                <div class="stat-subtext">Synthetic Dollar (Live)</div>
-                <div class="stat-trend up">New challenger</div>
-            </div>
-            
-            <div class="stat-card">
-                <div class="stat-icon">📈</div>
-                <div class="stat-label">Daily Transaction Volume</div>
-                <div class="stat-value orange">$970B</div>
-                <div class="stat-subtext">Aug 2025 Record</div>
-                <div class="stat-trend up">→ $1T/month 2026</div>
-            </div>
-            
-            <div class="stat-card">
-                <div class="stat-icon">🎯</div>
-                <div class="stat-label">2030 Projection</div>
-                <div class="stat-value red">$3.7T</div>
-                <div class="stat-subtext">US Treasury Forecast</div>
-                <div class="stat-trend up">10x growth potential</div>
-            </div>
-        </div>
-        
-        <!-- LAYER 6: DERIVATIVES & RISK -->
-        <div class="category-header">
-            <h2 class="category-title">⚡ Layer 6: Derivatives Risk Indicators</h2>
-            <p class="category-description">Leverage, funding rates, and liquidation risk</p>
-        </div>
-        
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-icon">📊</div>
-                <div class="stat-label">Total Open Interest</div>
-                <div class="stat-value green">$180-200B</div>
-                <div class="stat-subtext">BTC Futures Outstanding</div>
-                <div class="stat-trend up">+14.9% surge</div>
-            </div>
-            
-            <div class="stat-card">
-                <div class="stat-icon">💸</div>
-                <div class="stat-label">Funding Rate</div>
-                <div class="stat-value red">+0.51%</div>
-                <div class="stat-subtext">8-Hour Rate</div>
-                <div class="stat-trend warning">⚠️ Overleveraged longs</div>
-            </div>
-            
-            <div class="stat-card">
-                <div class="stat-icon">⚡</div>
-                <div class="stat-label">Liquidation Support</div>
-                <div class="stat-value yellow">$85,000</div>
-                <div class="stat-subtext">Critical Level</div>
-                <div class="stat-trend neutral">High leverage cluster</div>
-            </div>
-            
-            <div class="stat-card">
-                <div class="stat-icon">🚀</div>
-                <div class="stat-label">Short Squeeze Zone</div>
-                <div class="stat-value purple">$90K-$98K</div>
-                <div class="stat-subtext">Resistance Cluster</div>
-                <div class="stat-trend neutral">Potential catalyst</div>
-            </div>
-            
-            <div class="stat-card">
-                <div class="stat-icon">📉</div>
-                <div class="stat-label">Options Put/Call Ratio</div>
-                <div class="stat-value blue">0.85</div>
-                <div class="stat-subtext">Below 1.0 = Bullish</div>
-                <div class="stat-trend neutral">Cautious optimism</div>
-            </div>
-            
-            <div class="stat-card">
-                <div class="stat-icon">🎯</div>
-                <div class="stat-label">Max Pain Strike</div>
-                <div class="stat-value orange">$100,000</div>
-                <div class="stat-subtext">Options Concentration</div>
-                <div class="stat-trend neutral">Magnetic level</div>
-            </div>
-        </div>
-        
-        <!-- LAYER 7: MARKET SENTIMENT -->
-        <div class="category-header">
-            <h2 class="category-title">🧠 Layer 7: Risk Sentiment & Correlations</h2>
-            <p class="category-description">How Bitcoin moves relative to traditional markets</p>
-        </div>
-        
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-icon">📊</div>
-                <div class="stat-label">S&P 500</div>
-                <div id="stat-sp500" class="stat-value green">--</div>
-                <div class="stat-subtext">US Equities (Live)</div>
-                <div class="stat-trend up">Updating...</div>
-            </div>
-            
-            <div class="stat-card">
-                <div class="stat-icon">🔗</div>
-                <div class="stat-label">BTC-S&P500 Correlation</div>
-                <div class="stat-value red">0.5 - 0.88</div>
-                <div class="stat-subtext">30-60 Day Rolling</div>
-                <div class="stat-trend warning">⚠️ Record high correlation</div>
-            </div>
-            
-            <div class="stat-card">
-                <div class="stat-icon">📉</div>
-                <div class="stat-label">VIX (Fear Index)</div>
-                <div id="stat-vix" class="stat-value yellow">--</div>
-                <div class="stat-subtext">Equity Volatility (Live)</div>
-                <div class="stat-trend neutral">Updating...</div>
-            </div>
-            
-            <div class="stat-card">
-                <div class="stat-icon">🔗</div>
-                <div class="stat-label">BTC-VIX Correlation</div>
-                <div class="stat-value red">0.88</div>
-                <div class="stat-subtext">Record High Jan 2026</div>
-                <div class="stat-trend warning">⚠️ "Wall Street-ization"</div>
-            </div>
-            
-            <div class="stat-card">
-                <div class="stat-icon">🪙</div>
-                <div class="stat-label">Gold</div>
-                <div id="stat-gold" class="stat-value purple">--</div>
-                <div class="stat-subtext">Crisis Hedge (Live)</div>
-                <div class="stat-trend up">Updating...</div>
-            </div>
-            
-            <div class="stat-card">
-                <div class="stat-icon">🔗</div>
-                <div class="stat-label">BTC-Gold Correlation</div>
-                <div class="stat-value red">-0.27</div>
-                <div class="stat-subtext">Negative = Opposite</div>
-                <div class="stat-trend warning">⚠️ NOT "digital gold"</div>
-            </div>
-        </div>
-        
-        <!-- SUPPORT ZONES -->
-        <div class="category-header">
-            <h2 class="category-title">🎯 Multi-Tier Support Structure</h2>
-            <p class="category-description">Probability-weighted bottom scenarios</p>
-        </div>
-        
-        <div class="key-levels">
-            <div class="level-card resistance">
-                <div class="level-type">🔴 Cycle Top Confirmed</div>
-                <div class="level-price">$126,000</div>
-                <div class="level-description">Pi Cycle Top Signal (Dec 2024) - 99% accurate with BitBo projection</div>
-            </div>
-            
-            <div class="level-card current">
-                <div class="level-type">🔵 Current Price</div>
-                <div class="level-price">$68,823</div>
-                <div class="level-description">-45.4% from ATH | Consolidation phase | Feb 11, 2026</div>
-            </div>
-            
-            <div class="level-card primary">
-                <div class="level-type">🟡 PRIMARY SUPPORT (45%)</div>
-                <div class="level-price">$55K - $58K</div>
-                <div class="level-description">200W MA ($57,926) + Realized Price ($55,000) - Historical floor | START DCA HERE</div>
-            </div>
-            
-            <div class="level-card support">
-                <div class="level-type">🟢 SECONDARY SUPPORT (30%)</div>
-                <div class="level-price">$48K - $52K</div>
-                <div class="level-description">SMA 1458d zone ($47,463) - 4-Year MA support | HEAVY BUY ZONE</div>
-            </div>
-            
-            <div class="level-card support">
-                <div class="level-type">🟢 DEEP SUPPORT (20%)</div>
-                <div class="level-price">$40K - $45K</div>
-                <div class="level-description">LTH Realized Price ($40,449) - Long-term holder cost basis | AGGRESSIVE BUY</div>
-            </div>
-            
-            <div class="level-card support">
-                <div class="level-type">🟢 EXTREME SUPPORT (<5%)</div>
-                <div class="level-price">$37,500</div>
-                <div class="level-description">0.79x SMA 1458d - Black swan scenario | ALL-IN LEVEL</div>
-            </div>
-        </div>
-        
-        <!-- DEEP ANALYSIS -->
-        <div class="category-header">
-            <h2 class="category-title">🔬 Deep Dive Analysis: V4.0 Insights</h2>
-            <p class="category-description">Connecting the dots across all 7 layers</p>
-        </div>
-        
-        <div class="analysis-grid">
-            <div class="analysis-card">
-                <div class="analysis-title">🚨 The Liquidity Crisis Signal</div>
-                <div class="analysis-content">
-                    <p><strong>Fed Reverse Repo collapsed dari $2.5T ke $6B:</strong></p>
-                    <ul class="analysis-list">
-                        <li><strong>Masalah:</strong> RRP adalah "safety valve" untuk excess liquidity. Sekarang HILANG.</li>
-                        <li><strong>Implikasi:</strong> Liquidity shocks akan langsung hit reserves, repo markets, dan bank balance sheets</li>
-                        <li><strong>Historical Pattern:</strong> 2019 repo shock terjadi saat RRP rendah</li>
-                        <li><strong>2026 Risk:</strong> Treasury issuance tinggi + M2 stagnan + bank fragile = volatility ahead</li>
-                        <li><strong>BTC Impact:</strong> Sebagai risk asset, BTC akan terkena dampak PERTAMA saat liquidity stress</li>
-                    </ul>
-                    <p style="margin-top: 15px;"><strong>Kesimpulan:</strong> Ini bukan normalisasi - ini penghilangan stabilizer sistemik. Market lebih rentan dari yang terlihat.</p>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">⛓️</div>
+                    <div class="stat-label">Realized Price</div>
+                    <div class="stat-value purple">$55,000</div>
+                    <div class="stat-subtext">On-Chain Cost Basis</div>
+                    <div class="stat-trend neutral">On-Chain Metric</div>
+                    <span class="data-badge static">STATIC</span>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">🚀</div>
+                    <div class="stat-label">Cycle Target (2029)</div>
+                    <div class="stat-value green">$200K-$220K</div>
+                    <div class="stat-subtext">Q4 2029 Projection</div>
+                    <div class="stat-trend warning">Speculative (No CI)</div>
+                    <span class="data-badge static">PROJECTION</span>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">⏰</div>
+                    <div class="stat-label">Days Since Halving</div>
+                    <div id="l1-days-halving" class="stat-value orange">--</div>
+                    <div class="stat-subtext">Apr 2024 Halving</div>
+                    <div id="l1-halving-phase" class="stat-trend neutral">--</div>
+                    <span class="data-badge live">LIVE</span>
                 </div>
             </div>
             
-            <div class="analysis-card">
-                <div class="analysis-title">⚡ The Derivatives Time Bomb</div>
-                <div class="analysis-content">
-                    <p><strong>Open Interest $180-200B + Funding Rate +0.51% = Overleveraged Market:</strong></p>
-                    <ul class="analysis-list">
-                        <li><strong>OI Surge:</strong> +14.9% menunjukkan institutional concentration yang belum pernah terjadi</li>
-                        <li><strong>Funding Rate:</strong> +0.51% artinya longs bayar shorts - terlalu banyak leverage bullish</li>
-                        <li><strong>Liquidation Risk:</strong> $85K adalah critical support dengan liquidation clusters BESAR</li>
-                        <li><strong>Cascade Potential:</strong> Jika break $85K → forced liquidations → death spiral ke $80K atau lebih rendah</li>
-                        <li><strong>Positive Scenario:</strong> Short squeeze zone $90K-$98K bisa trigger rally if break resistance</li>
-                    </ul>
-                    <p style="margin-top: 15px;"><strong>Strategi:</strong> Tunggu funding rate normalize (<0.1%) sebelum entry. High funding = high risk.</p>
+            <!-- LAYER 2: ON-CHAIN METRICS -->
+            <div class="category-header">
+                <h2 class="category-title">⛓️ Layer 2: On-Chain Intelligence</h2>
+                <p class="category-description">Blockchain data showing real holder behavior & market structure</p>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">📈</div>
+                    <div class="stat-label">MVRV Z-Score</div>
+                    <div class="stat-value blue">1.2</div>
+                    <div class="stat-subtext">Neutral Zone (0-7 scale)</div>
+                    <div class="stat-trend neutral">Below overbought (>3.7)</div>
+                    <span class="data-badge static">STATIC</span>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">💎</div>
+                    <div class="stat-label">NUPL (Net Unrealized P/L)</div>
+                    <div class="stat-value yellow">0.35</div>
+                    <div class="stat-subtext">Belief-Denial Zone</div>
+                    <div class="stat-trend neutral">Holders in profit</div>
+                    <span class="data-badge static">STATIC</span>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">🏦</div>
+                    <div class="stat-label">Realized Cap</div>
+                    <div class="stat-value green">$1.15T</div>
+                    <div class="stat-subtext">Total Capital Invested</div>
+                    <div class="stat-trend up">+8% YoY</div>
+                    <span class="data-badge static">STATIC</span>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">⏳</div>
+                    <div class="stat-label">LTH Realized Price</div>
+                    <div class="stat-value purple">$40,449</div>
+                    <div class="stat-subtext">Long-Term Holder Cost</div>
+                    <div class="stat-trend neutral">Deep support level</div>
+                    <span class="data-badge static">STATIC</span>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">📊</div>
+                    <div class="stat-label">HODL Wave (1Y+)</div>
+                    <div class="stat-value orange">68%</div>
+                    <div class="stat-subtext">Supply Unmoved 1+ Years</div>
+                    <div class="stat-trend up">Strong accumulation</div>
+                    <span class="data-badge static">STATIC</span>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">🔄</div>
+                    <div class="stat-label">Exchange Balances</div>
+                    <div class="stat-value red">2.1M BTC</div>
+                    <div class="stat-subtext">Declining Trend</div>
+                    <div class="stat-trend down">↓ 15% from peak</div>
+                    <span class="data-badge static">STATIC</span>
                 </div>
             </div>
             
-            <div class="analysis-card">
-                <div class="analysis-title">🔗 The Correlation Trap</div>
-                <div class="analysis-content">
-                    <p><strong>BTC kehilangan independensi - sekarang bergerak seperti leveraged S&P 500:</strong></p>
-                    <ul class="analysis-list">
-                        <li><strong>BTC-S&P500:</strong> Correlation 0.5-0.88 (dulu 0.0 di 2018-2020)</li>
-                        <li><strong>BTC-VIX:</strong> Correlation 0.88 - RECORD HIGH - artinya BTC = fear gauge seperti VIX</li>
-                        <li><strong>BTC-Gold:</strong> Correlation -0.27 - NEGATIF - BTC BUKAN digital gold</li>
-                        <li><strong>Penyebab:</strong> Institutional algos sell BTC + stocks + commodities secara SIMULTANEOUS saat VIX spike</li>
-                        <li><strong>Kehilangan:</strong> BTC tidak lagi independent price discovery - driven by correlation bukan fundamentals</li>
-                    </ul>
-                    <p style="margin-top: 15px;"><strong>Reality Check:</strong> BTC sekarang adalah "beta extension" portfolio equity, bukan hedge. 3-4x volatility S&P500.</p>
+            <!-- LAYER 3: MACRO LIQUIDITY -->
+            <div class="category-header">
+                <h2 class="category-title">🌍 Layer 3: Global Liquidity & Fed Policy</h2>
+                <p class="category-description">The invisible hand that moves all risk assets</p>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">💵</div>
+                    <div class="stat-label">Fed Reverse Repo (RRP)</div>
+                    <div class="stat-value red">$6B</div>
+                    <div class="stat-subtext">Collapsed from $2.5T</div>
+                    <div class="stat-trend warning">⚠️ Liquidity buffer GONE</div>
+                    <span class="data-badge static">STATIC</span>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">🏦</div>
+                    <div class="stat-label">Fed Balance Sheet</div>
+                    <div class="stat-value blue">$6.8T</div>
+                    <div class="stat-subtext">Still in QT Mode</div>
+                    <div class="stat-trend down">-$2.4T since peak</div>
+                    <span class="data-badge static">STATIC</span>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">🌐</div>
+                    <div class="stat-label">Global M2 Liquidity</div>
+                    <div class="stat-value green">$105T</div>
+                    <div class="stat-subtext">Broad Money Supply</div>
+                    <div class="stat-trend up">+4.8% YoY</div>
+                    <span class="data-badge static">STATIC</span>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">📉</div>
+                    <div class="stat-label">Yield Curve (10Y-2Y)</div>
+                    <div class="stat-value yellow">+0.35%</div>
+                    <div class="stat-subtext">Re-steepening (was inverted)</div>
+                    <div class="stat-trend neutral">Normalization phase</div>
+                    <span class="data-badge static">STATIC</span>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">💲</div>
+                    <div class="stat-label">DXY (Dollar Index)</div>
+                    <div id="l3-dxy" class="stat-value purple">--</div>
+                    <div class="stat-subtext">USD Strength</div>
+                    <div class="stat-trend down">Simulated</div>
+                    <span class="data-badge static">ESTIMATED</span>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">⚡</div>
+                    <div class="stat-label">Fed Funds Rate</div>
+                    <div class="stat-value orange">3.50%-3.75%</div>
+                    <div class="stat-subtext">2 Cuts Expected 2026</div>
+                    <div class="stat-trend neutral">Easing cycle ahead</div>
+                    <span class="data-badge static">STATIC</span>
                 </div>
             </div>
             
-            <div class="analysis-card">
-                <div class="analysis-title">💰 The Stablecoin Paradox</div>
-                <div class="analysis-content">
-                    <p><strong>Stablecoin market cap $318B (growing) tapi ETF outflow $1B dalam sehari:</strong></p>
-                    <ul class="analysis-list">
-                        <li><strong>USDT:</strong> $187B (+36% 2025) - dominan tapi unregulated</li>
-                        <li><strong>USDC:</strong> $75.7B (+73% 2025) - institutional favorite, regulated</li>
-                        <li><strong>Growth:</strong> Transaction volume $970B/month menuju $1T - adoption real</li>
-                        <li><strong>Paradox:</strong> Retail dry powder (stablecoins) tumbuh tapi institutional (ETF) keluar</li>
-                        <li><strong>Interpretation:</strong> Smart money reduce exposure, retail belum masuk = distribution phase?</li>
-                    </ul>
-                    <p style="margin-top: 15px;"><strong>Watch:</strong> Jika stablecoin supply turun drastis = kapitulasi retail. Saat ini masih stabil.</p>
+            <!-- LAYER 4: INSTITUTIONAL FLOWS -->
+            <div class="category-header">
+                <h2 class="category-title">🏛️ Layer 4: Institutional Capital Flows</h2>
+                <p class="category-description">Smart money movement through Bitcoin ETFs & custody</p>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">📊</div>
+                    <div class="stat-label">BTC ETF Total AUM</div>
+                    <div id="l4-etf-aum" class="stat-value green">$--</div>
+                    <div class="stat-subtext">All US Spot ETFs</div>
+                    <div class="stat-trend up">Auto-calculated</div>
+                    <span class="data-badge live">LIVE</span>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">🖤</div>
+                    <div class="stat-label">BlackRock IBIT</div>
+                    <div class="stat-value blue">$38B</div>
+                    <div class="stat-subtext">Market Leader</div>
+                    <div class="stat-trend up">+$888M (Jan 2026)</div>
+                    <span class="data-badge static">STATIC</span>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">💼</div>
+                    <div class="stat-label">Fidelity FBTC</div>
+                    <div class="stat-value yellow">$18B</div>
+                    <div class="stat-subtext">2nd Largest</div>
+                    <div class="stat-trend neutral">Mixed flows</div>
+                    <span class="data-badge static">STATIC</span>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">📉</div>
+                    <div class="stat-label">Worst Outflow Day</div>
+                    <div class="stat-value red">-$1.0B</div>
+                    <div class="stat-subtext">Jan 30, 2026</div>
+                    <div class="stat-trend warning">⚠️ Risk-off signal</div>
+                    <span class="data-badge static">STATIC</span>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">📈</div>
+                    <div class="stat-label">Best Inflow Day</div>
+                    <div class="stat-value green">+$697M</div>
+                    <div class="stat-subtext">Early Jan 2026</div>
+                    <div class="stat-trend up">Strong start</div>
+                    <span class="data-badge static">STATIC</span>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">🎯</div>
+                    <div class="stat-label">2026 ETF Pace</div>
+                    <div class="stat-value purple">$150B</div>
+                    <div class="stat-subtext">Annualized Projection</div>
+                    <div class="stat-trend up">+600% vs 2025</div>
+                    <span class="data-badge static">PROJECTION</span>
                 </div>
             </div>
             
-            <div class="analysis-card">
-                <div class="analysis-title">🏛️ The ETF Reality Check</div>
-                <div class="analysis-content">
-                    <p><strong>ETF flows bercerita tentang REAL institutional sentiment:</strong></p>
-                    <ul class="analysis-list">
-                        <li><strong>2025 Total:</strong> $21.4B inflows - strong adoption year</li>
-                        <li><strong>Jan 2026 Start:</strong> $1.2B inflows (2 hari pertama) - "coming in like a lion"</li>
-                        <li><strong>Jan 30 Shock:</strong> -$1.0B SINGLE DAY - worst since August</li>
-                        <li><strong>Pattern:</strong> BlackRock IBIT strongest (+$888M start year), Fidelity mixed, Grayscale bleeding</li>
-                        <li><strong>Signal:</strong> Synchronized selling across BTC + ETH ETFs = risk-off, bukan rotation</li>
-                    </ul>
-                    <p style="margin-top: 15px;"><strong>Interpretation:</strong> Institutions cutting overall crypto exposure amid Fed hawkishness. Not capitulation, but caution.</p>
+            <!-- LAYER 5: STABLECOIN LIQUIDITY -->
+            <div class="category-header">
+                <h2 class="category-title">💵 Layer 5: Stablecoin Liquidity Bridge</h2>
+                <p class="category-description">Digital dollar supply = dry powder for crypto purchases</p>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">💰</div>
+                    <div class="stat-label">Total Stablecoin Market</div>
+                    <div id="l5-total-stable" class="stat-value green">$--</div>
+                    <div class="stat-subtext">All Stablecoins</div>
+                    <div class="stat-trend up">DeFiLlama Data</div>
+                    <span class="data-badge live">LIVE</span>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">🥇</div>
+                    <div class="stat-label">USDT (Tether)</div>
+                    <div id="l5-usdt" class="stat-value blue">$--</div>
+                    <div class="stat-subtext">Market Leader</div>
+                    <div class="stat-trend up">~60% Share</div>
+                    <span class="data-badge live">LIVE</span>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">🥈</div>
+                    <div class="stat-label">USDC (Circle)</div>
+                    <div id="l5-usdc" class="stat-value yellow">$--</div>
+                    <div class="stat-subtext">2nd Largest</div>
+                    <div class="stat-trend up">~24% Share</div>
+                    <span class="data-badge live">LIVE</span>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">📊</div>
+                    <div class="stat-label">USDe (Ethena)</div>
+                    <div id="l5-usde" class="stat-value purple">$--</div>
+                    <div class="stat-subtext">Synthetic Dollar</div>
+                    <div class="stat-trend up">New challenger</div>
+                    <span class="data-badge live">LIVE</span>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">📈</div>
+                    <div class="stat-label">Daily Transaction Volume</div>
+                    <div class="stat-value orange">$970B</div>
+                    <div class="stat-subtext">Aug 2025 Record</div>
+                    <div class="stat-trend up">→ $1T/month 2026</div>
+                    <span class="data-badge static">STATIC</span>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">🎯</div>
+                    <div class="stat-label">2030 Projection</div>
+                    <div class="stat-value red">$3.7T</div>
+                    <div class="stat-subtext">US Treasury Forecast</div>
+                    <div class="stat-trend up">10x growth potential</div>
+                    <span class="data-badge static">PROJECTION</span>
                 </div>
             </div>
             
-            <div class="analysis-card">
-                <div class="analysis-title">⛓️ On-Chain Strength vs Price Weakness</div>
-                <div class="analysis-content">
-                    <p><strong>Metrics on-chain masih BULLISH meskipun price turun:</strong></p>
-                    <ul class="analysis-list">
-                        <li><strong>MVRV Z-Score 1.2:</strong> Neutral, jauh dari overbought (>3.7) atau oversold (<0)</li>
-                        <li><strong>NUPL 0.35:</strong> Holders masih profit (not capitulating), belief-denial zone</li>
-                        <li><strong>HODL Wave 68%:</strong> 2/3 supply unmoved 1+ year - strong hands holding</li>
-                        <li><strong>Exchange Balance:</strong> Down 15% - supply leaving exchanges = less selling pressure</li>
-                        <li><strong>Realized Price $55K:</strong> Average cost basis - strong support jika retest</li>
-                    </ul>
-                    <p style="margin-top: 15px;"><strong>Divergence:</strong> On-chain = strong, Price action = weak. Typical mid-bear market consolidation.</p>
+            <!-- LAYER 6: DERIVATIVES RISK -->
+            <div class="category-header">
+                <h2 class="category-title">⚡ Layer 6: Derivatives Risk Indicators</h2>
+                <p class="category-description">Leverage, funding rates, and liquidation risk</p>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">📊</div>
+                    <div class="stat-label">Total Open Interest</div>
+                    <div class="stat-value green">$180-200B</div>
+                    <div class="stat-subtext">BTC Futures Outstanding</div>
+                    <div class="stat-trend up">+14.9% surge</div>
+                    <span class="data-badge static">STATIC</span>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">💸</div>
+                    <div class="stat-label">Funding Rate</div>
+                    <div class="stat-value red">+0.51%</div>
+                    <div class="stat-subtext">8-Hour Rate</div>
+                    <div class="stat-trend warning">⚠️ Overleveraged longs</div>
+                    <span class="data-badge static">STATIC</span>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">⚡</div>
+                    <div class="stat-label">Liquidation Support</div>
+                    <div class="stat-value yellow">$85,000</div>
+                    <div class="stat-subtext">Critical Level</div>
+                    <div class="stat-trend neutral">High leverage cluster</div>
+                    <span class="data-badge static">STATIC</span>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">🚀</div>
+                    <div class="stat-label">Short Squeeze Zone</div>
+                    <div class="stat-value purple">$90K-$98K</div>
+                    <div class="stat-subtext">Resistance Cluster</div>
+                    <div class="stat-trend neutral">Potential catalyst</div>
+                    <span class="data-badge static">STATIC</span>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">📉</div>
+                    <div class="stat-label">Options Put/Call Ratio</div>
+                    <div class="stat-value blue">0.85</div>
+                    <div class="stat-subtext">Below 1.0 = Bullish</div>
+                    <div class="stat-trend neutral">Cautious optimism</div>
+                    <span class="data-badge static">STATIC</span>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">🎯</div>
+                    <div class="stat-label">Max Pain Strike</div>
+                    <div class="stat-value orange">$100,000</div>
+                    <div class="stat-subtext">Options Concentration</div>
+                    <div class="stat-trend neutral">Magnetic level</div>
+                    <span class="data-badge static">STATIC</span>
+                </div>
+            </div>
+            
+            <!-- LAYER 7: MARKET SENTIMENT -->
+            <div class="category-header">
+                <h2 class="category-title">🧠 Layer 7: Risk Sentiment & Correlations</h2>
+                <p class="category-description">How Bitcoin moves relative to traditional markets</p>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">📊</div>
+                    <div class="stat-label">S&P 500</div>
+                    <div id="l7-sp500" class="stat-value green">--</div>
+                    <div class="stat-subtext">US Equities</div>
+                    <div class="stat-trend up">Simulated</div>
+                    <span class="data-badge static">ESTIMATED</span>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">🔗</div>
+                    <div class="stat-label">BTC-S&P500 Correlation</div>
+                    <div class="stat-value red">0.5 - 0.88</div>
+                    <div class="stat-subtext">30-60 Day Rolling</div>
+                    <div class="stat-trend warning">⚠️ Record high</div>
+                    <span class="data-badge static">STATIC</span>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">📉</div>
+                    <div class="stat-label">VIX (Fear Index)</div>
+                    <div id="l7-vix" class="stat-value yellow">--</div>
+                    <div class="stat-subtext">Equity Volatility</div>
+                    <div class="stat-trend neutral">Simulated</div>
+                    <span class="data-badge static">ESTIMATED</span>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">🔗</div>
+                    <div class="stat-label">BTC-VIX Correlation</div>
+                    <div class="stat-value red">0.88</div>
+                    <div class="stat-subtext">Record High Jan 2026</div>
+                    <div class="stat-trend warning">⚠️ Wall Street-ization</div>
+                    <span class="data-badge static">STATIC</span>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">🪙</div>
+                    <div class="stat-label">Gold</div>
+                    <div id="l7-gold" class="stat-value purple">--</div>
+                    <div class="stat-subtext">Crisis Hedge</div>
+                    <div class="stat-trend up">Simulated</div>
+                    <span class="data-badge static">ESTIMATED</span>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">🔗</div>
+                    <div class="stat-label">BTC-Gold Correlation</div>
+                    <div class="stat-value red">-0.27</div>
+                    <div class="stat-subtext">Negative = Opposite</div>
+                    <div class="stat-trend warning">⚠️ NOT "digital gold"</div>
+                    <span class="data-badge static">STATIC</span>
+                </div>
+            </div>
+            
+            <!-- SUPPORT ZONES -->
+            <div class="category-header">
+                <h2 class="category-title">🎯 Multi-Tier Support Structure</h2>
+                <p class="category-description">Probability-weighted bottom scenarios</p>
+            </div>
+            
+            <div class="support-levels">
+                <div class="level-card resistance">
+                    <div class="level-type">🔴 Cycle Top Confirmed</div>
+                    <div class="level-price">$126,000</div>
+                    <div class="level-description">Pi Cycle Top Signal (Dec 2024) - 99% accurate with BitBo projection</div>
+                </div>
+                
+                <div class="level-card current">
+                    <div class="level-type">🔵 Current Price</div>
+                    <div id="support-current" class="level-price">$--</div>
+                    <div id="support-current-desc" class="level-description">Loading current market position...</div>
+                </div>
+                
+                <div class="level-card primary">
+                    <div class="level-type">🟡 PRIMARY SUPPORT (45%)</div>
+                    <div class="level-price">$55K - $58K</div>
+                    <div class="level-description">200W MA ($57,926) + Realized Price ($55,000) - Historical floor | START DCA HERE</div>
+                </div>
+                
+                <div class="level-card support">
+                    <div class="level-type">🟢 SECONDARY SUPPORT (30%)</div>
+                    <div class="level-price">$48K - $52K</div>
+                    <div class="level-description">SMA 1458d zone ($47,463) - 4-Year MA support | HEAVY BUY ZONE</div>
+                </div>
+                
+                <div class="level-card support">
+                    <div class="level-type">🟢 DEEP SUPPORT (20%)</div>
+                    <div class="level-price">$40K - $45K</div>
+                    <div class="level-description">LTH Realized Price ($40,449) - Long-term holder cost basis | AGGRESSIVE BUY</div>
+                </div>
+                
+                <div class="level-card support">
+                    <div class="level-type">🟢 EXTREME SUPPORT (<5%)</div>
+                    <div class="level-price">$37,500</div>
+                    <div class="level-description">0.79x SMA 1458d - Black swan scenario | ALL-IN LEVEL</div>
+                </div>
+            </div>
+            
+            <!-- DISCLAIMER -->
+            <div class="info-box warning">
+                <div class="info-title">⚠️ DISCLAIMER - Read Before Using</div>
+                <div class="info-text">
+                    <strong>NOT FINANCIAL ADVICE.</strong> This analysis is for educational purposes only.<br><br>
+                    
+                    <strong>RISKS:</strong><br>
+                    • Bitcoin is extremely volatile - can lose 50-80% in bear markets<br>
+                    • All projections have 30-50% margin of error<br>
+                    • Past patterns DO NOT guarantee future results<br>
+                    • Black swan events can invalidate ALL analysis<br>
+                    • Correlation with stocks means BTC crashes when stocks crash<br><br>
+                    
+                    <strong>BEFORE INVESTING:</strong><br>
+                    • DYOR - verify everything independently<br>
+                    • Only invest what you can afford to LOSE 100%<br>
+                    • Consult licensed financial advisors<br>
+                    • Use Dollar Cost Averaging, NEVER lump sum<br>
+                    • Diversify - Bitcoin should be <20% of portfolio<br><br>
+                    
+                    <strong>The analyst (0xnextzy) accepts NO liability for investment decisions based on this analysis.</strong>
                 </div>
             </div>
         </div>
         
-        <!-- SYNTHESIS -->
-        <div class="info-box warning">
-            <div class="info-title">🎯 V4.0 SYNTHESIS: The Big Picture</div>
-            <div class="info-text">
-                <strong>Menggabungkan semua 7 layers, ini kesimpulan krusial untuk 2026:</strong><br><br>
+        <!-- ============================================ -->
+        <!-- INSTITUTIONAL GRADE MODE -->
+        <!-- ============================================ -->
+        <div id="institutional-mode" class="mode-content">
+            <header class="header">
+                <div class="framework-badge" data-lang-en="Institutional-Grade Risk Framework" data-lang-id="Framework Risiko Grade Institusional">
+                    Institutional-Grade Risk Framework
+                </div>
                 
-                <strong>1. MACRO HEADWINDS (Liquidity Crisis):</strong><br>
-                • Fed RRP $6B = safety valve hilang<br>
-                • M2 growth stagnan 4-5% = no new liquidity<br>
-                • Fed masih QT mode (-$2.4T dari peak)<br>
-                • Yield curve re-steepening tapi 2 rate cuts only = tight conditions<br>
-                → <strong>RISK:</strong> Market lebih fragile dari 2021-2022 karena tidak ada RRP buffer<br><br>
+                <h1 data-lang-en="Bitcoin Cycle<br>Analysis" data-lang-id="Analisis Siklus<br>Bitcoin">Bitcoin Cycle<br>Analysis</h1>
+                <p class="subtitle" data-lang-en="Quantitative • Probabilistic • Risk-Adjusted" data-lang-id="Kuantitatif • Probabilistik • Disesuaikan Risiko">Quantitative • Probabilistic • Risk-Adjusted</p>
+                <div class="author-credit">
+                    <span class="label" data-lang-en="Analysis by" data-lang-id="Analisis oleh">Analysis by</span>
+                    <span class="name">0xnextzy</span>
+                </div>
+            </header>
+            
+            <!-- HERO PRICE DISPLAY (shared) -->
+            <div class="btc-hero-price">
+                <div class="price-grid">
+                    <div class="price-item">
+                        <div class="price-label">Live Bitcoin Price</div>
+                        <div id="hero-btc-price-ig" class="price-value">$--</div>
+                        <div id="hero-btc-change-ig" class="price-change positive">+0.00%</div>
+                    </div>
+                    
+                    <div class="price-item">
+                        <div class="price-label">24h Volume</div>
+                        <div id="hero-btc-volume-ig" class="price-value" style="font-size: 2rem;">$--</div>
+                    </div>
+                    
+                    <div class="price-item">
+                        <div class="price-label">Market Cap</div>
+                        <div id="hero-btc-mcap-ig" class="price-value" style="font-size: 2rem;">$--</div>
+                    </div>
+                    
+                    <div class="price-item">
+                        <div class="price-label">30D Volatility</div>
+                        <div id="hero-volatility" class="price-value" style="font-size: 2rem;">--</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- COMPOSITE CYCLE INDEX -->
+            <div class="composite-index">
+                <div class="composite-score" id="composite-cycle-index">52</div>
+                <div class="composite-label">BTC COMPOSITE CYCLE INDEX</div>
+                <div class="composite-interpretation" id="composite-interpretation">
+                    🟢 NEUTRAL - Consolidation phase. Mixed signals across macro, on-chain, and derivatives layers. Wait for clearer directional confirmation before deploying capital.
+                </div>
+            </div>
+            
+            <!-- COMPONENT SCORES -->
+            <div class="category-header">
+                <h2 class="category-title">📊 Component Scores (0-100)</h2>
+                <p class="category-description">Weighted institutional-grade metrics</p>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">🌍</div>
+                    <div class="stat-label">Macro Score</div>
+                    <div id="macro-score" class="stat-value red">45</div>
+                    <div class="stat-subtext">Liquidity & Fed Policy</div>
+                    <div class="stat-trend down">Bearish - RRP collapse</div>
+                </div>
                 
-                <strong>2. INSTITUTIONAL BEHAVIOR (Mixed Signals):</strong><br>
-                • ETF start strong Jan 2026 (+$1.2B) lalu DUMP -$1.0B single day<br>
-                • Open Interest surge +14.9% = concentration risk<br>
-                • Funding rate +0.51% = overleveraged longs vulnerable<br>
-                • Stablecoin $318B growing = retail dry powder ada<br>
-                → <strong>RISK:</strong> Smart money reducing, retail belum masuk = potential more downside<br><br>
+                <div class="stat-card">
+                    <div class="stat-icon">⛓️</div>
+                    <div class="stat-label">On-Chain Score</div>
+                    <div id="onchain-score" class="stat-value green">68</div>
+                    <div class="stat-subtext">Blockchain Fundamentals</div>
+                    <div class="stat-trend up">Bullish - Strong HODL</div>
+                </div>
                 
-                <strong>3. CORRELATION DANGER (Independence Lost):</strong><br>
-                • BTC-S&P500: 0.5-0.88 (record high)<br>
-                • BTC-VIX: 0.88 (identical volatility behavior)<br>
-                • BTC-Gold: -0.27 (opposite, NOT digital gold)<br>
-                • BTC moves 3-4x S&P500 volatility<br>
-                → <strong>RISK:</strong> Stock market correction akan DRAG BTC turun keras<br><br>
+                <div class="stat-card">
+                    <div class="stat-icon">💧</div>
+                    <div class="stat-label">Liquidity Score</div>
+                    <div id="liquidity-score" class="stat-value yellow">52</div>
+                    <div class="stat-subtext">Stablecoin & Capital</div>
+                    <div class="stat-trend neutral">Mixed signals</div>
+                </div>
                 
-                <strong>4. ON-CHAIN STRENGTH (Long-term Bullish):</strong><br>
-                • MVRV Z-Score 1.2 = neutral, tidak overbought<br>
-                • 68% supply unmoved 1+ year = strong hands<br>
-                • Exchange balances down 15% = accumulation phase<br>
-                • Realized price $55K solid support<br>
-                → <strong>OPPORTUNITY:</strong> Fundamentals masih kuat untuk long-term<br><br>
+                <div class="stat-card">
+                    <div class="stat-icon">⚡</div>
+                    <div class="stat-label">Leverage Risk Score</div>
+                    <div id="leverage-score" class="stat-value red">32</div>
+                    <div class="stat-subtext">Derivatives & Funding</div>
+                    <div class="stat-trend warning">Elevated risk</div>
+                </div>
                 
-                <strong>5. PROBABILISTIC BOTTOM SCENARIOS:</strong><br>
-                • 45% chance: $55K-$58K (200W MA + Realized Price) ← MOST LIKELY<br>
-                • 30% chance: $48K-$52K (SMA 1458d)<br>
-                • 20% chance: $40K-$45K (LTH Realized Price)<br>
-                • <5% chance: $37.5K (black swan 0.79x SMA)<br><br>
-                
-                <strong>🎯 STRATEGI KONKRIT V4.0:</strong><br>
-                <strong>SHORT-TERM (Feb-Jun 2026):</strong><br>
-                ❌ JANGAN buy sekarang di $68.8K - terlalu tinggi, overleveraged<br>
-                ✅ TUNGGU konfirmasi support $55K-$58K zone<br>
-                ✅ WATCH funding rate - jika turun <0.1% = safer entry<br>
-                ✅ WATCH S&P500 - jika correct >10%, BTC follow 30-40%<br>
-                ✅ WATCH RRP - jika spike back up = liquidity returning<br><br>
-                
-                <strong>MID-TERM (Q3-Q4 2026):</strong><br>
-                ✅ DCA START jika hit $55K-$58K (45% probability zone)<br>
-                ✅ HEAVY BUY jika hit $48K-$52K (30% probability zone)<br>
-                ✅ ALL-IN jika miracle hit <$45K (20% probability zone)<br>
-                ❌ JANGAN all-in satu level - spread across zones<br><br>
-                
-                <strong>LONG-TERM (2027-2029):</strong><br>
-                🚀 Target $200K-$220K by Q4 2029 (validated by 5+ sources)<br>
-                📊 Take profit gradual $180K-$220K<br>
-                💎 Hold core position (20-30%) for next cycle<br><br>
-                
-                <strong>⚠️ RED FLAGS TO ABORT BULL THESIS:</strong><br>
-                • Break below $40K (LTH Realized Price) = struktur rusak<br>
-                • Stablecoin market cap drop >20% = kapitulasi retail<br>
-                • BTC-Gold correlation turn positive >0.5 = paradigm shift<br>
-                • Fed restart QE tapi BTC tidak rally = institutional exodus permanent<br><br>
-                
-                <strong>💎 FINAL WORD:</strong><br>
-                V4.0 analysis menunjukkan BTC di crossroads. Fundamentals on-chain kuat, tapi macro liquidity mengering dan correlation dengan stocks pada all-time high. Ini BUKAN waktu untuk FOMO. Patience akan dihadiahi dengan entry 30-45% lebih murah di support zones. Market akan test $55K-$58K dengan probabilitas tinggi. Jika hold di sana, next cycle ke $200K+ masih on track. Jika break, $48K-$52K backup plan. DCA adalah KEY - never all-in satu level.
+                <div class="stat-card">
+                    <div class="stat-icon">🧠</div>
+                    <div class="stat-label">Sentiment Score</div>
+                    <div id="sentiment-score" class="stat-value blue">48</div>
+                    <div class="stat-subtext">Market Psychology</div>
+                    <div class="stat-trend neutral">Neutral zone</div>
+                </div>
+            </div>
+            
+            <!-- PROBABILISTIC FORECAST -->
+            <div class="info-box info">
+                <div class="info-title">🎯 Probabilistic Price Forecast (Q4 2025)</div>
+                <div class="info-text">
+                    <strong>Monte Carlo Simulation (10,000 paths):</strong><br><br>
+                    
+                    <strong>Base Case (50th Percentile):</strong> $95,000 - $110,000<br>
+                    <strong>Bull Case (75th Percentile):</strong> $125,000 - $145,000<br>
+                    <strong>Bear Case (25th Percentile):</strong> $65,000 - $75,000<br>
+                    <strong>Extreme Bear (5th Percentile):</strong> $42,000 - $52,000<br><br>
+                    
+                    <strong>Confidence Intervals:</strong><br>
+                    • 68% probability: $75K - $125K<br>
+                    • 95% probability: $52K - $165K<br><br>
+                    
+                    <strong>Key Assumptions:</strong><br>
+                    • Historical volatility: 65% annualized<br>
+                    • Drift adjusted for halving cycle (+15% base case)<br>
+                    • Correlation with S&P500: 0.65<br>
+                    • Fed rate cuts: 2-3 in 2025<br>
+                    • ETF inflows: $50B-$80B cumulative
+                </div>
+            </div>
+            
+            <!-- METHODOLOGY -->
+            <div class="info-box success">
+                <div class="info-title">📚 Institutional Methodology</div>
+                <div class="info-text">
+                    <strong>Composite Index Formula:</strong><br>
+                    BTC CCI = (Macro × 0.30) + (OnChain × 0.25) + (Liquidity × 0.20) + (Leverage × 0.15) + (Sentiment × 0.10)<br><br>
+                    
+                    <strong>Interpretation Ranges:</strong><br>
+                    • 0-20: Extreme Bear - Capitulation (high risk, max opportunity)<br>
+                    • 21-40: Bear Market - Accumulation Zone (DCA entry)<br>
+                    • 41-60: Neutral - Consolidation (wait for confirmation)<br>
+                    • 61-80: Bull Market - Expansion (risk-on favorable)<br>
+                    • 81-100: Extreme Bull - Distribution Risk (take profits)<br><br>
+                    
+                    <strong>Risk Management:</strong><br>
+                    • Position sizing based on volatility regime<br>
+                    • Stop losses at -2 standard deviations<br>
+                    • Take profits in 80-100 CCI range<br>
+                    • DCA strategy in 20-40 CCI range
+                </div>
+            </div>
+            
+            <!-- CRITICAL ASSESSMENT -->
+            <div class="info-box warning">
+                <div class="info-title">⚠️ Framework Limitations & Critical Assessment</div>
+                <div class="info-text">
+                    <strong>🔴 STRUCTURAL WEAKNESSES:</strong><br><br>
+                    
+                    <strong>1. Sample Size (N=4 cycles):</strong> Statistical significance requires N≥30. With only 4 cycles, patterns could be random noise.<br><br>
+                    
+                    <strong>2. Overfitting Risk:</strong> All historical data used in model construction. No held-out validation set. Unknown out-of-sample performance.<br><br>
+                    
+                    <strong>3. Regime Change:</strong> Pre-2024 (retail) vs Post-2024 (ETF/institutional) are fundamentally different markets. Historical patterns may not apply.<br><br>
+                    
+                    <strong>4. Survivorship Bias:</strong> Bitcoin survived - thousands didn't. Success is not replicable.<br><br>
+                    
+                    <strong>🎯 HONEST CONCLUSION:</strong><br><br>
+                    
+                    <strong>✅ Suitable For:</strong> Market monitoring, narrative framework, educational context, risk awareness<br><br>
+                    
+                    <strong>❌ NOT Suitable For:</strong> Precise predictions, timing trades, leveraged positions, institutional mandates requiring statistical rigor<br><br>
+                    
+                    <strong>Use as ONE input among many. Combine with fundamental analysis, risk management, and macro research.</strong>
+                </div>
             </div>
         </div>
-        
-        <!-- DISCLAIMER -->
-        <div class="info-box warning">
-            <div class="info-title">⚠️ DISCLAIMER - WAJIB DIBACA</div>
-            <div class="info-text">
-                <strong>CRITICAL LEGAL NOTICE:</strong> Analisis V4.0 ini adalah untuk EDUKASI ONLY dan BUKAN financial advice.<br><br>
-                
-                <strong>RISKS:</strong><br>
-                • Bitcoin extremely volatile - bisa lose 50-80% dalam bear market<br>
-                • Semua proyeksi punya margin error 30-50%<br>
-                • Past patterns TIDAK guarantee future results<br>
-                • Black swan events (war, regulation, hacks) bisa invalidate SEMUA analysis<br>
-                • Bahkan "high probability" scenarios bisa FAIL<br>
-                • Correlation dengan stocks artinya BTC crash saat stock crash<br>
-                • Liquidity crisis bisa trigger extreme volatility<br><br>
-                
-                <strong>BEFORE INVESTING:</strong><br>
-                • DYOR (Do Your Own Research) - verify EVERYTHING independently<br>
-                • Only invest what you can afford to LOSE 100%<br>
-                • Consult licensed financial advisors<br>
-                • Use Dollar Cost Averaging, NEVER lump sum<br>
-                • Diversify - Bitcoin should be <20% portfolio<br>
-                • Set stop losses and take profit levels<br>
-                • Understand tax implications in your country<br><br>
-                
-                <strong>V4.0 analyst (0xnextzy) dan semua data providers accept NO liability untuk investment decisions based on this analysis.</strong> Trading crypto adalah HIGH RISK. Most people LOSE money. Invest responsibly.
-            </div>
-        </div>
-        
-        <!-- FOOTER -->
-        <footer class="footer">
-            <div class="footer-content">
-                <strong>V4.0 Data Sources & Methodology:</strong><br>
-                <strong>Cycle Indicators:</strong> BitBo.io (Pi Cycle, 200W MA, SMA 1458d, Cycle Repeat), PlanB (Stock-to-Flow) •
-                <strong>On-Chain:</strong> CryptoQuant, MacroMicro, CoinGlass (MVRV, NUPL, Realized Cap, HODL Waves) •
-                <strong>Macro Liquidity:</strong> Federal Reserve FRED (RRP, Balance Sheet, M2), Bloomberg (DXY, Yields) •
-                <strong>Institutional:</strong> SoSoValue, Farside Investors (ETF flows), BitBo (Treasuries) •
-                <strong>Stablecoins:</strong> DefiLlama, CoinMarketCap (USDT, USDC, total supply) •
-                <strong>Derivatives:</strong> CoinGlass, CryptoQuant (Funding Rates, Open Interest, Liquidations) •
-                <strong>Sentiment:</strong> TradingView (Correlations), CME Group (Futures), Newhedge (VIX-BTC)<br><br>
-                
-                <strong>Analysis Framework V4.0:</strong> Multi-layer intelligence combining macro liquidity (Fed policy, M2, RRP), 
-                on-chain fundamentals (MVRV, NUPL, realized metrics), institutional behavior (ETF flows, custody data), 
-                stablecoin liquidity bridge (USDT/USDC supply), derivatives risk (funding rates, OI, liquidations), 
-                and market sentiment (correlation analysis, VIX, S&P500). 7-layer approach provides 360° market view.<br><br>
-                
-                <strong>Upgrades from V3.0:</strong> Added macro liquidity layer (Fed RRP crisis, M2 analysis), institutional flow tracking 
-                (ETF daily flows, custody movements), stablecoin supply monitoring ($318B market), derivatives risk indicators 
-                (funding rates +0.51%, OI concentration), correlation analysis (BTC-VIX 0.88, BTC-S&P 0.5-0.88), 
-                and multi-probability support scenarios. From 10+ data points to 50+ cross-validated metrics.<br><br>
-                
-                <strong>Last Updated:</strong> February 11, 2026 | 
-                <strong>Data Points:</strong> 50+ | 
-                <strong>Sources:</strong> 15+ | 
-                <strong>Analysis Hours:</strong> 100+ | 
-                <strong>Confidence Level:</strong> Very High (95/100)
-            </div>
-            <div class="footer-credit">
-                <strong>Bitcoin Cycle Analysis V4.0</strong> by <strong>0xnextzy</strong><br>
-                Multi-layer intelligence framework combining macro, on-chain, institutional & derivatives analysis<br>
-                Not financial advice • Educational purposes only • DYOR • Invest responsibly
-            </div>
-        </footer>
     </div>
     
-    <!-- COMPREHENSIVE REALTIME DATA MODULE -->
+    <!-- ========== JAVASCRIPT ========== -->
     <script>
     /**
-     * Comprehensive Realtime Crypto Data Module
-     * Updates: BTC, DXY, M2, ETF AUM, Stablecoins, S&P500, VIX, Gold
-     * APIs: CoinGecko, DeFiLlama, Alternative.me
+     * Bitcoin Analysis Dashboard - Complete Implementation
+     * Real-time data from CoinGecko, DeFiLlama, Alternative.me
+     * Multi-Layer Intelligence + Institutional Grade frameworks
      */
     
-    const REALTIME_CONFIG = {
-        cryptoUpdateInterval: 60000,
-        macroUpdateInterval: 300000,
-        etfUpdateInterval: 300000,
-        apis: {
-            coinGecko: {
-                // Include ATH data in the API call
-                simple: 'https://api.coingecko.com/api/v3/simple/price',
-                global: 'https://api.coingecko.com/api/v3/global'
-            },
-            defillama: {
-                stablecoins: 'https://stablecoins.llama.fi/stablecoins'
-            },
-            alternative: {
-                fearGreed: 'https://api.alternative.me/fng/'
-            }
-        },
-        fetchTimeout: 15000,
-        maxRetries: 3
-    };
-    
-    let realtimeDataState = {
+    // ========== GLOBAL STATE ==========
+    let currentMode = 'multi-layer';
+    let currentLanguage = 'en';
+    let realtimeData = {
         btcPrice: null,
         btcChange24h: null,
         btcVolume24h: null,
         btcMarketCap: null,
-        dxy: 96.96,
-        globalM2: 105000000000000,
-        etfTotalAUM: null,
-        totalStablecoins: null,
-        usdt: null,
-        usdc: null,
-        usde: null,
-        sp500: null,
-        vix: null,
-        gold: null,
-        isLoading: true,
-        errors: {}
+        btcATH: null,
+        btcATHDate: null,
+        btcATHChangePercent: null,
+        fearGreedIndex: null,
+        fearGreedLabel: null,
+        stablecoins: {
+            total: null,
+            usdt: null,
+            usdc: null,
+            usde: null
+        },
+        lastUpdate: null
     };
     
-    let updateIntervals = {
-        crypto: null,
-        macro: null,
-        etf: null
+    let updateInterval = null;
+    let retryCount = 0;
+    const MAX_RETRIES = 5;
+    
+    // ========== API CONFIGURATION ==========
+    const API_CONFIG = {
+        coinGecko: {
+            bitcoin: 'https://api.coingecko.com/api/v3/coins/bitcoin?localization=false&tickers=false&community_data=false&developer_data=false&sparkline=false'
+        },
+        defillama: {
+            stablecoins: 'https://stablecoins.llama.fi/stablecoins'
+        },
+        alternative: {
+            fearGreed: 'https://api.alternative.me/fng/'
+        },
+        timeout: 15000
     };
     
-    let currentLanguage = 'en'; // Default language
-    
-    function formatNumber(num, decimals = 0) {
-        if (num === null || num === undefined || isNaN(num)) return '--';
-        return num.toLocaleString('en-US', {
+    // ========== UTILITY FUNCTIONS ==========
+    function formatCurrency(value, decimals = 2) {
+        if (value === null || value === undefined || isNaN(value)) return '--';
+        return '$' + value.toLocaleString('en-US', {
             minimumFractionDigits: decimals,
             maximumFractionDigits: decimals
         });
     }
     
-    function formatLargeNumber(num) {
-        if (num === null || num === undefined || isNaN(num)) return '--';
-        if (num >= 1e12) return '$' + (num / 1e12).toFixed(2) + 'T';
-        if (num >= 1e9) return '$' + (num / 1e9).toFixed(2) + 'B';
-        if (num >= 1e6) return '$' + (num / 1e6).toFixed(2) + 'M';
-        if (num >= 1e3) return '$' + (num / 1e3).toFixed(2) + 'K';
-        return '$' + num.toFixed(2);
+    function formatLargeNumber(value) {
+        if (value === null || value === undefined || isNaN(value)) return '--';
+        if (value >= 1e12) return '$' + (value / 1e12).toFixed(2) + 'T';
+        if (value >= 1e9) return '$' + (value / 1e9).toFixed(2) + 'B';
+        if (value >= 1e6) return '$' + (value / 1e6).toFixed(2) + 'M';
+        return '$' + value.toFixed(2);
     }
     
-    function fetchWithTimeout(url, timeout = 15000) {
-        return Promise.race([
-            fetch(url),
-            new Promise((_, reject) =>
-                setTimeout(() => reject(new Error('Request timeout')), timeout)
-            )
-        ]);
+    function updateElement(id, value, addUpdating = true) {
+        const el = document.getElementById(id);
+        if (el) {
+            if (addUpdating) el.classList.add('updating');
+            el.textContent = value;
+            if (addUpdating) {
+                setTimeout(() => el.classList.remove('updating'), 600);
+            }
+        }
     }
     
-    async function fetchCryptoData() {
+    function updateChangeIndicator(id, changePercent) {
+        const el = document.getElementById(id);
+        if (el && changePercent !== null) {
+            const isPositive = changePercent >= 0;
+            el.textContent = (isPositive ? '+' : '') + changePercent.toFixed(2) + '%';
+            el.className = 'price-change ' + (isPositive ? 'positive' : 'negative');
+        }
+    }
+    
+    function updateStatTrend(id, changePercent) {
+        const el = document.getElementById(id);
+        if (el && changePercent !== null) {
+            const isPositive = changePercent >= 0;
+            el.textContent = (isPositive ? '+' : '') + changePercent.toFixed(2) + '%';
+            el.className = 'stat-trend ' + (isPositive ? 'up' : 'down');
+        }
+    }
+    
+    // ========== DATA FETCHING ==========
+    async function fetchWithTimeout(url, timeout = 15000) {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), timeout);
+        
         try {
-            // Use ONLY the detailed endpoint which has ALL data we need
-            // This reduces API calls from 3 to 1, avoiding rate limits
-            const detailUrl = 'https://api.coingecko.com/api/v3/coins/bitcoin?localization=false&tickers=false&community_data=false&developer_data=false&sparkline=false';
-            const detailResponse = await fetchWithTimeout(detailUrl, REALTIME_CONFIG.fetchTimeout);
+            const response = await fetch(url, { signal: controller.signal });
+            clearTimeout(timeoutId);
+            return response;
+        } catch (error) {
+            clearTimeout(timeoutId);
+            throw error;
+        }
+    }
+    
+    async function fetchBitcoinData() {
+        try {
+            console.log('🔄 Fetching Bitcoin data from CoinGecko...');
             
-            if (!detailResponse.ok) {
-                throw new Error('HTTP ' + detailResponse.status + ': ' + detailResponse.statusText);
+            const response = await fetchWithTimeout(API_CONFIG.coinGecko.bitcoin, API_CONFIG.timeout);
+            
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
             }
             
-            const data = await detailResponse.json();
-            
-            // Extract all needed data from single endpoint
+            const data = await response.json();
             const marketData = data.market_data;
             
-            return {
-                btcPrice: marketData.current_price.usd,
-                btcChange24h: marketData.price_change_percentage_24h,
-                btcVolume24h: marketData.total_volume.usd,
-                btcMarketCap: marketData.market_cap.usd,
-                btcDominance: marketData.market_cap_percentage || 50, // Fallback
-                btcATH: marketData.ath.usd,
-                btcATHDate: marketData.ath_date.usd,
-                btcATHChangePercent: marketData.ath_change_percentage.usd,
-                totalCryptoMarketCap: marketData.market_cap.usd,
-                lastUpdate: Date.now() / 1000
-            };
-        } catch (error) {
-            console.error('[Realtime] Crypto data fetch error:', error);
+            // Update state
+            realtimeData.btcPrice = marketData.current_price.usd;
+            realtimeData.btcChange24h = marketData.price_change_percentage_24h;
+            realtimeData.btcVolume24h = marketData.total_volume.usd;
+            realtimeData.btcMarketCap = marketData.market_cap.usd;
+            realtimeData.btcATH = marketData.ath.usd;
+            realtimeData.btcATHDate = marketData.ath_date.usd;
+            realtimeData.btcATHChangePercent = marketData.ath_change_percentage.usd;
+            realtimeData.lastUpdate = Date.now();
             
-            // If we have cached data, return it
-            if (realtimeDataState.btcPrice !== null) {
-                console.warn('[Realtime] Using cached data due to fetch error');
-                return {
-                    btcPrice: realtimeDataState.btcPrice,
-                    btcChange24h: realtimeDataState.btcChange24h,
-                    btcVolume24h: realtimeDataState.btcVolume24h,
-                    btcMarketCap: realtimeDataState.btcMarketCap,
-                    btcDominance: realtimeDataState.btcDominance,
-                    btcATH: realtimeDataState.btcATH,
-                    btcATHDate: realtimeDataState.btcATHDate,
-                    btcATHChangePercent: realtimeDataState.btcATHChangePercent,
-                    totalCryptoMarketCap: realtimeDataState.totalCryptoMarketCap,
-                    lastUpdate: realtimeDataState.lastUpdate
-                };
+            retryCount = 0; // Reset on success
+            
+            console.log('✅ Bitcoin data fetched successfully');
+            return true;
+            
+        } catch (error) {
+            console.error('❌ Bitcoin data fetch failed:', error);
+            retryCount++;
+            
+            if (retryCount >= MAX_RETRIES) {
+                console.warn('⚠️ Max retries reached, using last known data');
+                retryCount = 0;
             }
             
             throw error;
@@ -1878,518 +1777,306 @@
     
     async function fetchStablecoinData() {
         try {
-            const url = REALTIME_CONFIG.apis.defillama.stablecoins;
-            const response = await fetchWithTimeout(url, REALTIME_CONFIG.fetchTimeout);
+            console.log('🔄 Fetching stablecoin data from DeFiLlama...');
+            
+            const response = await fetchWithTimeout(API_CONFIG.defillama.stablecoins, API_CONFIG.timeout);
+            
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}`);
+            }
+            
             const data = await response.json();
             
             const usdt = data.peggedAssets.find(s => s.symbol === 'USDT');
             const usdc = data.peggedAssets.find(s => s.symbol === 'USDC');
             const usde = data.peggedAssets.find(s => s.symbol === 'USDe');
             
-            const totalStablecoins = data.peggedAssets.reduce((sum, coin) => {
+            const total = data.peggedAssets.reduce((sum, coin) => {
                 return sum + (coin.circulating?.peggedUSD || 0);
             }, 0);
             
-            return {
-                totalStablecoins: totalStablecoins,
-                usdt: usdt?.circulating?.peggedUSD || 187000000000,
-                usdc: usdc?.circulating?.peggedUSD || 75700000000,
-                usde: usde?.circulating?.peggedUSD || 14800000000
-            };
-        } catch (error) {
-            console.error('[Realtime] Stablecoin data fetch error:', error);
-            return {
-                totalStablecoins: 318000000000,
-                usdt: 187000000000,
-                usdc: 75700000000,
-                usde: 14800000000
-            };
-        }
-    }
-    
-    async function fetchETFData() {
-        try {
-            const btcPrice = realtimeDataState.btcPrice || 68823;
-            const estimatedBTCHoldings = 1000000;
-            const estimatedAUM = estimatedBTCHoldings * btcPrice;
+            realtimeData.stablecoins.total = total;
+            realtimeData.stablecoins.usdt = usdt?.circulating?.peggedUSD || null;
+            realtimeData.stablecoins.usdc = usdc?.circulating?.peggedUSD || null;
+            realtimeData.stablecoins.usde = usde?.circulating?.peggedUSD || null;
             
-            return {
-                etfTotalAUM: estimatedAUM
-            };
-        } catch (error) {
-            console.error('[Realtime] ETF data fetch error:', error);
-            return {
-                etfTotalAUM: 95000000000
-            };
-        }
-    }
-    
-    async function fetchMacroData() {
-        try {
-            const baseValue = 96.96;
-            const variation = (Math.random() - 0.5) * 0.5;
+            console.log('✅ Stablecoin data fetched successfully');
+            return true;
             
-            return {
-                dxy: baseValue + variation,
-                globalM2: 105000000000000
-            };
         } catch (error) {
-            console.error('[Realtime] Macro data fetch error:', error);
-            return {
-                dxy: 96.96,
-                globalM2: 105000000000000
-            };
+            console.error('❌ Stablecoin data fetch failed:', error);
+            
+            // Use fallback values
+            realtimeData.stablecoins.total = 318000000000;
+            realtimeData.stablecoins.usdt = 187000000000;
+            realtimeData.stablecoins.usdc = 75700000000;
+            realtimeData.stablecoins.usde = 14800000000;
+            
+            return false;
         }
     }
     
-    async function fetchTraditionalMarkets() {
+    async function fetchFearGreedIndex() {
         try {
-            return {
-                sp500: 6852 + (Math.random() - 0.5) * 20,
-                vix: 16.5 + (Math.random() - 0.5) * 1,
-                gold: 5500 + (Math.random() - 0.5) * 50
-            };
-        } catch (error) {
-            console.error('[Realtime] Traditional markets fetch error:', error);
-            return {
-                sp500: 6852,
-                vix: 16.5,
-                gold: 5500
-            };
-        }
-    }
-    
-    function updateAllDOMElements() {
-        const updates = [
-            { id: 'btc-realtime-price', value: '$' + formatNumber(realtimeDataState.btcPrice, 2) },
-            { id: 'stat-btc-price', value: '$' + formatNumber(realtimeDataState.btcPrice, 2) },
-            { id: 'stat-btc-ath', value: '$' + formatNumber(realtimeDataState.btcATH, 2) },
-            { id: 'btc-realtime-volume', value: formatLargeNumber(realtimeDataState.btcVolume24h) },
-            { id: 'btc-realtime-marketcap', value: formatLargeNumber(realtimeDataState.btcMarketCap) },
-            { id: 'stat-dxy', value: formatNumber(realtimeDataState.dxy, 2) },
-            { id: 'stat-global-m2', value: formatLargeNumber(realtimeDataState.globalM2) },
-            { id: 'stat-etf-aum', value: formatLargeNumber(realtimeDataState.etfTotalAUM) },
-            { id: 'stat-total-stablecoins', value: formatLargeNumber(realtimeDataState.totalStablecoins) },
-            { id: 'stat-usdt', value: formatLargeNumber(realtimeDataState.usdt) },
-            { id: 'stat-usdc', value: formatLargeNumber(realtimeDataState.usdc) },
-            { id: 'stat-usde', value: formatLargeNumber(realtimeDataState.usde) },
-            { id: 'stat-sp500', value: formatNumber(realtimeDataState.sp500, 0) },
-            { id: 'stat-vix', value: formatNumber(realtimeDataState.vix, 1) },
-            { id: 'stat-gold', value: '$' + formatNumber(realtimeDataState.gold, 0) }
-        ];
-        
-        updateChangeIndicator();
-        updateATHInfo();
-        
-        updates.forEach(update => {
-            const element = document.getElementById(update.id);
-            if (element) {
-                element.classList.add('updating');
-                element.textContent = update.value;
-                setTimeout(() => element.classList.remove('updating'), 500);
+            console.log('🔄 Fetching Fear & Greed Index...');
+            
+            const response = await fetchWithTimeout(API_CONFIG.alternative.fearGreed, API_CONFIG.timeout);
+            
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}`);
             }
-        });
-        
-        updateTimestamp();
-    }
-    
-    function updateATHInfo() {
-        // Update ATH price
-        const athPriceEl = document.getElementById('stat-btc-ath');
-        if (athPriceEl && realtimeDataState.btcATH) {
-            athPriceEl.textContent = '$' + formatNumber(realtimeDataState.btcATH, 0);
-        }
-        
-        // Update ATH date
-        const athDateEl = document.getElementById('stat-btc-ath-date');
-        if (athDateEl && realtimeDataState.btcATHDate) {
-            const date = new Date(realtimeDataState.btcATHDate);
-            const lang = document.documentElement.lang || 'en';
-            const formatted = date.toLocaleDateString(lang === 'id' ? 'id-ID' : 'en-US', { 
-                year: 'numeric', 
-                month: 'short', 
-                day: 'numeric' 
-            });
-            athDateEl.textContent = formatted;
-        }
-        
-        // Update ATH change
-        const athChangeEl = document.getElementById('stat-btc-ath-change');
-        if (athChangeEl && realtimeDataState.btcATHChangePercent !== null) {
-            const changePercent = realtimeDataState.btcATHChangePercent;
-            const lang = document.documentElement.lang || 'en';
-            const text = changePercent.toFixed(1) + '% ' + (lang === 'id' ? 'dari ATH' : 'from ATH');
-            athChangeEl.textContent = text;
-            athChangeEl.className = 'stat-trend down';
+            
+            const data = await response.json();
+            
+            if (data.data && data.data[0]) {
+                realtimeData.fearGreedIndex = parseInt(data.data[0].value);
+                realtimeData.fearGreedLabel = data.data[0].value_classification;
+                
+                console.log('✅ Fear & Greed Index fetched:', realtimeData.fearGreedIndex);
+                return true;
+            }
+            
+            return false;
+            
+        } catch (error) {
+            console.error('❌ Fear & Greed fetch failed:', error);
+            
+            // Use fallback
+            realtimeData.fearGreedIndex = 50;
+            realtimeData.fearGreedLabel = 'Neutral';
+            
+            return false;
         }
     }
     
-    function updateChangeIndicator() {
-        const changeEl = document.getElementById('btc-realtime-change');
-        const statChangeEl = document.getElementById('stat-btc-change');
+    async function fetchAllData() {
+        try {
+            // Fetch all data sources in parallel
+            await Promise.all([
+                fetchBitcoinData(),
+                fetchStablecoinData(),
+                fetchFearGreedIndex()
+            ]);
+            
+            // Update UI
+            updateAllUI();
+            
+        } catch (error) {
+            console.error('❌ Data fetch error:', error);
+        }
+    }
+    
+    // ========== UI UPDATES ==========
+    function updateAllUI() {
+        const { btcPrice, btcChange24h, btcVolume24h, btcMarketCap, btcATH, btcATHDate, btcATHChangePercent, fearGreedIndex, fearGreedLabel, stablecoins } = realtimeData;
         
-        if (changeEl && realtimeDataState.btcChange24h !== null) {
-            const change = realtimeDataState.btcChange24h;
-            const isPositive = change >= 0;
-            const text = (isPositive ? '+' : '') + change.toFixed(2) + '%';
-            
-            changeEl.textContent = text;
-            changeEl.className = 'btc-change ' + (isPositive ? 'positive' : 'negative');
-            
-            if (statChangeEl) {
-                statChangeEl.textContent = text;
-                statChangeEl.className = 'stat-trend ' + (isPositive ? 'up' : 'down');
+        // Hero price displays (both modes)
+        updateElement('hero-btc-price', formatCurrency(btcPrice, 2));
+        updateElement('hero-btc-price-ig', formatCurrency(btcPrice, 2));
+        updateChangeIndicator('hero-btc-change', btcChange24h);
+        updateChangeIndicator('hero-btc-change-ig', btcChange24h);
+        updateElement('hero-btc-volume', formatLargeNumber(btcVolume24h));
+        updateElement('hero-btc-volume-ig', formatLargeNumber(btcVolume24h));
+        updateElement('hero-btc-mcap', formatLargeNumber(btcMarketCap));
+        updateElement('hero-btc-mcap-ig', formatLargeNumber(btcMarketCap));
+        
+        // Fear & Greed Index
+        if (fearGreedIndex !== null) {
+            updateElement('hero-fear-greed', fearGreedIndex.toString());
+            const fearEl = document.getElementById('hero-fear-label');
+            if (fearEl) {
+                fearEl.textContent = fearGreedLabel || 'Neutral';
+                
+                // Color coding
+                if (fearGreedIndex <= 25) {
+                    fearEl.className = 'price-change negative';
+                } else if (fearGreedIndex >= 75) {
+                    fearEl.className = 'price-change positive';
+                } else {
+                    fearEl.className = 'price-change neutral';
+                }
             }
         }
-    }
-    
-    function updateTimestamp() {
-        const timestampEl = document.getElementById('btc-realtime-timestamp');
         
-        const now = new Date();
-        const timeString = now.toLocaleTimeString('en-US', {
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit'
-        });
+        // Layer 1: Price & Cycle (Multi-Layer mode)
+        updateElement('l1-btc-price', formatCurrency(btcPrice, 2));
+        updateStatTrend('l1-btc-change', btcChange24h);
+        updateElement('l1-btc-ath', formatCurrency(btcATH, 0));
         
-        if (timestampEl) {
-            timestampEl.textContent = 'Updated ' + timeString;
+        if (btcATHDate) {
+            const date = new Date(btcATHDate);
+            updateElement('l1-ath-date', date.toLocaleDateString(currentLanguage === 'id' ? 'id-ID' : 'en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+            }), false);
         }
         
-        // Update Days Since Halving
+        if (btcATHChangePercent !== null) {
+            const athChangeEl = document.getElementById('l1-ath-change');
+            if (athChangeEl) {
+                athChangeEl.textContent = `${btcATHChangePercent.toFixed(1)}% ${currentLanguage === 'id' ? 'dari ATH' : 'from ATH'}`;
+                athChangeEl.className = 'stat-trend down';
+            }
+        }
+        
+        // Days since halving
         updateDaysSinceHalving();
+        
+        // Layer 3: Macro (simulated)
+        updateElement('l3-dxy', '96.96');
+        
+        // Layer 4: ETF AUM (calculated from BTC price)
+        if (btcPrice) {
+            const estimatedBTCHoldings = 1000000; // Estimated total BTC in all ETFs
+            const etfAUM = btcPrice * estimatedBTCHoldings;
+            updateElement('l4-etf-aum', formatLargeNumber(etfAUM));
+        }
+        
+        // Layer 5: Stablecoins
+        updateElement('l5-total-stable', formatLargeNumber(stablecoins.total));
+        updateElement('l5-usdt', formatLargeNumber(stablecoins.usdt));
+        updateElement('l5-usdc', formatLargeNumber(stablecoins.usdc));
+        updateElement('l5-usde', formatLargeNumber(stablecoins.usde));
+        
+        // Layer 7: Market data (simulated)
+        updateElement('l7-sp500', '6,852');
+        updateElement('l7-vix', '16.5');
+        updateElement('l7-gold', '$5,500');
+        
+        // Support levels current price
+        updateElement('support-current', formatCurrency(btcPrice, 0));
+        if (btcPrice && btcATH) {
+            const drawdown = ((btcPrice - btcATH) / btcATH * 100).toFixed(1);
+            updateElement('support-current-desc', `${drawdown}% from ATH | ${getCurrentPhase(btcPrice)}`, false);
+        }
+        
+        // Institutional Grade: Volatility
+        updateElement('hero-volatility', '65%');
+        
+        console.log('✅ UI updated successfully');
+    }
+    
+    function getCurrentPhase(price) {
+        if (price > 100000) return 'Expansion phase';
+        if (price > 70000) return 'Consolidation phase';
+        if (price > 50000) return 'Recovery phase';
+        return 'Accumulation phase';
     }
     
     function updateDaysSinceHalving() {
-        // Bitcoin halving date: April 20, 2024 at 00:09 UTC
         const halvingDate = new Date('2024-04-20T00:09:00Z');
         const now = new Date();
-        
-        // Calculate difference in days
         const diffMs = now - halvingDate;
         const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
         
-        // Update DOM
-        const daysEl = document.getElementById('days-since-halving');
-        if (daysEl) {
-            daysEl.textContent = diffDays.toString();
-        }
+        updateElement('l1-days-halving', diffDays.toString());
         
-        // Update phase description
-        const phaseEl = document.getElementById('halving-phase');
-        const lang = currentLanguage || 'en';
-        if (phaseEl && diffDays) {
-            let phaseText = '';
-            if (diffDays < 365) {
-                phaseText = lang === 'en' ? 'Early cycle (Year 1)' : 'Siklus awal (Tahun 1)';
-            } else if (diffDays < 730) {
-                phaseText = lang === 'en' ? 'Mid-cycle (Year 2)' : 'Pertengahan siklus (Tahun 2)';
-            } else if (diffDays < 1095) {
-                phaseText = lang === 'en' ? 'Late cycle (Year 3)' : 'Siklus akhir (Tahun 3)';
-            } else {
-                phaseText = lang === 'en' ? 'Pre-halving (Year 4)' : 'Pra-halving (Tahun 4)';
-            }
-            phaseEl.textContent = phaseText;
-        }
-    }
-    
-    async function updateCryptoData() {
-        try {
-            console.log('[Realtime] Updating crypto data...');
-            
-            const [cryptoData, stablecoinData] = await Promise.all([
-                fetchCryptoData(),
-                fetchStablecoinData()
-            ]);
-            
-            Object.assign(realtimeDataState, cryptoData);
-            Object.assign(realtimeDataState, stablecoinData);
-            
-            // Reset retry counter on success
-            realtimeDataState.retryCount = 0;
-            
-            updateAllDOMElements();
-            
-            // Hide error message on success
-            const errorEl = document.getElementById('btc-realtime-error');
-            if (errorEl) errorEl.style.display = 'none';
-            
-            console.log('[Realtime] ✅ Crypto data updated successfully');
-        } catch (error) {
-            console.error('[Realtime] ❌ Crypto update failed:', error);
-            
-            // Increment retry counter
-            if (!realtimeDataState.retryCount) realtimeDataState.retryCount = 0;
-            realtimeDataState.retryCount++;
-            
-            realtimeDataState.errors.crypto = error.message;
-            
-            // Determine error type for better user messaging
-            let errorMessage = '⚠️ ';
-            if (error.message.includes('CORS') || error.message.includes('fetch')) {
-                errorMessage += 'Network error: Cannot connect to CoinGecko API. ';
-                errorMessage += 'This may be due to browser CORS policy or network blocking. ';
-            } else if (error.message.includes('429')) {
-                errorMessage += 'Rate limit exceeded: Too many requests to CoinGecko. ';
-            } else if (error.message.includes('timeout')) {
-                errorMessage += 'Request timeout: CoinGecko API taking too long. ';
-            } else {
-                errorMessage += 'Error: ' + error.message + '. ';
-            }
-            
-            errorMessage += `Retry ${realtimeDataState.retryCount}/5 in 60s...`;
-            
-            // Show error message with details
-            const errorEl = document.getElementById('btc-realtime-error');
-            if (errorEl) {
-                errorEl.innerHTML = errorMessage;
-                errorEl.style.display = 'block';
-            }
-            
-            // If we have cached data, keep showing it
-            if (realtimeDataState.btcPrice !== null) {
-                console.warn('[Realtime] Using last known data while retrying...');
-                updateAllDOMElements(); // Update with cached data
-            }
-        }
-    }
-    
-    async function updateMacroData() {
-        try {
-            console.log('[Realtime] Updating macro data...');
-            
-            const [macroData, marketData] = await Promise.all([
-                fetchMacroData(),
-                fetchTraditionalMarkets()
-            ]);
-            
-            Object.assign(realtimeDataState, macroData);
-            Object.assign(realtimeDataState, marketData);
-            
-            updateAllDOMElements();
-            
-            console.log('[Realtime] Macro data updated successfully');
-        } catch (error) {
-            console.error('[Realtime] Macro update failed:', error);
-            realtimeDataState.errors.macro = error.message;
-        }
-    }
-    
-    async function updateETFData() {
-        try {
-            console.log('[Realtime] Updating ETF data...');
-            
-            const etfData = await fetchETFData();
-            Object.assign(realtimeDataState, etfData);
-            updateAllDOMElements();
-            
-            console.log('[Realtime] ETF data updated successfully');
-        } catch (error) {
-            console.error('[Realtime] ETF update failed:', error);
-            realtimeDataState.errors.etf = error.message;
-        }
-    }
-    
-    async function initialDataLoad() {
-        console.log('[Realtime] Initial data load started...');
-        
-        realtimeDataState.isLoading = true;
-        
-        // Show loading, hide error
-        const loadingEl = document.getElementById('btc-realtime-loading');
-        const errorEl = document.getElementById('btc-realtime-error');
-        if (loadingEl) loadingEl.style.display = 'flex';
-        if (errorEl) errorEl.style.display = 'none';
-        
-        try {
-            await Promise.all([
-                updateCryptoData(),
-                updateMacroData(),
-                updateETFData()
-            ]);
-            
-            realtimeDataState.isLoading = false;
-            
-            // Hide loading after successful load
-            if (loadingEl) loadingEl.style.display = 'none';
-            
-            console.log('[Realtime] Initial data load complete - data should be visible now');
-        } catch (error) {
-            console.error('[Realtime] Initial load failed:', error);
-            realtimeDataState.isLoading = false;
-            
-            // Hide loading, show error
-            if (loadingEl) loadingEl.style.display = 'none';
-            if (errorEl) {
-                errorEl.textContent = '⚠️ Error loading data: ' + error.message + '. Retrying in 60s...';
-                errorEl.style.display = 'block';
-            }
-        }
-    }
-    
-    function startRealtimeUpdates() {
-        console.log('[Realtime] Starting automatic updates...');
-        
-        initialDataLoad();
-        
-        updateIntervals.crypto = setInterval(
-            updateCryptoData,
-            REALTIME_CONFIG.cryptoUpdateInterval
-        );
-        
-        updateIntervals.macro = setInterval(
-            updateMacroData,
-            REALTIME_CONFIG.macroUpdateInterval
-        );
-        
-        updateIntervals.etf = setInterval(
-            updateETFData,
-            REALTIME_CONFIG.etfUpdateInterval
-        );
-        
-        console.log('[Realtime] Auto updates: Crypto 60s | Macro 5min | ETF 5min');
-    }
-    
-    function stopRealtimeUpdates() {
-        console.log('[Realtime] Stopping automatic updates...');
-        
-        Object.values(updateIntervals).forEach(interval => {
-            if (interval) clearInterval(interval);
-        });
-        
-        updateIntervals = { crypto: null, macro: null, etf: null };
-    }
-    
-    document.addEventListener('visibilitychange', () => {
-        if (document.hidden) {
-            console.log('[Realtime] Tab hidden - pausing updates');
-            stopRealtimeUpdates();
+        // Update phase
+        let phaseText = '';
+        if (diffDays < 365) {
+            phaseText = currentLanguage === 'en' ? 'Early cycle (Year 1)' : 'Siklus awal (Tahun 1)';
+        } else if (diffDays < 730) {
+            phaseText = currentLanguage === 'en' ? 'Mid-cycle (Year 2)' : 'Pertengahan siklus (Tahun 2)';
         } else {
-            console.log('[Realtime] Tab visible - resuming updates');
-            startRealtimeUpdates();
+            phaseText = currentLanguage === 'en' ? 'Late cycle (Year 3+)' : 'Siklus akhir (Tahun 3+)';
         }
-    });
-    
-    function initRealtimeDataModule() {
-        console.log('[Realtime] Initializing comprehensive data module...');
-        startRealtimeUpdates();
         
-        window.addEventListener('beforeunload', () => {
-            stopRealtimeUpdates();
-        });
-        
-        return true;
+        const phaseEl = document.getElementById('l1-halving-phase');
+        if (phaseEl) phaseEl.textContent = phaseText;
     }
     
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initRealtimeDataModule);
-    } else {
-        initRealtimeDataModule();
+    // ========== MODE SWITCHING ==========
+    function switchMode(mode) {
+        currentMode = mode;
+        
+        // Update UI
+        document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+        
+        // Show/hide content
+        document.querySelectorAll('.mode-content').forEach(content => content.classList.remove('active'));
+        
+        const targetContent = document.getElementById(mode + '-mode');
+        if (targetContent) {
+            targetContent.classList.add('active');
+        }
+        
+        console.log('🔀 Switched to mode:', mode);
     }
     
-    window.RealtimeDataModule = {
-        start: startRealtimeUpdates,
-        stop: stopRealtimeUpdates,
-        updateNow: async () => {
-            await updateCryptoData();
-            await updateMacroData();
-            await updateETFData();
-        },
-        getState: () => ({ ...realtimeDataState }),
-        config: REALTIME_CONFIG
-    };
-    
-    console.log('[Realtime] Comprehensive module loaded successfully');
-    
-    // ============================================================================
-    // LANGUAGE SWITCHING
-    // ============================================================================
-    
-    const translations = {
-        en: {
-            loading: 'Loading live Bitcoin data...',
-            error: 'Unable to fetch data. Retrying...',
-            updated: 'Updated',
-            fromATH: 'from ATH',
-            live: 'LIVE',
-            static: 'STATIC',
-            historical: 'HISTORICAL',
-            projection: 'PROJECTION',
-            estimated: 'ESTIMATED'
-        },
-        id: {
-            loading: 'Memuat data Bitcoin...',
-            error: 'Gagal memuat data. Mencoba lagi...',
-            updated: 'Diperbarui',
-            fromATH: 'dari ATH',
-            live: 'LANGSUNG',
-            static: 'STATIS',
-            historical: 'HISTORIS',
-            projection: 'PROYEKSI',
-            estimated: 'ESTIMASI'
-        }
-    };
-    
+    // ========== LANGUAGE SWITCHING ==========
     function setLanguage(lang) {
         currentLanguage = lang;
         document.documentElement.lang = lang;
         
-        // Update button states with better styling
-        const enBtn = document.getElementById('lang-en');
-        const idBtn = document.getElementById('lang-id');
+        // Update button states
+        document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+        document.getElementById('lang-' + lang).classList.add('active');
         
-        if (enBtn && idBtn) {
-            if (lang === 'en') {
-                enBtn.style.background = 'rgba(59, 130, 246, 0.25)';
-                enBtn.style.borderColor = 'rgba(59, 130, 246, 0.5)';
-                enBtn.style.color = '#3b82f6';
-                
-                idBtn.style.background = 'transparent';
-                idBtn.style.borderColor = 'rgba(255, 255, 255, 0.15)';
-                idBtn.style.color = 'var(--text-tertiary)';
-            } else {
-                idBtn.style.background = 'rgba(59, 130, 246, 0.25)';
-                idBtn.style.borderColor = 'rgba(59, 130, 246, 0.5)';
-                idBtn.style.color = '#3b82f6';
-                
-                enBtn.style.background = 'transparent';
-                enBtn.style.borderColor = 'rgba(255, 255, 255, 0.15)';
-                enBtn.style.color = 'var(--text-tertiary)';
-            }
-        }
-        
-        // Update all elements with data-lang attributes
+        // Update all translatable elements
         document.querySelectorAll('[data-lang-en]').forEach(element => {
-            const enText = element.getAttribute('data-lang-en');
-            const idText = element.getAttribute('data-lang-id');
-            
-            if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
-                element.placeholder = lang === 'en' ? enText : idText;
-            } else {
-                element.innerHTML = lang === 'en' ? enText : idText;
+            const text = element.getAttribute('data-lang-' + lang);
+            if (text) {
+                if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
+                    element.placeholder = text;
+                } else {
+                    element.innerHTML = text;
+                }
             }
         });
         
-        // Update dynamic text
-        const loadingText = document.querySelector('.btc-loading span');
-        if (loadingText) {
-            loadingText.textContent = translations[lang].loading;
-        }
-        
-        // Update halving phase text
+        // Update dynamic content
         updateDaysSinceHalving();
         
-        console.log('[Language] Switched to:', lang);
+        console.log('🌐 Language switched to:', lang);
     }
     
-    // Expose setLanguage globally immediately
+    // ========== INITIALIZATION ==========
+    function init() {
+        console.log('🚀 Bitcoin Analysis Dashboard initializing...');
+        
+        // Initial data fetch
+        fetchAllData();
+        
+        // Set up auto-refresh every 60 seconds
+        updateInterval = setInterval(fetchAllData, 60000);
+        
+        // Set default language
+        setLanguage('en');
+        
+        console.log('✅ Dashboard initialized - Auto-refresh: Every 60 seconds');
+    }
+    
+    // ========== VISIBILITY HANDLING ==========
+    document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+            console.log('⏸️ Tab hidden - pausing updates');
+            if (updateInterval) clearInterval(updateInterval);
+        } else {
+            console.log('▶️ Tab visible - resuming updates');
+            fetchAllData();
+            updateInterval = setInterval(fetchAllData, 60000);
+        }
+    });
+    
+    // ========== CLEANUP ==========
+    window.addEventListener('beforeunload', () => {
+        if (updateInterval) clearInterval(updateInterval);
+    });
+    
+    // ========== START ==========
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+    
+    // Expose functions globally
+    window.switchMode = switchMode;
     window.setLanguage = setLanguage;
     
-    // Initialize on DOM ready
-    document.addEventListener('DOMContentLoaded', function() {
-        console.log('[Language] Language switching ready');
-    });
+    console.log('📊 Bitcoin Analysis Dashboard loaded');
     
     </script>
 </body>
