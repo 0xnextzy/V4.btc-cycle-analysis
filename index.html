@@ -8,44 +8,23 @@
         @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Playfair+Display:wght@700;900&display=swap');
         
         :root {
-            /* Base Colors */
             --bg-primary: #0a0a0a;
             --bg-secondary: #151515;
-            --bg-tertiary: #1f1f1f;
-            --bg-elevated: #2a2a2a;
-            
-            /* Accent Colors */
             --accent-green: #00ff88;
-            --accent-green-dim: #00cc6d;
             --accent-blue: #0ea5e9;
-            --accent-blue-dim: #0284c7;
             --accent-yellow: #fbbf24;
             --accent-red: #ef4444;
             --accent-purple: #a855f7;
             --accent-orange: #f97316;
             --accent-cyan: #06b6d4;
-            
-            /* Text Colors */
             --text-primary: #ffffff;
             --text-secondary: #a3a3a3;
             --text-tertiary: #737373;
-            --text-muted: #525252;
-            
-            /* Border & Effects */
-            --border-subtle: rgba(255, 255, 255, 0.08);
             --border-medium: rgba(255, 255, 255, 0.12);
             --glass-bg: rgba(255, 255, 255, 0.05);
             --glass-border: rgba(255, 255, 255, 0.1);
-            
-            /* Shadows & Glows */
-            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
-            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
-            --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.5);
-            --shadow-xl: 0 24px 60px rgba(0, 0, 0, 0.6);
             --glow-green: 0 0 40px rgba(0, 255, 136, 0.3);
             --glow-blue: 0 0 40px rgba(14, 165, 233, 0.3);
-            --glow-red: 0 0 40px rgba(239, 68, 68, 0.3);
-            --glow-purple: 0 0 40px rgba(168, 85, 247, 0.3);
         }
         
         * {
@@ -55,16 +34,14 @@
         }
         
         body {
-            font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'Space Grotesk', sans-serif;
             background: var(--bg-primary);
             color: var(--text-primary);
             line-height: 1.6;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
         }
         
-        /* Animated Background */
         body::before {
             content: '';
             position: fixed;
@@ -74,8 +51,7 @@
             height: 100%;
             background: 
                 radial-gradient(circle at 20% 50%, rgba(0, 255, 136, 0.05) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(14, 165, 233, 0.05) 0%, transparent 50%),
-                radial-gradient(circle at 40% 20%, rgba(168, 85, 247, 0.05) 0%, transparent 50%);
+                radial-gradient(circle at 80% 80%, rgba(14, 165, 233, 0.05) 0%, transparent 50%);
             background-size: 200% 200%;
             animation: gradient-shift 15s ease infinite;
             pointer-events: none;
@@ -87,7 +63,6 @@
             50% { background-position: 100% 50%; }
         }
         
-        /* Grid Pattern */
         body::after {
             content: '';
             position: fixed;
@@ -106,12 +81,12 @@
         .container {
             max-width: 1800px;
             margin: 0 auto;
-            padding: 100px 40px 60px 40px; /* Top padding for fixed switcher */
+            padding: 100px 40px 60px 40px;
             position: relative;
             z-index: 1;
         }
         
-        /* ========== MODE SWITCHER (FIXED) ========== */
+        /* MODE SWITCHER */
         .mode-switcher-wrapper {
             position: fixed;
             top: 0;
@@ -129,7 +104,6 @@
             margin: 0 auto;
             display: flex;
             justify-content: center;
-            align-items: center;
             gap: 16px;
             padding: 16px 20px;
         }
@@ -144,32 +118,12 @@
             font-weight: 700;
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            font-family: 'Space Grotesk', sans-serif;
-            letter-spacing: 0.3px;
-            position: relative;
-            overflow: hidden;
             white-space: nowrap;
-        }
-        
-        .mode-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-            transition: left 0.5s;
-        }
-        
-        .mode-btn:hover::before {
-            left: 100%;
         }
         
         .mode-btn:hover:not(.active) {
             border-color: var(--accent-blue);
             color: var(--text-primary);
-            transform: translateY(-2px);
         }
         
         .mode-btn.active {
@@ -177,12 +131,11 @@
             border-color: transparent;
             color: var(--bg-primary);
             box-shadow: 0 4px 16px rgba(14, 165, 233, 0.4);
-            transform: scale(1.02);
         }
         
         .mode-content {
             display: none;
-            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            animation: fadeInUp 0.8s ease;
         }
         
         .mode-content.active {
@@ -190,17 +143,11 @@
         }
         
         @keyframes fadeInUp {
-            from { 
-                opacity: 0; 
-                transform: translateY(40px); 
-            }
-            to { 
-                opacity: 1; 
-                transform: translateY(0); 
-            }
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
-        /* ========== LANGUAGE TOGGLE (FIXED) ========== */
+        /* LANGUAGE TOGGLE */
         .lang-toggle {
             position: fixed;
             top: 70px;
@@ -213,39 +160,31 @@
             border: 1px solid var(--border-medium);
             border-radius: 12px;
             padding: 8px;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
         }
         
         .lang-btn {
             padding: 8px 16px;
             background: transparent;
-            border: 1px solid var(--border-subtle);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 8px;
             color: var(--text-tertiary);
             font-size: 0.85rem;
             font-weight: 700;
             cursor: pointer;
             transition: all 0.3s ease;
-            font-family: 'Space Grotesk', sans-serif;
         }
         
         .lang-btn.active {
             background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-cyan) 100%);
             border-color: transparent;
             color: var(--bg-primary);
-            box-shadow: 0 2px 8px rgba(14, 165, 233, 0.4);
         }
         
-        .lang-btn:hover:not(.active) {
-            border-color: var(--accent-blue);
-            color: var(--text-primary);
-        }
-        
-        /* ========== HEADER ========== */
+        /* HEADER */
         .header {
             text-align: center;
             margin-bottom: 80px;
-            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            animation: fadeInUp 0.8s ease;
         }
         
         .framework-badge {
@@ -268,13 +207,12 @@
         
         .framework-badge::before {
             content: '●';
-            color: var(--accent-green);
             animation: pulse-dot 2s ease-in-out infinite;
         }
         
         @keyframes pulse-dot {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.4; transform: scale(0.8); }
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
         }
         
         h1 {
@@ -283,19 +221,15 @@
             font-weight: 900;
             line-height: 1;
             margin-bottom: 28px;
-            letter-spacing: -0.04em;
             background: linear-gradient(135deg, #ffffff 0%, var(--accent-green) 50%, var(--accent-blue) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            text-shadow: 0 0 80px rgba(0, 255, 136, 0.2);
         }
         
         .subtitle {
             font-size: clamp(1rem, 2.5vw, 1.4rem);
             color: var(--text-secondary);
-            font-weight: 400;
-            letter-spacing: 0.08em;
             margin-bottom: 28px;
         }
         
@@ -309,13 +243,6 @@
             padding: 18px 36px;
             border-radius: 18px;
             margin-top: 36px;
-            transition: all 0.3s ease;
-        }
-        
-        .author-credit:hover {
-            border-color: var(--accent-green);
-            transform: translateY(-2px);
-            box-shadow: var(--glow-green);
         }
         
         .author-credit .label {
@@ -332,7 +259,7 @@
             color: var(--accent-green);
         }
         
-        /* ========== REALTIME PRICE MODULE ========== */
+        /* HERO PRICE */
         .btc-hero-price {
             background: linear-gradient(135deg, rgba(0, 255, 136, 0.08) 0%, rgba(14, 165, 233, 0.08) 100%);
             backdrop-filter: blur(30px);
@@ -343,22 +270,6 @@
             position: relative;
             overflow: hidden;
             box-shadow: var(--glow-green);
-        }
-        
-        .btc-hero-price::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(0, 255, 136, 0.1) 0%, transparent 70%);
-            animation: rotate-glow 20s linear infinite;
-        }
-        
-        @keyframes rotate-glow {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
         }
         
         .price-grid {
@@ -400,7 +311,6 @@
             border-radius: 100px;
             font-size: 0.85rem;
             font-weight: 700;
-            backdrop-filter: blur(10px);
         }
         
         .price-change.positive {
@@ -424,7 +334,7 @@
         .price-change.positive::before { content: '↑ '; }
         .price-change.negative::before { content: '↓ '; }
         
-        /* ========== ALERT BANNER ========== */
+        /* ALERT BANNER */
         .alert-banner {
             background: linear-gradient(135deg, rgba(239, 68, 68, 0.12) 0%, rgba(249, 115, 22, 0.12) 100%);
             backdrop-filter: blur(30px);
@@ -432,9 +342,6 @@
             border-radius: 24px;
             padding: 36px;
             margin-bottom: 80px;
-            position: relative;
-            overflow: hidden;
-            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s backwards;
         }
         
         .alert-title {
@@ -459,10 +366,9 @@
             font-weight: 700;
         }
         
-        /* ========== CATEGORY HEADER ========== */
+        /* CATEGORY HEADER */
         .category-header {
             margin: 100px 0 60px 0;
-            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
             position: relative;
         }
         
@@ -474,25 +380,21 @@
             width: 80px;
             height: 3px;
             background: linear-gradient(90deg, var(--accent-green) 0%, transparent 100%);
-            border-radius: 2px;
         }
         
         .category-title {
             font-family: 'Playfair Display', serif;
             font-size: clamp(2rem, 4vw, 3.5rem);
             font-weight: 900;
-            color: var(--text-primary);
             margin-bottom: 14px;
-            letter-spacing: -0.03em;
         }
         
         .category-description {
             font-size: clamp(1rem, 2vw, 1.2rem);
             color: var(--text-tertiary);
-            font-weight: 400;
         }
         
-        /* ========== STATS GRID ========== */
+        /* STATS GRID */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -506,33 +408,7 @@
             border: 1px solid var(--glass-border);
             border-radius: 20px;
             padding: 32px;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        
-        .stat-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background: linear-gradient(90deg, transparent 0%, var(--accent-green) 50%, transparent 100%);
-            opacity: 0;
-            transition: opacity 0.4s ease;
-        }
-        
-        .stat-card::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at top right, rgba(0, 255, 136, 0.05) 0%, transparent 60%);
-            opacity: 0;
-            transition: opacity 0.4s ease;
+            transition: all 0.5s ease;
         }
         
         .stat-card:hover {
@@ -541,16 +417,10 @@
             box-shadow: var(--glow-green);
         }
         
-        .stat-card:hover::before,
-        .stat-card:hover::after {
-            opacity: 1;
-        }
-        
         .stat-icon {
             font-size: 2.5rem;
             margin-bottom: 14px;
             opacity: 0.7;
-            filter: drop-shadow(0 4px 12px rgba(0, 255, 136, 0.3));
         }
         
         .stat-label {
@@ -560,7 +430,6 @@
             letter-spacing: 1.5px;
             font-weight: 700;
             margin-bottom: 14px;
-            line-height: 1.4;
         }
         
         .stat-value {
@@ -569,9 +438,6 @@
             font-weight: 800;
             line-height: 1.2;
             margin-bottom: 14px;
-            letter-spacing: -0.02em;
-            position: relative;
-            z-index: 1;
         }
         
         .stat-value.green { color: var(--accent-green); text-shadow: 0 0 20px rgba(0, 255, 136, 0.4); }
@@ -585,7 +451,6 @@
             font-size: 0.9rem;
             color: var(--text-secondary);
             margin-bottom: 14px;
-            line-height: 1.5;
         }
         
         .stat-trend {
@@ -598,7 +463,6 @@
             font-weight: 700;
             backdrop-filter: blur(10px);
             text-transform: uppercase;
-            letter-spacing: 0.3px;
         }
         
         .stat-trend.up {
@@ -634,7 +498,6 @@
             font-size: 0.65rem;
             font-weight: 800;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
             margin-top: 8px;
         }
         
@@ -655,7 +518,7 @@
             border: 1px solid rgba(59, 130, 246, 0.4);
         }
         
-        /* ========== COMPOSITE INDEX ========== */
+        /* COMPOSITE INDEX */
         .composite-index {
             background: linear-gradient(135deg, rgba(14, 165, 233, 0.15) 0%, rgba(0, 255, 136, 0.15) 100%);
             backdrop-filter: blur(30px);
@@ -664,25 +527,7 @@
             padding: 50px 32px;
             margin: 70px 0;
             text-align: center;
-            position: relative;
-            overflow: hidden;
             box-shadow: var(--glow-blue);
-        }
-        
-        .composite-index::before {
-            content: '';
-            position: absolute;
-            top: -100%;
-            left: -100%;
-            width: 300%;
-            height: 300%;
-            background: conic-gradient(from 0deg, transparent, rgba(14, 165, 233, 0.1), transparent);
-            animation: rotate-conic 15s linear infinite;
-        }
-        
-        @keyframes rotate-conic {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
         }
         
         .composite-score {
@@ -692,11 +537,8 @@
             background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-green) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-clip: text;
             line-height: 1;
             margin-bottom: 20px;
-            position: relative;
-            z-index: 1;
         }
         
         .composite-label {
@@ -706,8 +548,6 @@
             text-transform: uppercase;
             letter-spacing: 2px;
             margin-bottom: 28px;
-            position: relative;
-            z-index: 1;
         }
         
         .composite-interpretation {
@@ -716,11 +556,9 @@
             max-width: 900px;
             margin: 0 auto;
             line-height: 1.9;
-            position: relative;
-            z-index: 1;
         }
         
-        /* ========== SUPPORT LEVELS ========== */
+        /* SUPPORT LEVELS */
         .support-levels {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -735,8 +573,7 @@
             border-radius: 20px;
             padding: 28px;
             position: relative;
-            overflow: hidden;
-            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: all 0.5s ease;
         }
         
         .level-card::before {
@@ -756,7 +593,6 @@
         
         .level-card:hover {
             transform: translateX(8px);
-            border-color: rgba(255, 255, 255, 0.3);
         }
         
         .level-card:hover::before {
@@ -780,7 +616,6 @@
             font-family: 'JetBrains Mono', monospace;
             font-size: clamp(1.6rem, 3vw, 2.2rem);
             font-weight: 800;
-            color: var(--text-primary);
             margin-bottom: 12px;
         }
         
@@ -790,7 +625,7 @@
             line-height: 1.6;
         }
         
-        /* ========== INFO BOX ========== */
+        /* INFO BOX */
         .info-box {
             background: var(--glass-bg);
             backdrop-filter: blur(30px);
@@ -798,13 +633,15 @@
             padding: 36px;
             margin-bottom: 40px;
             border: 2px solid;
-            position: relative;
-            overflow: hidden;
         }
         
         .info-box.warning { border-color: rgba(239, 68, 68, 0.5); }
         .info-box.info { border-color: rgba(14, 165, 233, 0.5); }
         .info-box.success { border-color: rgba(0, 255, 136, 0.5); }
+        .info-box.critical { 
+            border-color: rgba(168, 85, 247, 0.5);
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.05) 0%, rgba(239, 68, 68, 0.05) 100%);
+        }
         
         .info-title {
             font-size: clamp(1.3rem, 2.5vw, 1.7rem);
@@ -819,6 +656,7 @@
         .info-box.warning .info-title { color: var(--accent-red); }
         .info-box.info .info-title { color: var(--accent-blue); }
         .info-box.success .info-title { color: var(--accent-green); }
+        .info-box.critical .info-title { color: var(--accent-purple); }
         
         .info-text {
             font-size: clamp(0.9rem, 1.8vw, 1rem);
@@ -831,263 +669,127 @@
             font-weight: 700;
         }
         
-        /* ========== LOADING ========== */
-        .loading-indicator {
-            display: inline-block;
-            width: 18px;
-            height: 18px;
-            border: 3px solid rgba(255, 255, 255, 0.1);
-            border-top-color: var(--accent-green);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
+        .weakness-section {
+            margin: 28px 0;
+            padding: 24px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 16px;
+            border-left: 4px solid var(--accent-red);
         }
         
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+        .weakness-title {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: var(--accent-red);
+            margin-bottom: 14px;
+            text-transform: uppercase;
         }
         
-        /* ========== MOBILE OPTIMIZATIONS ========== */
+        .weakness-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .weakness-list li {
+            padding: 12px 0 12px 32px;
+            position: relative;
+            line-height: 1.8;
+        }
+        
+        .weakness-list li::before {
+            content: '✗';
+            position: absolute;
+            left: 0;
+            color: var(--accent-red);
+            font-weight: 900;
+            font-size: 1.2rem;
+        }
+        
+        /* MOBILE */
         @media (max-width: 768px) {
-            .container {
-                padding: 90px 16px 40px 16px;
-            }
-            
-            .mode-switcher {
-                gap: 10px;
-                padding: 12px 12px;
-            }
-            
-            .mode-btn {
-                padding: 12px 20px;
-                font-size: 0.85rem;
-                border-radius: 12px;
-            }
-            
-            .lang-toggle {
-                top: 58px;
-                right: 12px;
-                padding: 6px;
-                gap: 6px;
-            }
-            
-            .lang-btn {
-                padding: 8px 14px;
-                font-size: 0.8rem;
-            }
-            
-            .btc-hero-price {
-                padding: 28px 20px;
-                border-radius: 24px;
-            }
-            
-            .price-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 20px;
-            }
-            
-            .price-value {
-                font-size: clamp(1.5rem, 5vw, 2rem);
-            }
-            
-            .price-label {
-                font-size: 0.7rem;
-            }
-            
-            .alert-banner {
-                padding: 24px 20px;
-                border-radius: 20px;
-            }
-            
-            .stats-grid {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
-            
-            .stat-card {
-                padding: 24px 20px;
-                border-radius: 16px;
-            }
-            
-            .category-header {
-                margin: 70px 0 40px 0;
-            }
-            
-            .composite-index {
-                padding: 36px 20px;
-                border-radius: 24px;
-            }
-            
-            .support-levels {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
-            
-            .level-card {
-                padding: 24px 20px;
-                border-radius: 16px;
-            }
-            
-            .info-box {
-                padding: 28px 20px;
-                border-radius: 20px;
-            }
-            
-            h1 {
-                font-size: clamp(2.5rem, 10vw, 4rem);
-            }
+            .container { padding: 90px 16px 40px 16px; }
+            .mode-switcher { gap: 10px; padding: 12px; }
+            .mode-btn { padding: 12px 20px; font-size: 0.85rem; }
+            .lang-toggle { top: 58px; right: 12px; }
+            .btc-hero-price { padding: 28px 20px; }
+            .price-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+            .stats-grid { grid-template-columns: 1fr; gap: 20px; }
+            .stat-card { padding: 24px 20px; }
+            .support-levels { grid-template-columns: 1fr; }
         }
         
         @media (max-width: 480px) {
-            .container {
-                padding: 80px 12px 32px 12px;
-            }
-            
-            .mode-switcher {
-                flex-direction: row;
-                gap: 8px;
-                padding: 10px 8px;
-            }
-            
-            .mode-btn {
-                flex: 1;
-                padding: 10px 12px;
-                font-size: 0.75rem;
-                min-width: 0;
-            }
-            
-            .mode-btn span {
-                display: none;
-            }
-            
-            /* Show only icons on very small screens */
-            .mode-btn::after {
-                content: attr(data-icon);
-                font-size: 1.2rem;
-            }
-            
-            .price-grid {
-                grid-template-columns: 1fr;
-                gap: 16px;
-            }
-            
-            .stat-card {
-                padding: 20px 16px;
-            }
-            
-            .stat-icon {
-                font-size: 2rem;
-            }
+            .container { padding: 80px 12px 32px 12px; }
+            .mode-btn span { display: none; }
+            .mode-btn::after { content: attr(data-icon); font-size: 1.2rem; }
+            .price-grid { grid-template-columns: 1fr; gap: 16px; }
         }
         
-        /* ========== ANIMATIONS ========== */
         @keyframes pulse-update {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.7; transform: scale(1.02); }
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
         }
         
-        .stat-value.updating,
-        .price-value.updating {
-            animation: pulse-update 0.6s ease-in-out;
-        }
-        
-        ::selection {
-            background: rgba(0, 255, 136, 0.4);
-            color: var(--text-primary);
-        }
-        
-        /* Smooth scrolling */
-        html {
-            scroll-behavior: smooth;
-        }
-        
-        /* Hide scrollbar but keep functionality */
-        body::-webkit-scrollbar {
-            width: 8px;
-        }
-        
-        body::-webkit-scrollbar-track {
-            background: var(--bg-primary);
-        }
-        
-        body::-webkit-scrollbar-thumb {
-            background: var(--border-medium);
-            border-radius: 4px;
-        }
-        
-        body::-webkit-scrollbar-thumb:hover {
-            background: var(--accent-green);
-        }
+        .stat-value.updating { animation: pulse-update 0.6s ease-in-out; }
     </style>
 </head>
 <body>
-    <!-- MODE SWITCHER (FIXED) -->
     <div class="mode-switcher-wrapper">
         <div class="mode-switcher">
-            <button class="mode-btn active" onclick="switchMode('multi-layer')" data-icon="📊" data-lang-en="<span>📊 Multi-Layer Intelligence</span>" data-lang-id="<span>📊 Analisis Multi-Layer</span>">
+            <button class="mode-btn active" onclick="switchMode('multi-layer')" data-icon="📊">
                 <span>📊 Multi-Layer Intelligence</span>
             </button>
-            <button class="mode-btn" onclick="switchMode('institutional')" data-icon="🏛️" data-lang-en="<span>🏛️ Institutional Grade</span>" data-lang-id="<span>🏛️ Grade Institusional</span>">
+            <button class="mode-btn" onclick="switchMode('institutional')" data-icon="🏛️">
                 <span>🏛️ Institutional Grade</span>
             </button>
         </div>
     </div>
     
-    <!-- LANGUAGE TOGGLE (FIXED) -->
     <div class="lang-toggle">
         <button id="lang-en" class="lang-btn active" onclick="setLanguage('en')">🇬🇧 EN</button>
         <button id="lang-id" class="lang-btn" onclick="setLanguage('id')">🇮🇩 ID</button>
     </div>
     
     <div class="container">
-        <!-- ============================================ -->
-        <!-- MULTI-LAYER INTELLIGENCE MODE -->
-        <!-- ============================================ -->
+        <!-- MULTI-LAYER MODE -->
         <div id="multi-layer-mode" class="mode-content active">
             <header class="header">
-                <div class="framework-badge" data-lang-en="Multi-Layer Intelligence Framework" data-lang-id="Framework Analisis Multi-Layer">
-                    Multi-Layer Intelligence Framework
-                </div>
-                
-                <h1 data-lang-en="Bitcoin Cycle<br>Analysis" data-lang-id="Analisis Siklus<br>Bitcoin">Bitcoin Cycle<br>Analysis</h1>
-                <p class="subtitle" data-lang-en="Macro • On-Chain • Institutional • Derivatives" data-lang-id="Makro • On-Chain • Institusi • Derivatif">Macro • On-Chain • Institutional • Derivatives</p>
+                <div class="framework-badge">Multi-Layer Intelligence Framework</div>
+                <h1>Bitcoin Cycle<br>Analysis</h1>
+                <p class="subtitle">Macro • On-Chain • Institutional • Derivatives</p>
                 <div class="author-credit">
-                    <span class="label" data-lang-en="Analysis by" data-lang-id="Analisis oleh">Analysis by</span>
+                    <span class="label">Analysis by</span>
                     <span class="name">0xnextzy</span>
                 </div>
             </header>
             
-            <!-- HERO PRICE DISPLAY -->
+            <!-- HERO PRICE -->
             <div class="btc-hero-price">
                 <div class="price-grid">
                     <div class="price-item">
-                        <div class="price-label" data-lang-en="Live Bitcoin Price" data-lang-id="Harga Bitcoin Live">Live Bitcoin Price</div>
+                        <div class="price-label">Live Bitcoin Price</div>
                         <div id="hero-btc-price" class="price-value">$--</div>
                         <div id="hero-btc-change" class="price-change positive">+0.00%</div>
                     </div>
-                    
                     <div class="price-item">
-                        <div class="price-label" data-lang-en="24h Volume" data-lang-id="Volume 24j">24h Volume</div>
+                        <div class="price-label">24h Volume</div>
                         <div id="hero-btc-volume" class="price-value">$--</div>
                     </div>
-                    
                     <div class="price-item">
-                        <div class="price-label" data-lang-en="Market Cap" data-lang-id="Kapitalisasi Pasar">Market Cap</div>
+                        <div class="price-label">Market Cap</div>
                         <div id="hero-btc-mcap" class="price-value">$--</div>
                     </div>
-                    
                     <div class="price-item">
-                        <div class="price-label" data-lang-en="Fear & Greed" data-lang-id="Fear & Greed">Fear & Greed</div>
+                        <div class="price-label">Fear & Greed</div>
                         <div id="hero-fear-greed" class="price-value">--</div>
                         <div id="hero-fear-label" class="price-change neutral">--</div>
                     </div>
                 </div>
             </div>
             
-            <!-- CRITICAL LIMITATIONS -->
+            <!-- ALERT -->
             <div class="alert-banner">
-                <div class="alert-title" data-lang-en="⚠️ Statistical & Methodological Limitations" data-lang-id="⚠️ Keterbatasan Statistik & Metodologi">
-                    ⚠️ Statistical & Methodological Limitations
-                </div>
+                <div class="alert-title">⚠️ Statistical & Methodological Limitations</div>
                 <div class="alert-content">
                     <strong>📊 STATISTICAL WEAKNESSES:</strong><br>
                     • Sample Size N=4 cycles (minimum N≥30 required)<br>
@@ -1096,15 +798,14 @@
                     
                     <strong>🌍 STRUCTURAL CHANGE RISK:</strong><br>
                     • Pre-2024: Retail-driven, low correlation<br>
-                    • Post-2024: ETF-dominated, high correlation (0.5-0.88)<br>
-                    • Market fundamentally changed<br><br>
+                    • Post-2024: ETF-dominated, high correlation (0.5-0.88)<br><br>
                     
                     <strong>⚠️ NOT FINANCIAL ADVICE</strong><br>
-                    Educational only. Past performance ≠ future results. DYOR.
+                    Educational only. DYOR.
                 </div>
             </div>
             
-            <!-- LAYER 1: PRICE & CYCLE -->
+            <!-- LAYER 1 -->
             <div class="category-header">
                 <h2 class="category-title">🎯 Layer 1: Price & Cycle</h2>
                 <p class="category-description">Technical analysis & halving metrics</p>
@@ -1166,7 +867,7 @@
                 </div>
             </div>
             
-            <!-- LAYER 2: ON-CHAIN -->
+            <!-- LAYER 2 -->
             <div class="category-header">
                 <h2 class="category-title">⛓️ Layer 2: On-Chain</h2>
                 <p class="category-description">Blockchain holder behavior</p>
@@ -1228,7 +929,7 @@
                 </div>
             </div>
             
-            <!-- LAYER 3: MACRO -->
+            <!-- LAYER 3 -->
             <div class="category-header">
                 <h2 class="category-title">🌍 Layer 3: Macro Liquidity</h2>
                 <p class="category-description">Fed policy & global liquidity</p>
@@ -1274,7 +975,7 @@
                 <div class="stat-card">
                     <div class="stat-icon">💲</div>
                     <div class="stat-label">DXY</div>
-                    <div id="l3-dxy" class="stat-value purple">96.96</div>
+                    <div class="stat-value purple">96.96</div>
                     <div class="stat-subtext">USD Strength</div>
                     <div class="stat-trend neutral">Simulated</div>
                     <span class="data-badge static">ESTIMATED</span>
@@ -1290,7 +991,7 @@
                 </div>
             </div>
             
-            <!-- LAYER 4: INSTITUTIONAL -->
+            <!-- LAYER 4 -->
             <div class="category-header">
                 <h2 class="category-title">🏛️ Layer 4: Institutional</h2>
                 <p class="category-description">ETF flows & smart money</p>
@@ -1352,7 +1053,7 @@
                 </div>
             </div>
             
-            <!-- LAYER 5: STABLECOINS -->
+            <!-- LAYER 5 -->
             <div class="category-header">
                 <h2 class="category-title">💵 Layer 5: Stablecoins</h2>
                 <p class="category-description">Digital dollar dry powder</p>
@@ -1414,7 +1115,7 @@
                 </div>
             </div>
             
-            <!-- LAYER 6: DERIVATIVES -->
+            <!-- LAYER 6 -->
             <div class="category-header">
                 <h2 class="category-title">⚡ Layer 6: Derivatives</h2>
                 <p class="category-description">Leverage & liquidation risk</p>
@@ -1476,7 +1177,7 @@
                 </div>
             </div>
             
-            <!-- LAYER 7: SENTIMENT -->
+            <!-- LAYER 7 -->
             <div class="category-header">
                 <h2 class="category-title">🧠 Layer 7: Sentiment</h2>
                 <p class="category-description">Market correlations</p>
@@ -1486,7 +1187,7 @@
                 <div class="stat-card">
                     <div class="stat-icon">📊</div>
                     <div class="stat-label">S&P 500</div>
-                    <div id="l7-sp500" class="stat-value green">6,852</div>
+                    <div class="stat-value green">6,852</div>
                     <div class="stat-subtext">US Equities</div>
                     <div class="stat-trend up">Simulated</div>
                     <span class="data-badge static">ESTIMATED</span>
@@ -1504,7 +1205,7 @@
                 <div class="stat-card">
                     <div class="stat-icon">📉</div>
                     <div class="stat-label">VIX</div>
-                    <div id="l7-vix" class="stat-value yellow">16.5</div>
+                    <div class="stat-value yellow">16.5</div>
                     <div class="stat-subtext">Fear Index</div>
                     <div class="stat-trend neutral">Simulated</div>
                     <span class="data-badge static">ESTIMATED</span>
@@ -1522,7 +1223,7 @@
                 <div class="stat-card">
                     <div class="stat-icon">🪙</div>
                     <div class="stat-label">Gold</div>
-                    <div id="l7-gold" class="stat-value purple">$5,500</div>
+                    <div class="stat-value purple">$5,500</div>
                     <div class="stat-subtext">Crisis Hedge</div>
                     <div class="stat-trend up">Simulated</div>
                     <span class="data-badge static">ESTIMATED</span>
@@ -1538,7 +1239,7 @@
                 </div>
             </div>
             
-            <!-- SUPPORT ZONES -->
+            <!-- SUPPORT STRUCTURE -->
             <div class="category-header">
                 <h2 class="category-title">🎯 Support Structure</h2>
                 <p class="category-description">Probability-weighted scenarios</p>
@@ -1588,7 +1289,7 @@
                 <div class="info-text">
                     <strong>NOT FINANCIAL ADVICE.</strong> Educational only.<br><br>
                     
-                    <strong>RISKS:</strong> Bitcoin extremely volatile. Can lose 50-80%. All projections have 30-50% error. Past ≠ future. Black swans invalidate everything.<br><br>
+                    <strong>RISKS:</strong> Bitcoin extremely volatile. Can lose 50-80%. All projections have 30-50% error. Past ≠ future.<br><br>
                     
                     <strong>BEFORE INVESTING:</strong> DYOR. Only invest what you can lose 100%. Consult licensed advisors. DCA, never lump sum. Diversify - BTC <20% portfolio.<br><br>
                     
@@ -1597,15 +1298,10 @@
             </div>
         </div>
         
-        <!-- ============================================ -->
-        <!-- INSTITUTIONAL GRADE MODE -->
-        <!-- ============================================ -->
+        <!-- INSTITUTIONAL MODE -->
         <div id="institutional-mode" class="mode-content">
             <header class="header">
-                <div class="framework-badge">
-                    Institutional-Grade Risk Framework
-                </div>
-                
+                <div class="framework-badge">Institutional-Grade Risk Framework</div>
                 <h1>Bitcoin Cycle<br>Analysis</h1>
                 <p class="subtitle">Quantitative • Probabilistic • Risk-Adjusted</p>
                 <div class="author-credit">
@@ -1622,27 +1318,24 @@
                         <div id="hero-btc-price-ig" class="price-value">$--</div>
                         <div id="hero-btc-change-ig" class="price-change positive">+0.00%</div>
                     </div>
-                    
                     <div class="price-item">
                         <div class="price-label">24h Volume</div>
                         <div id="hero-btc-volume-ig" class="price-value">$--</div>
                     </div>
-                    
                     <div class="price-item">
                         <div class="price-label">Market Cap</div>
                         <div id="hero-btc-mcap-ig" class="price-value">$--</div>
                     </div>
-                    
                     <div class="price-item">
                         <div class="price-label">30D Volatility</div>
-                        <div id="hero-volatility" class="price-value">65%</div>
+                        <div class="price-value">65%</div>
                     </div>
                 </div>
             </div>
             
             <!-- COMPOSITE INDEX -->
             <div class="composite-index">
-                <div class="composite-score" id="composite-cycle-index">52</div>
+                <div class="composite-score">52</div>
                 <div class="composite-label">BTC COMPOSITE CYCLE INDEX</div>
                 <div class="composite-interpretation">
                     🟢 NEUTRAL - Consolidation phase. Mixed signals across layers. Wait for directional confirmation.
@@ -1697,62 +1390,140 @@
                 </div>
             </div>
             
-            <!-- FORECAST -->
-            <div class="info-box info">
-                <div class="info-title">🎯 Probabilistic Forecast (Q4 2025)</div>
-                <div class="info-text">
-                    <strong>Monte Carlo (10K paths):</strong><br><br>
-                    
-                    <strong>Base (50%):</strong> $95K-$110K<br>
-                    <strong>Bull (75%):</strong> $125K-$145K<br>
-                    <strong>Bear (25%):</strong> $65K-$75K<br>
-                    <strong>Extreme (5%):</strong> $42K-$52K<br><br>
-                    
-                    <strong>Confidence Intervals:</strong><br>
-                    • 68%: $75K-$125K<br>
-                    • 95%: $52K-$165K<br><br>
-                    
-                    <strong>Assumptions:</strong> 65% vol, halving +15%, SPX corr 0.65, 2-3 cuts, ETF $50-80B
-                </div>
+            <!-- CRITICAL EVALUATION (keeping existing critical analysis section) -->
+            <div class="category-header">
+                <h2 class="category-title">🔬 Critical Quantitative Evaluation</h2>
+                <p class="category-description">Brutal institutional-grade assessment</p>
             </div>
             
-            <!-- METHODOLOGY -->
-            <div class="info-box success">
-                <div class="info-title">📚 Methodology</div>
+            <div class="info-box critical">
+                <div class="info-title">⚠️ STRUCTURAL WEAKNESSES & STATISTICAL FLAWS</div>
                 <div class="info-text">
-                    <strong>Formula:</strong><br>
-                    CCI = (Macro×0.30) + (OnChain×0.25) + (Liquidity×0.20) + (Leverage×0.15) + (Sentiment×0.10)<br><br>
+                    <strong style="color: var(--accent-red); font-size: 1.15rem;">Hedge fund risk manager perspective - WEAKNESSES ONLY.</strong>
                     
-                    <strong>Ranges:</strong><br>
-                    0-20: Extreme Bear | 21-40: Bear/Accumulation | 41-60: Neutral | 61-80: Bull | 81-100: Extreme Bull<br><br>
+                    <div class="weakness-section">
+                        <div class="weakness-title">1️⃣ SAMPLE SIZE CATASTROPHE (N=4)</div>
+                        <ul class="weakness-list">
+                            <li><strong>Statistical Invalidity:</strong> Only ~4 complete Bitcoin halving cycles. Professional models require N≥30. With N=4, p-value >0.05 likely - patterns could be pure random noise.</li>
+                            <li><strong>No Degrees of Freedom:</strong> Cannot perform train/test splits. Any model fit on 4 points appears to work perfectly in-sample but fails out-of-sample.</li>
+                            <li><strong>Confidence Intervals Impossible:</strong> Cannot calculate meaningful standard errors. All forecasts are point estimates with unknown reliability.</li>
+                        </ul>
+                    </div>
                     
-                    <strong>Risk Mgmt:</strong> Vol-based sizing, -2σ stops, take profits 80-100, DCA 20-40
-                </div>
-            </div>
-            
-            <!-- LIMITATIONS -->
-            <div class="info-box warning">
-                <div class="info-title">⚠️ Critical Limitations</div>
-                <div class="info-text">
-                    <strong>WEAKNESSES:</strong><br>
-                    1. N=4 cycles (need N≥30)<br>
-                    2. Overfitting - no validation set<br>
-                    3. Regime change - ETF era different<br>
-                    4. Survivorship bias<br><br>
+                    <div class="weakness-section">
+                        <div class="weakness-title">2️⃣ OVERFITTING & CURVE-FITTING DISASTER</div>
+                        <ul class="weakness-list">
+                            <li><strong>In-Sample Optimization:</strong> All historical data used to create indicators. Zero held-out validation. Guarantees perfect hindsight fit, zero predictive power.</li>
+                            <li><strong>Parameter Tuning on Same Data:</strong> 200W MA, MVRV thresholds calibrated to historical cycles. These are data-mined parameters, not universal constants.</li>
+                            <li><strong>No Backtesting:</strong> Indicators untested on rolling out-of-sample windows. Unknown if they would have worked prospectively.</li>
+                        </ul>
+                    </div>
                     
-                    <strong>✅ SUITABLE:</strong> Monitoring, narrative, education, risk awareness<br><br>
+                    <div class="weakness-section">
+                        <div class="weakness-title">3️⃣ HALVING CYCLE ASSUMPTION - FRAGILE</div>
+                        <ul class="weakness-list">
+                            <li><strong>Mechanistic Fallacy:</strong> Assumes halving drives cycles. But BTC inflation already <2%. Marginal supply reduction economically trivial vs demand volatility.</li>
+                            <li><strong>Confounding Variables:</strong> 2013=Mt.Gox, 2017=ICO bubble, 2021=Fed QE, 2024=ETF approval. Each cycle had unique drivers unrelated to halving.</li>
+                            <li><strong>Non-Stationarity:</strong> Market structure changed: 2013-2020 (retail) → 2024+ (ETFs, 0.88 SPX correlation). Past distributions irrelevant.</li>
+                        </ul>
+                    </div>
                     
-                    <strong>❌ NOT SUITABLE:</strong> Precise predictions, timing, leverage, mandates<br><br>
+                    <div class="weakness-section">
+                        <div class="weakness-title">4️⃣ LAGGING INDICATORS - TIMING FAILURE</div>
+                        <ul class="weakness-list">
+                            <li><strong>Mostly Lagging:</strong> 200W MA, MVRV, NUPL derived from price itself. Confirm trends after the fact, don't predict turning points.</li>
+                            <li><strong>On-Chain Lag:</strong> Exchange balances, HODL waves update slowly. By the time supply leaves exchanges, price already moved.</li>
+                            <li><strong>No True Leading Indicators:</strong> Model lacks forward-looking signals like funding rate term structure, IV skew changes, or order book depth decay.</li>
+                        </ul>
+                    </div>
                     
-                    <strong>Use as ONE input. Combine with fundamentals, technicals, risk mgmt.</strong>
+                    <div class="weakness-section">
+                        <div class="weakness-title">5️⃣ STATISTICAL ROBUSTNESS - MISSING</div>
+                        <ul class="weakness-list">
+                            <li><strong>No Regression Analysis:</strong> Composite weights (Macro 30%, OnChain 25%) appear arbitrary. No OLS, ridge regression, or Lasso to optimize.</li>
+                            <li><strong>No Covariance Matrix:</strong> Indicators treated as independent but highly correlated. BTC price drives MVRV, NUPL simultaneously. Double counting.</li>
+                            <li><strong>Zero Hypothesis Testing:</strong> No t-tests, F-tests, Granger causality to validate if indicators predict price vs random walk.</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="weakness-section">
+                        <div class="weakness-title">6️⃣ BLACK SWAN BLINDNESS</div>
+                        <ul class="weakness-list">
+                            <li><strong>Fat Tail Ignorance:</strong> Model assumes Gaussian. Bitcoin has Pareto/power-law tails. One -80% crash wipes years of gains. VaR/CVaR missing.</li>
+                            <li><strong>No Stress Testing:</strong> What if ETFs reverse? Fed emergency QE? China unbans mining? No scenario analysis or Monte Carlo stress tests.</li>
+                            <li><strong>Structural Break Detection:</strong> No CUSUM, Chow tests, or regime-switching models to detect when market structure changes.</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="weakness-section">
+                        <div class="weakness-title">7️⃣ COMPOSITE INDEX - OVERSIMPLIFICATION</div>
+                        <ul class="weakness-list">
+                            <li><strong>Linear Combination Fallacy:</strong> Assumes linear relationships. Reality: regime-dependent non-linear interactions. Macro matters MORE in risk-off.</li>
+                            <li><strong>Lost Information:</strong> Reducing 50+ indicators to single number destroys nuance. Single number can't capture multi-dimensional complexity.</li>
+                            <li><strong>Threshold Brittleness:</strong> "Below 40=bear" has no statistical basis. Why not 35/65? Arbitrary cutoffs create false precision.</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="weakness-section">
+                        <div class="weakness-title">8️⃣ MACRO INTEGRATION - CORRELATION ≠ CAUSATION</div>
+                        <ul class="weakness-list">
+                            <li><strong>Spurious Relationships:</strong> BTC-SPX correlation 0.88 doesn't prove causation. Both could be driven by third variable (liquidity, risk sentiment).</li>
+                            <li><strong>Lag Structure Unknown:</strong> Does Fed RRP collapse cause BTC crash, or vice versa? No VAR or Granger causality tests to establish precedence.</li>
+                            <li><strong>No Transmission Mechanism:</strong> HOW does Fed RRP affect BTC? Through what channel? Mechanism unclear, model fragile.</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="weakness-section">
+                        <div class="weakness-title">9️⃣ REFLEXIVITY RISK - MODEL SELF-DESTRUCTS</div>
+                        <ul class="weakness-list">
+                            <li><strong>Crowded Trade Dynamics:</strong> If 100K traders use Pi Cycle Top, they'll sell BEFORE signal triggers. Model success → model failure.</li>
+                            <li><strong>Alpha Decay:</strong> Any edge decays as it becomes known. Cycle models now mainstream = zero edge.</li>
+                            <li><strong>Soros Reflexivity:</strong> Participants' beliefs shape reality until reality diverges. No meta-model to detect when loop reverses.</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="weakness-section">
+                        <div class="weakness-title">🔟 MISSING ADVANCED METHODS</div>
+                        <ul class="weakness-list">
+                            <li><strong>Monte Carlo:</strong> Should run 10,000+ paths with stochastic volatility for probability distributions. Current: point forecasts with no confidence intervals.</li>
+                            <li><strong>Regime-Switching:</strong> Need Hamilton filter or HMM to detect regime changes. Current model treats all periods identically.</li>
+                            <li><strong>GARCH/Volatility:</strong> Bitcoin volatility clusters. Need GARCH(1,1) or EGARCH. Current: ignores vol forecasting entirely.</li>
+                            <li><strong>Bayesian Updating:</strong> Should update beliefs as new data arrives. Current: static beliefs, no learning.</li>
+                            <li><strong>Machine Learning:</strong> Random forests, gradient boosting, LSTM to detect non-linear patterns. Current: simple weighted averages.</li>
+                        </ul>
+                    </div>
+                    
+                    <br><br>
+                    
+                    <strong style="color: var(--accent-red); font-size: 1.25rem; display: block; margin-top: 24px; padding-top: 24px; border-top: 2px solid rgba(239, 68, 68, 0.3);">
+                        ⚠️ INSTITUTIONAL VERDICT: HIGH RISK, LOW CONFIDENCE
+                    </strong>
+                    
+                    <br>
+                    
+                    <strong>WHAT A HEDGE FUND WOULD DEMAND:</strong><br>
+                    1. Expand dataset with synthetic data to reach N=30+<br>
+                    2. Implement walk-forward optimization with rolling windows<br>
+                    3. Build Bayesian hierarchical model with prior distributions<br>
+                    4. Deploy regime-switching framework (Markov HMM)<br>
+                    5. Add GARCH(1,1) for volatility forecasting<br>
+                    6. Implement Monte Carlo with 50,000 simulations<br>
+                    7. Build VAR model to test Granger causality<br>
+                    8. Add stress testing: 20 worst-case scenarios<br>
+                    9. Quarterly re-optimization with out-of-sample testing<br>
+                    10. Risk-adjusted metrics: Sharpe, Sortino, Calmar, VaR, CVaR<br><br>
+                    
+                    <strong style="color: var(--accent-yellow);">CURRENT STATE:</strong> Descriptive analysis useful for market monitoring. NOT suitable for capital allocation or institutional mandates.<br><br>
+                    
+                    <strong style="color: var(--accent-red);">RISK RATING:</strong> ⚠️⚠️⚠️ HIGH - Unquantified model risk. Unknown failure modes.<br><br>
+                    
+                    <strong>USE:</strong> Supplementary context only. Never sole basis for investment decisions.
                 </div>
             </div>
         </div>
     </div>
     
-    <!-- JAVASCRIPT -->
     <script>
-    // Global state
     let currentMode = 'multi-layer';
     let currentLanguage = 'en';
     let realtimeData = {
@@ -1768,17 +1539,12 @@
         stablecoins: { total: null, usdt: null, usdc: null, usde: null }
     };
     
-    let updateInterval = null;
-    
-    // API Config
     const API = {
         coinGecko: 'https://api.coingecko.com/api/v3/coins/bitcoin?localization=false&tickers=false&community_data=false&developer_data=false&sparkline=false',
         defillama: 'https://stablecoins.llama.fi/stablecoins',
-        fearGreed: 'https://api.alternative.me/fng/',
-        timeout: 15000
+        fearGreed: 'https://api.alternative.me/fng/'
     };
     
-    // Utilities
     function formatCurrency(val, dec = 2) {
         if (!val) return '--';
         return '$' + val.toLocaleString('en-US', { minimumFractionDigits: dec, maximumFractionDigits: dec });
@@ -1819,12 +1585,10 @@
         }
     }
     
-    // Data fetching
     async function fetchBTC() {
         try {
             const res = await fetch(API.coinGecko);
             if (!res.ok) throw new Error('HTTP ' + res.status);
-            
             const data = await res.json();
             const m = data.market_data;
             
@@ -1835,7 +1599,6 @@
             realtimeData.btcATH = m.ath.usd;
             realtimeData.btcATHDate = m.ath_date.usd;
             realtimeData.btcATHChangePercent = m.ath_change_percentage.usd;
-            
             return true;
         } catch (e) {
             console.error('BTC fetch failed:', e);
@@ -1847,11 +1610,9 @@
         try {
             const res = await fetch(API.defillama);
             const data = await res.json();
-            
             const usdt = data.peggedAssets.find(s => s.symbol === 'USDT');
             const usdc = data.peggedAssets.find(s => s.symbol === 'USDC');
             const usde = data.peggedAssets.find(s => s.symbol === 'USDe');
-            
             const total = data.peggedAssets.reduce((sum, c) => sum + (c.circulating?.peggedUSD || 0), 0);
             
             realtimeData.stablecoins = {
@@ -1860,17 +1621,10 @@
                 usdc: usdc?.circulating?.peggedUSD || null,
                 usde: usde?.circulating?.peggedUSD || null
             };
-            
             return true;
         } catch (e) {
-            console.error('Stables fetch failed:', e);
-            // Fallbacks
-            realtimeData.stablecoins = {
-                total: 318000000000,
-                usdt: 187000000000,
-                usdc: 75700000000,
-                usde: 14800000000
-            };
+            console.error('Stables failed:', e);
+            realtimeData.stablecoins = { total: 318e9, usdt: 187e9, usdc: 75.7e9, usde: 14.8e9 };
             return false;
         }
     }
@@ -1879,7 +1633,6 @@
         try {
             const res = await fetch(API.fearGreed);
             const data = await res.json();
-            
             if (data.data && data.data[0]) {
                 realtimeData.fearGreedIndex = parseInt(data.data[0].value);
                 realtimeData.fearGreedLabel = data.data[0].value_classification;
@@ -1887,7 +1640,7 @@
             }
             return false;
         } catch (e) {
-            console.error('Fear/Greed fetch failed:', e);
+            console.error('Fear/Greed failed:', e);
             realtimeData.fearGreedIndex = 50;
             realtimeData.fearGreedLabel = 'Neutral';
             return false;
@@ -1899,7 +1652,6 @@
         updateUI();
     }
     
-    // UI Update
     function updateUI() {
         const { btcPrice, btcChange24h, btcVolume24h, btcMarketCap, btcATH, btcATHDate, btcATHChangePercent, fearGreedIndex, fearGreedLabel, stablecoins } = realtimeData;
         
@@ -1930,24 +1682,22 @@
         
         if (btcATHDate) {
             const d = new Date(btcATHDate);
-            updateEl('l1-ath-date', d.toLocaleDateString(currentLanguage === 'id' ? 'id-ID' : 'en-US', { year: 'numeric', month: 'short', day: 'numeric' }), false);
+            updateEl('l1-ath-date', d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }), false);
         }
         
         if (btcATHChangePercent !== null) {
             const el = document.getElementById('l1-ath-change');
             if (el) {
-                el.textContent = `${btcATHChangePercent.toFixed(1)}% ${currentLanguage === 'id' ? 'dari ATH' : 'from ATH'}`;
+                el.textContent = `${btcATHChangePercent.toFixed(1)}% from ATH`;
                 el.className = 'stat-trend down';
             }
         }
         
-        // Days since halving
         updateHalving();
         
         // ETF AUM
         if (btcPrice) {
-            const aum = btcPrice * 1000000;
-            updateEl('l4-etf-aum', formatLarge(aum));
+            updateEl('l4-etf-aum', formatLarge(btcPrice * 1000000));
         }
         
         // Stablecoins
@@ -1966,72 +1716,44 @@
     
     function updateHalving() {
         const halving = new Date('2024-04-20T00:09:00Z');
-        const now = new Date();
-        const days = Math.floor((now - halving) / 86400000);
-        
+        const days = Math.floor((new Date() - halving) / 86400000);
         updateEl('l1-days-halving', days.toString());
         
         let phase = '';
-        if (days < 365) phase = currentLanguage === 'en' ? 'Year 1' : 'Tahun 1';
-        else if (days < 730) phase = currentLanguage === 'en' ? 'Year 2' : 'Tahun 2';
-        else phase = currentLanguage === 'en' ? 'Year 3+' : 'Tahun 3+';
+        if (days < 365) phase = 'Year 1';
+        else if (days < 730) phase = 'Year 2';
+        else phase = 'Year 3+';
         
         const el = document.getElementById('l1-halving-phase');
         if (el) el.textContent = phase;
     }
     
-    // Mode switching
     function switchMode(mode) {
         currentMode = mode;
-        
         document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
         event.target.classList.add('active');
-        
         document.querySelectorAll('.mode-content').forEach(c => c.classList.remove('active'));
         document.getElementById(mode + '-mode').classList.add('active');
-        
-        console.log('Mode:', mode);
     }
     
-    // Language switching
     function setLanguage(lang) {
         currentLanguage = lang;
-        document.documentElement.lang = lang;
-        
         document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
         document.getElementById('lang-' + lang).classList.add('active');
-        
-        document.querySelectorAll('[data-lang-en]').forEach(el => {
-            const text = el.getAttribute('data-lang-' + lang);
-            if (text) {
-                if (el.tagName === 'INPUT') el.placeholder = text;
-                else el.innerHTML = text;
-            }
-        });
-        
         updateHalving();
-        console.log('Lang:', lang);
     }
     
-    // Init
     function init() {
         console.log('🚀 Dashboard init');
         fetchAll();
-        updateInterval = setInterval(fetchAll, 60000);
+        setInterval(fetchAll, 60000);
         setLanguage('en');
     }
     
-    // Visibility
     document.addEventListener('visibilitychange', () => {
-        if (document.hidden) {
-            if (updateInterval) clearInterval(updateInterval);
-        } else {
-            fetchAll();
-            updateInterval = setInterval(fetchAll, 60000);
-        }
+        if (!document.hidden) fetchAll();
     });
     
-    // Start
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', init);
     } else {
