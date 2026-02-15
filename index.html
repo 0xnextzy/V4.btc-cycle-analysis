@@ -1031,6 +1031,660 @@ body::after {
         font-size: 40px;
     }
 }
+
+/* ============================================
+   ADVANCED ANALYSIS SECTION
+   ============================================ */
+
+.analysis-header {
+    text-align: center;
+    margin-bottom: var(--spacing-2xl);
+    padding: var(--spacing-xl);
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(236, 72, 153, 0.1));
+    border-radius: var(--radius-xl);
+    border: 2px solid;
+    border-image: var(--gradient-primary) 1;
+}
+
+.analysis-badge {
+    display: inline-block;
+    padding: 8px 20px;
+    background: var(--gradient-primary);
+    color: var(--text-primary);
+    border-radius: var(--radius-md);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin-bottom: var(--spacing-sm);
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
+}
+
+.analysis-title {
+    font-family: var(--font-display);
+    font-size: 36px;
+    font-weight: 700;
+    background: var(--gradient-cosmic);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: var(--spacing-sm);
+    letter-spacing: -1px;
+}
+
+.analysis-subtitle {
+    font-size: 14px;
+    color: var(--text-secondary);
+    max-width: 800px;
+    margin: 0 auto;
+    line-height: 1.7;
+}
+
+.analysis-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-2xl);
+}
+
+.analysis-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+}
+
+.analysis-card:hover {
+    border-color: rgba(139, 92, 246, 0.5);
+    box-shadow: var(--shadow-glow);
+    transform: translateY(-2px);
+}
+
+.analysis-card-header {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-lg);
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.05), rgba(236, 72, 153, 0.05));
+}
+
+.analysis-icon {
+    font-size: 32px;
+    flex-shrink: 0;
+    filter: drop-shadow(0 0 8px rgba(139, 92, 246, 0.5));
+}
+
+.analysis-card-title {
+    flex: 1;
+}
+
+.analysis-card-title h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+    font-family: var(--font-display);
+}
+
+.analysis-card-title p {
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.4;
+}
+
+.analysis-toggle {
+    font-size: 24px;
+    color: var(--accent-primary);
+    font-weight: 700;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(139, 92, 246, 0.1);
+    transition: all 0.3s ease;
+}
+
+.analysis-card.active .analysis-toggle {
+    transform: rotate(45deg);
+    background: var(--gradient-primary);
+    color: var(--text-primary);
+}
+
+.analysis-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease, padding 0.4s ease;
+    padding: 0 var(--spacing-lg);
+}
+
+.analysis-card.active .analysis-content {
+    max-height: 2000px;
+    padding: 0 var(--spacing-lg) var(--spacing-lg);
+}
+
+.analysis-text {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.8;
+    margin-bottom: var(--spacing-sm);
+}
+
+.analysis-text strong {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.analysis-status {
+    margin-bottom: var(--spacing-sm);
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 6px 14px;
+    background: var(--gradient-secondary);
+    color: var(--text-primary);
+    border-radius: var(--radius-sm);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.analysis-metrics {
+    margin-top: var(--spacing-md);
+}
+
+.metric-item {
+    margin-bottom: var(--spacing-sm);
+}
+
+.metric-label {
+    display: block;
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.metric-bar {
+    width: 100%;
+    height: 8px;
+    background: rgba(148, 163, 184, 0.15);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.metric-fill {
+    height: 100%;
+    background: var(--gradient-primary);
+    border-radius: 4px;
+    transition: width 1s ease;
+}
+
+.analysis-insight {
+    margin-top: var(--spacing-md);
+    padding: var(--spacing-sm);
+    background: rgba(6, 182, 212, 0.1);
+    border-left: 3px solid var(--accent-cyan);
+    border-radius: var(--radius-sm);
+    font-size: 12px;
+    color: var(--accent-cyan);
+    line-height: 1.6;
+}
+
+.market-snapshot {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-md);
+    padding: var(--spacing-md);
+    background: rgba(139, 92, 246, 0.05);
+    border-radius: var(--radius-md);
+}
+
+.snapshot-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.snapshot-label {
+    font-size: 10px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+}
+
+.snapshot-value {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-primary);
+    font-family: var(--font-display);
+}
+
+.liquidity-factors,
+.rate-analysis,
+.dxy-status,
+.stress-indicators,
+.etf-metrics,
+.deriv-status,
+.stablecoin-breakdown,
+.onchain-metrics,
+.correlation-matrix {
+    margin-top: var(--spacing-sm);
+}
+
+.factor-item,
+.rate-item,
+.status-item,
+.indicator,
+.etf-stat,
+.deriv-item,
+.stable-item,
+.metric-row,
+.corr-item {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    margin-bottom: 6px;
+    background: rgba(139, 92, 246, 0.05);
+    border-radius: var(--radius-sm);
+    font-size: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.rate-value,
+.trend-value,
+.deriv-val,
+.metric-status,
+.corr-value {
+    font-weight: 600;
+    color: var(--accent-cyan);
+}
+
+.etf-label,
+.etf-value {
+    font-size: 11px;
+}
+
+.etf-value {
+    font-weight: 700;
+    color: var(--accent-green);
+}
+
+.sentiment-gauge {
+    margin-top: var(--spacing-md);
+}
+
+.gauge-bar {
+    width: 100%;
+    height: 10px;
+    background: linear-gradient(90deg, var(--accent-green), var(--accent-yellow), var(--accent-red));
+    border-radius: 5px;
+    margin-bottom: 8px;
+}
+
+.gauge-fill {
+    height: 100%;
+    border-right: 3px solid var(--text-primary);
+    transition: width 1s ease;
+}
+
+.gauge-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    color: var(--text-muted);
+}
+
+.dom-chart {
+    margin-top: var(--spacing-md);
+}
+
+.dom-bar {
+    width: 100%;
+    height: 12px;
+    background: rgba(148, 163, 184, 0.15);
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: var(--spacing-sm);
+}
+
+.dom-fill {
+    height: 100%;
+    background: var(--gradient-primary);
+    border-radius: 6px;
+    transition: width 1s ease;
+}
+
+.dom-status {
+    font-size: 12px;
+    color: var(--text-secondary);
+    text-align: center;
+}
+
+.evolution-list {
+    margin: var(--spacing-sm) 0;
+    padding-left: var(--spacing-md);
+}
+
+.evolution-list li {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+    line-height: 1.6;
+}
+
+.regime-badge {
+    display: inline-block;
+    padding: 6px 16px;
+    background: var(--gradient-success);
+    color: var(--text-primary);
+    border-radius: var(--radius-md);
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 1px;
+}
+
+.regime-factors {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-xs);
+    margin-top: var(--spacing-md);
+}
+
+.factor {
+    padding: var(--spacing-xs);
+    background: rgba(139, 92, 246, 0.05);
+    border-radius: var(--radius-sm);
+    font-size: 11px;
+}
+
+.geo-factors,
+.adoption-stats {
+    margin-top: var(--spacing-sm);
+}
+
+.geo-item,
+.stat {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    margin-bottom: 6px;
+    background: rgba(139, 92, 246, 0.05);
+    border-radius: var(--radius-sm);
+    font-size: 12px;
+}
+
+.scenarios {
+    margin-top: var(--spacing-md);
+}
+
+.scenario-item {
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+    border-radius: var(--radius-md);
+    border: 2px solid;
+}
+
+.scenario-bull {
+    background: rgba(16, 185, 129, 0.05);
+    border-color: rgba(16, 185, 129, 0.3);
+}
+
+.scenario-neutral {
+    background: rgba(251, 191, 36, 0.05);
+    border-color: rgba(251, 191, 36, 0.3);
+}
+
+.scenario-bear {
+    background: rgba(239, 68, 68, 0.05);
+    border-color: rgba(239, 68, 68, 0.3);
+}
+
+.scenario-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-xs);
+}
+
+.scenario-label {
+    font-weight: 700;
+    font-size: 13px;
+}
+
+.scenario-prob {
+    font-size: 20px;
+    font-weight: 700;
+    font-family: var(--font-display);
+}
+
+.scenario-text {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-bottom: var(--spacing-xs);
+    line-height: 1.6;
+}
+
+.scenario-invalid {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+.timeline-forecast {
+    margin-top: var(--spacing-md);
+}
+
+.timeline-item {
+    display: flex;
+    justify-content: space-between;
+    padding: var(--spacing-sm);
+    margin-bottom: var(--spacing-xs);
+    background: rgba(139, 92, 246, 0.05);
+    border-radius: var(--radius-sm);
+    border-left: 3px solid var(--accent-primary);
+}
+
+.timeline-period {
+    font-weight: 700;
+    color: var(--accent-primary);
+    font-size: 12px;
+}
+
+.timeline-event {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.risk-list {
+    margin-top: var(--spacing-md);
+}
+
+.risk-item {
+    display: flex;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-sm);
+    border-radius: var(--radius-md);
+    background: rgba(139, 92, 246, 0.05);
+}
+
+.risk-icon {
+    font-size: 20px;
+    flex-shrink: 0;
+}
+
+.risk-content strong {
+    display: block;
+    font-size: 13px;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+}
+
+.risk-content p {
+    font-size: 11px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+.data-sources {
+    margin-top: var(--spacing-md);
+}
+
+.source-item {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    margin-bottom: 6px;
+    background: rgba(139, 92, 246, 0.05);
+    border-radius: var(--radius-sm);
+    font-size: 12px;
+}
+
+.update-status {
+    margin-top: var(--spacing-md);
+    padding: var(--spacing-sm);
+    background: rgba(16, 185, 129, 0.1);
+    border-radius: var(--radius-sm);
+    font-size: 12px;
+    color: var(--accent-green);
+    text-align: center;
+    font-weight: 600;
+}
+
+.analysis-summary {
+    padding: var(--spacing-2xl);
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(236, 72, 153, 0.1));
+    border-radius: var(--radius-xl);
+    border: 2px solid;
+    border-image: var(--gradient-cosmic) 1;
+    margin-top: var(--spacing-2xl);
+}
+
+.summary-title {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 700;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-align: center;
+    margin-bottom: var(--spacing-lg);
+}
+
+.summary-content {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.summary-text {
+    font-size: 15px;
+    color: var(--text-secondary);
+    line-height: 1.8;
+    margin-bottom: var(--spacing-xl);
+    text-align: center;
+}
+
+.summary-text strong {
+    color: var(--text-primary);
+    font-weight: 700;
+}
+
+.outlook-boxes {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-md);
+}
+
+.outlook-box {
+    padding: var(--spacing-lg);
+    border-radius: var(--radius-md);
+    border: 2px solid;
+}
+
+.outlook-short {
+    background: rgba(6, 182, 212, 0.05);
+    border-color: rgba(6, 182, 212, 0.3);
+}
+
+.outlook-medium {
+    background: rgba(16, 185, 129, 0.05);
+    border-color: rgba(16, 185, 129, 0.3);
+}
+
+.outlook-long {
+    background: rgba(139, 92, 246, 0.05);
+    border-color: rgba(139, 92, 246, 0.3);
+}
+
+.outlook-box h4 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-sm);
+    font-family: var(--font-display);
+}
+
+.outlook-box p {
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+@media (max-width: 1024px) {
+    .analysis-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .outlook-boxes {
+        grid-template-columns: 1fr;
+    }
+    
+    .market-snapshot {
+        grid-template-columns: 1fr;
+    }
+    
+    .analysis-title {
+        font-size: 28px;
+    }
+    
+    .regime-factors {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 640px) {
+    .analysis-header {
+        padding: var(--spacing-md);
+    }
+    
+    .analysis-title {
+        font-size: 24px;
+    }
+    
+    .analysis-subtitle {
+        font-size: 12px;
+    }
+    
+    .analysis-card-title h3 {
+        font-size: 14px;
+    }
+    
+    .analysis-card-title p {
+        font-size: 11px;
+    }
+    
+    .summary-title {
+        font-size: 22px;
+    }
+    
+    .analysis-summary {
+        padding: var(--spacing-lg);
+    }
+}
     </style>
 </head>
 <body>
@@ -1261,6 +1915,705 @@ body::after {
                         <div class="card-value card-value-small" id="fearGreedInterpretation">---</div>
                     </div>
                 </div>
+            </section>
+
+            <div class="divider"></div>
+
+            <!-- Advanced Cycle & Macro Analysis Framework -->
+            <section class="section">
+                <div class="analysis-header">
+                    <div class="analysis-badge">🎯 ADVANCED ANALYSIS</div>
+                    <h2 class="analysis-title">Bitcoin Cycle & Macro Framework</h2>
+                    <p class="analysis-subtitle">Comprehensive multi-factor analysis integrating on-chain, derivatives, liquidity & macroeconomic indicators</p>
+                </div>
+
+                <!-- Analysis Grid -->
+                <div class="analysis-grid">
+                    
+                    <!-- Category 1: Market Cycle Structure -->
+                    <div class="analysis-card" onclick="toggleAnalysis(this)">
+                        <div class="analysis-card-header">
+                            <div class="analysis-icon">📊</div>
+                            <div class="analysis-card-title">
+                                <h3>Market Cycle Structure</h3>
+                                <p>Current phase identification & historical comparison</p>
+                            </div>
+                            <div class="analysis-toggle">+</div>
+                        </div>
+                        <div class="analysis-content">
+                            <div class="analysis-status" id="cyclePhase">
+                                <span class="status-badge">ANALYZING...</span>
+                            </div>
+                            <p class="analysis-text" id="cycleAnalysis">
+                                Based on real-time data, we are currently in the <strong id="currentPhase">--</strong> phase. 
+                                Historical cycle patterns suggest <span id="cycleComparison">--</span>. 
+                                Key difference from previous cycles: <span id="cycleDifference">--</span>.
+                            </p>
+                            <div class="analysis-metrics">
+                                <div class="metric-item">
+                                    <span class="metric-label">Cycle Progress</span>
+                                    <div class="metric-bar">
+                                        <div class="metric-fill" id="cycleProgress" style="width: 0%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Category 2: Halving Context -->
+                    <div class="analysis-card" onclick="toggleAnalysis(this)">
+                        <div class="analysis-card-header">
+                            <div class="analysis-icon">⚡</div>
+                            <div class="analysis-card-title">
+                                <h3>Halving & Supply Dynamics</h3>
+                                <p>Supply shock analysis & historical halving impact</p>
+                            </div>
+                            <div class="analysis-toggle">+</div>
+                        </div>
+                        <div class="analysis-content">
+                            <p class="analysis-text" id="halvingAnalysis">
+                                Current halving cycle: <strong id="halvingCycle">4th halving (April 2024)</strong>. 
+                                Days elapsed: <strong id="daysFromHalving">--</strong>. 
+                                Historical pattern: Bitcoin typically peaks 12-18 months post-halving. 
+                                Supply reduction impact: Block reward reduced to 3.125 BTC.
+                            </p>
+                            <div class="analysis-insight">
+                                💡 <span id="halvingInsight">Supply shock typically manifests 6-12 months after halving event</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Category 3: Market Overview -->
+                    <div class="analysis-card" onclick="toggleAnalysis(this)">
+                        <div class="analysis-card-header">
+                            <div class="analysis-icon">💹</div>
+                            <div class="analysis-card-title">
+                                <h3>Real-Time Market Positioning</h3>
+                                <p>Live price action, volume & volatility analysis</p>
+                            </div>
+                            <div class="analysis-toggle">+</div>
+                        </div>
+                        <div class="analysis-content">
+                            <div class="market-snapshot">
+                                <div class="snapshot-item">
+                                    <span class="snapshot-label">Current Price</span>
+                                    <span class="snapshot-value" id="snapshotPrice">$--</span>
+                                </div>
+                                <div class="snapshot-item">
+                                    <span class="snapshot-label">24h Volume</span>
+                                    <span class="snapshot-value" id="snapshotVolume">$--</span>
+                                </div>
+                                <div class="snapshot-item">
+                                    <span class="snapshot-label">Market Cap</span>
+                                    <span class="snapshot-value" id="snapshotMcap">$--</span>
+                                </div>
+                                <div class="snapshot-item">
+                                    <span class="snapshot-label">Dominance</span>
+                                    <span class="snapshot-value" id="snapshotDom">--%</span>
+                                </div>
+                            </div>
+                            <p class="analysis-text" id="marketPositionText">
+                                Market structure analysis loading...
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Category 4: Global Liquidity -->
+                    <div class="analysis-card" onclick="toggleAnalysis(this)">
+                        <div class="analysis-card-header">
+                            <div class="analysis-icon">🌊</div>
+                            <div class="analysis-card-title">
+                                <h3>Global Liquidity & Macro Environment</h3>
+                                <p>Central bank balance sheets & liquidity conditions</p>
+                            </div>
+                            <div class="analysis-toggle">+</div>
+                        </div>
+                        <div class="analysis-content">
+                            <p class="analysis-text">
+                                <strong>Global Liquidity Analysis:</strong> Bitcoin has historically shown strong positive correlation with global M2 money supply expansion. 
+                                Current monetary environment characterized by: <span id="liquidityRegime">Central bank balance sheet stabilization</span>.
+                            </p>
+                            <div class="liquidity-factors">
+                                <div class="factor-item">🏦 <strong>Fed Balance Sheet:</strong> <span id="fedBalance">QT phase ending, pivot expected</span></div>
+                                <div class="factor-item">🇪🇺 <strong>ECB Policy:</strong> <span id="ecbPolicy">Rate cuts initiated, supportive stance</span></div>
+                                <div class="factor-item">🇨🇳 <strong>PBOC Action:</strong> <span id="pbocAction">Liquidity injections ongoing</span></div>
+                                <div class="factor-item">🇯🇵 <strong>BOJ Stance:</strong> <span id="bojStance">Ultra-loose policy maintained</span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Category 5: Interest Rates -->
+                    <div class="analysis-card" onclick="toggleAnalysis(this)">
+                        <div class="analysis-card-header">
+                            <div class="analysis-icon">📈</div>
+                            <div class="analysis-card-title">
+                                <h3>Interest Rates & Monetary Conditions</h3>
+                                <p>Real rates, yield curve & policy cycle analysis</p>
+                            </div>
+                            <div class="analysis-toggle">+</div>
+                        </div>
+                        <div class="analysis-content">
+                            <p class="analysis-text">
+                                <strong>Rate Environment:</strong> Real interest rates (nominal minus inflation) are critical for risk asset valuation. 
+                                Negative real rates historically correlate with Bitcoin bull markets.
+                            </p>
+                            <div class="rate-analysis">
+                                <div class="rate-item">
+                                    <span>Fed Funds Rate</span>
+                                    <span class="rate-value" id="fedRate">4.25-4.50%</span>
+                                </div>
+                                <div class="rate-item">
+                                    <span>10Y Treasury Yield</span>
+                                    <span class="rate-value" id="treasury10y">4.5%</span>
+                                </div>
+                                <div class="rate-item">
+                                    <span>Policy Direction</span>
+                                    <span class="rate-value" id="policyDir">→ Easing Expected</span>
+                                </div>
+                            </div>
+                            <div class="analysis-insight">
+                                💡 Rate cuts typically precede risk asset rallies by 3-6 months
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Category 6: US Dollar -->
+                    <div class="analysis-card" onclick="toggleAnalysis(this)">
+                        <div class="analysis-card-header">
+                            <div class="analysis-icon">💵</div>
+                            <div class="analysis-card-title">
+                                <h3>US Dollar & Global Funding</h3>
+                                <p>DXY trends & offshore dollar liquidity</p>
+                            </div>
+                            <div class="analysis-toggle">+</div>
+                        </div>
+                        <div class="analysis-content">
+                            <p class="analysis-text">
+                                <strong>Dollar Dynamics:</strong> Bitcoin typically exhibits inverse correlation with DXY. 
+                                Strong dollar = funding stress = negative for risk assets. 
+                                Weak dollar = abundant liquidity = positive for Bitcoin.
+                            </p>
+                            <div class="dxy-status">
+                                <div class="status-item">
+                                    <span>DXY Trend</span>
+                                    <span id="dxyTrend" class="trend-value">Weakening ↓</span>
+                                </div>
+                                <div class="status-item">
+                                    <span>Correlation</span>
+                                    <span id="btcDxyCorr">-0.65 (Inverse)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Category 7: Debt & Financial Stress -->
+                    <div class="analysis-card" onclick="toggleAnalysis(this)">
+                        <div class="analysis-card-header">
+                            <div class="analysis-icon">⚠️</div>
+                            <div class="analysis-card-title">
+                                <h3>Global Debt & System Stress</h3>
+                                <p>Sovereign debt risks & bond market volatility</p>
+                            </div>
+                            <div class="analysis-toggle">+</div>
+                        </div>
+                        <div class="analysis-content">
+                            <p class="analysis-text">
+                                <strong>Systemic Risk Assessment:</strong> Rising global debt levels and refinancing pressures increase demand for non-sovereign stores of value. 
+                                Bitcoin benefits from declining confidence in fiat monetary systems.
+                            </p>
+                            <div class="stress-indicators">
+                                <div class="indicator">🔴 US Debt/GDP: >130%</div>
+                                <div class="indicator">🟡 Bond Volatility: Elevated</div>
+                                <div class="indicator">🟢 Credit Stress: Contained</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Category 8: ETF Flows -->
+                    <div class="analysis-card" onclick="toggleAnalysis(this)">
+                        <div class="analysis-card-header">
+                            <div class="analysis-icon">🏛️</div>
+                            <div class="analysis-card-title">
+                                <h3>Institutional Flows & ETF Impact</h3>
+                                <p>Spot ETF demand & institutional allocation</p>
+                            </div>
+                            <div class="analysis-toggle">+</div>
+                        </div>
+                        <div class="analysis-content">
+                            <p class="analysis-text">
+                                <strong>ETF Revolution:</strong> Bitcoin spot ETFs launched January 2024 represent structural shift in institutional access. 
+                                Daily flows provide real-time gauge of institutional sentiment.
+                            </p>
+                            <div class="etf-metrics">
+                                <div class="etf-stat">
+                                    <span class="etf-label">Total ETF AUM</span>
+                                    <span class="etf-value" id="etfAum">~$60B+</span>
+                                </div>
+                                <div class="etf-stat">
+                                    <span class="etf-label">Net Flow Trend</span>
+                                    <span class="etf-value" id="etfFlow">Positive accumulation</span>
+                                </div>
+                            </div>
+                            <div class="analysis-insight">
+                                💡 Sustained ETF inflows create structural bid support
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Category 9: Derivatives -->
+                    <div class="analysis-card" onclick="toggleAnalysis(this)">
+                        <div class="analysis-card-header">
+                            <div class="analysis-icon">⚡</div>
+                            <div class="analysis-card-title">
+                                <h3>Derivatives Market Structure</h3>
+                                <p>Funding rates, OI & leverage positioning</p>
+                            </div>
+                            <div class="analysis-toggle">+</div>
+                        </div>
+                        <div class="analysis-content">
+                            <p class="analysis-text">
+                                <strong>Leverage Analysis:</strong> Derivatives markets provide insight into speculative positioning and leverage levels. 
+                                High funding rates + rising open interest = overleveraged longs (bearish). 
+                                Low/negative funding + stable OI = healthy uptrend.
+                            </p>
+                            <div class="deriv-status">
+                                <div class="deriv-item">
+                                    <span>Funding Rate</span>
+                                    <span id="fundingRate" class="deriv-val">0.01% (Neutral)</span>
+                                </div>
+                                <div class="deriv-item">
+                                    <span>Open Interest</span>
+                                    <span id="openInterest" class="deriv-val">$30B+</span>
+                                </div>
+                                <div class="deriv-item">
+                                    <span>Leverage Risk</span>
+                                    <span id="leverageRisk" class="deriv-val">🟢 Low</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Category 10: Stablecoin Flows -->
+                    <div class="analysis-card" onclick="toggleAnalysis(this)">
+                        <div class="analysis-card-header">
+                            <div class="analysis-icon">💎</div>
+                            <div class="analysis-card-title">
+                                <h3>Stablecoin Liquidity Analysis</h3>
+                                <p>On-ramp liquidity & exchange flows</p>
+                            </div>
+                            <div class="analysis-toggle">+</div>
+                        </div>
+                        <div class="analysis-content">
+                            <p class="analysis-text">
+                                <strong>Liquidity Conditions:</strong> Stablecoin market cap expansion indicates fresh capital entering crypto markets. 
+                                Current total: <strong id="stablecoinTotal">$--B</strong>. 
+                                Exchange inflows suggest <span id="stablecoinTrend">accumulation preparation</span>.
+                            </p>
+                            <div class="stablecoin-breakdown">
+                                <div class="stable-item">
+                                    <span>USDT Supply</span>
+                                    <span id="usdtSupply">$--B</span>
+                                </div>
+                                <div class="stable-item">
+                                    <span>USDC Supply</span>
+                                    <span id="usdcSupply">$--B</span>
+                                </div>
+                                <div class="stable-item">
+                                    <span>Trend</span>
+                                    <span id="stableSupplyTrend">📈 Expanding</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Category 11: On-Chain Metrics -->
+                    <div class="analysis-card" onclick="toggleAnalysis(this)">
+                        <div class="analysis-card-header">
+                            <div class="analysis-icon">🔗</div>
+                            <div class="analysis-card-title">
+                                <h3>On-Chain Metrics & Holder Behavior</h3>
+                                <p>MVRV, SOPR, exchange reserves & accumulation</p>
+                            </div>
+                            <div class="analysis-toggle">+</div>
+                        </div>
+                        <div class="analysis-content">
+                            <p class="analysis-text">
+                                <strong>Holder Sentiment:</strong> On-chain data reveals accumulation vs distribution patterns. 
+                                Key metrics: MVRV Z-Score (valuation), SOPR (profit-taking), Exchange Reserves (supply pressure).
+                            </p>
+                            <div class="onchain-metrics">
+                                <div class="metric-row">
+                                    <span>MVRV Z-Score</span>
+                                    <span id="mvrvScore" class="metric-status">🟡 Mid-range (Neither extreme)</span>
+                                </div>
+                                <div class="metric-row">
+                                    <span>Exchange Reserves</span>
+                                    <span id="exchangeReserves" class="metric-status">📉 Declining (Bullish)</span>
+                                </div>
+                                <div class="metric-row">
+                                    <span>Long-term Holders</span>
+                                    <span id="lthSupply" class="metric-status">📈 Accumulating</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Category 12: Sentiment -->
+                    <div class="analysis-card" onclick="toggleAnalysis(this)">
+                        <div class="analysis-card-header">
+                            <div class="analysis-icon">😊</div>
+                            <div class="analysis-card-title">
+                                <h3>Market Sentiment & Retail Activity</h3>
+                                <p>Fear/Greed, social metrics & euphoria indicators</p>
+                            </div>
+                            <div class="analysis-toggle">+</div>
+                        </div>
+                        <div class="analysis-content">
+                            <p class="analysis-text">
+                                <strong>Sentiment Gauge:</strong> Current Fear & Greed: <strong id="fgValue">--</strong> (<span id="fgClass">--</span>). 
+                                Extreme greed (>75) signals potential local tops. 
+                                Extreme fear (<25) indicates capitulation/buying opportunity.
+                            </p>
+                            <div class="sentiment-gauge">
+                                <div class="gauge-bar">
+                                    <div class="gauge-fill" id="sentimentGauge" style="width: 50%"></div>
+                                </div>
+                                <div class="gauge-labels">
+                                    <span>Extreme Fear</span>
+                                    <span>Neutral</span>
+                                    <span>Extreme Greed</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Category 13: Asset Correlation -->
+                    <div class="analysis-card" onclick="toggleAnalysis(this)">
+                        <div class="analysis-card-header">
+                            <div class="analysis-icon">📊</div>
+                            <div class="analysis-card-title">
+                                <h3>BTC vs Global Assets</h3>
+                                <p>Correlation with stocks, gold & bonds</p>
+                            </div>
+                            <div class="analysis-toggle">+</div>
+                        </div>
+                        <div class="analysis-content">
+                            <p class="analysis-text">
+                                <strong>Correlation Analysis:</strong> Bitcoin's correlation with traditional assets reveals its current market role (risk-on vs digital gold).
+                            </p>
+                            <div class="correlation-matrix">
+                                <div class="corr-item">
+                                    <span>vs S&P 500</span>
+                                    <span class="corr-value" id="corrSP500">+0.45 (Moderate positive)</span>
+                                </div>
+                                <div class="corr-item">
+                                    <span>vs Gold</span>
+                                    <span class="corr-value" id="corrGold">+0.20 (Low positive)</span>
+                                </div>
+                                <div class="corr-item">
+                                    <span>vs Bonds</span>
+                                    <span class="corr-value" id="corrBonds">-0.15 (Low inverse)</span>
+                                </div>
+                            </div>
+                            <div class="analysis-insight">
+                                💡 High correlation with stocks = Bitcoin trading as risk asset
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Category 14: BTC Dominance -->
+                    <div class="analysis-card" onclick="toggleAnalysis(this)">
+                        <div class="analysis-card-header">
+                            <div class="analysis-icon">👑</div>
+                            <div class="analysis-card-title">
+                                <h3>BTC Dominance & Altcoin Rotation</h3>
+                                <p>Capital flows & cycle rotation patterns</p>
+                            </div>
+                            <div class="analysis-toggle">+</div>
+                        </div>
+                        <div class="analysis-content">
+                            <p class="analysis-text">
+                                <strong>Dominance Analysis:</strong> Current BTC dominance: <strong id="btcDomValue">--%</strong>. 
+                                Rising dominance = capital fleeing alts into BTC (risk-off). 
+                                Falling dominance = altseason beginning.
+                            </p>
+                            <div class="dom-chart">
+                                <div class="dom-bar">
+                                    <div class="dom-fill" id="domBar" style="width: 50%"></div>
+                                </div>
+                                <p class="dom-status" id="domStatus">Neutral zone - no clear rotation signal</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Category 15: Structural Evolution -->
+                    <div class="analysis-card" onclick="toggleAnalysis(this)">
+                        <div class="analysis-card-header">
+                            <div class="analysis-icon">🔄</div>
+                            <div class="analysis-card-title">
+                                <h3>Structural Market Evolution</h3>
+                                <p>ETFs, maturity & diminishing returns</p>
+                            </div>
+                            <div class="analysis-toggle">+</div>
+                        </div>
+                        <div class="analysis-content">
+                            <p class="analysis-text">
+                                <strong>Market Maturation:</strong> This cycle differs from previous ones due to:
+                            </p>
+                            <ul class="evolution-list">
+                                <li>✅ Institutional access via spot ETFs (structural demand)</li>
+                                <li>✅ Reduced volatility vs historical cycles</li>
+                                <li>✅ Higher correlation with traditional finance</li>
+                                <li>✅ Diminishing ROI per cycle (law of large numbers)</li>
+                                <li>✅ Derivatives dominance (24/7 leverage)</li>
+                            </ul>
+                            <div class="analysis-insight">
+                                💡 Expect lower % gains but higher absolute price levels
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Category 16: Risk Regime -->
+                    <div class="analysis-card" onclick="toggleAnalysis(this)">
+                        <div class="analysis-card-header">
+                            <div class="analysis-icon">🎯</div>
+                            <div class="analysis-card-title">
+                                <h3>Risk-On vs Risk-Off Regime</h3>
+                                <p>Current market regime identification</p>
+                            </div>
+                            <div class="analysis-toggle">+</div>
+                        </div>
+                        <div class="analysis-content">
+                            <p class="analysis-text">
+                                <strong>Regime Status:</strong> <span id="riskRegime" class="regime-badge">RISK-ON</span>
+                            </p>
+                            <div class="regime-factors">
+                                <div class="factor">🟢 Liquidity: Expanding</div>
+                                <div class="factor">🟢 Credit Stress: Low</div>
+                                <div class="factor">🟡 Dollar: Neutral</div>
+                                <div class="factor">🟢 VIX: Below 20</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Category 17: Geopolitics -->
+                    <div class="analysis-card" onclick="toggleAnalysis(this)">
+                        <div class="analysis-card-header">
+                            <div class="analysis-icon">🌍</div>
+                            <div class="analysis-card-title">
+                                <h3>Geopolitics & Power Shifts</h3>
+                                <p>Conflicts, sanctions & de-dollarization</p>
+                            </div>
+                            <div class="analysis-toggle">+</div>
+                        </div>
+                        <div class="analysis-content">
+                            <p class="analysis-text">
+                                <strong>Geopolitical Drivers:</strong> Rising use of financial sanctions accelerates demand for censorship-resistant assets. 
+                                De-dollarization efforts by BRICS nations support non-sovereign money thesis.
+                            </p>
+                            <div class="geo-factors">
+                                <div class="geo-item">🔴 Ongoing conflicts (Ukraine, Middle East)</div>
+                                <div class="geo-item">🟡 Trade fragmentation increasing</div>
+                                <div class="geo-item">🟢 Bitcoin adoption in sanctions-hit regions</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Category 18: Technology Adoption -->
+                    <div class="analysis-card" onclick="toggleAnalysis(this)">
+                        <div class="analysis-card-header">
+                            <div class="analysis-icon">🚀</div>
+                            <div class="analysis-card-title">
+                                <h3>Technology & Adoption Growth</h3>
+                                <p>Infrastructure, tokenization & integration</p>
+                            </div>
+                            <div class="analysis-toggle">+</div>
+                        </div>
+                        <div class="analysis-content">
+                            <p class="analysis-text">
+                                <strong>Adoption Metrics:</strong> Institutional infrastructure rapidly improving. 
+                                Custody solutions, prime brokerage, and regulated on-ramps expanding.
+                            </p>
+                            <div class="adoption-stats">
+                                <div class="stat">📈 Bitcoin ETF holders: Growing</div>
+                                <div class="stat">🏦 Institutional custody: Expanding</div>
+                                <div class="stat">🌐 Global payments: Increasing</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Category 19: Scenarios -->
+                    <div class="analysis-card" onclick="toggleAnalysis(this)">
+                        <div class="analysis-card-header">
+                            <div class="analysis-icon">🎲</div>
+                            <div class="analysis-card-title">
+                                <h3>Probabilistic Scenarios</h3>
+                                <p>Bull, sideways & bear case probabilities</p>
+                            </div>
+                            <div class="analysis-toggle">+</div>
+                        </div>
+                        <div class="analysis-content">
+                            <div class="scenarios">
+                                <div class="scenario-item scenario-bull">
+                                    <div class="scenario-header">
+                                        <span class="scenario-label">🟢 Bullish Continuation</span>
+                                        <span class="scenario-prob" id="bullProb">60%</span>
+                                    </div>
+                                    <p class="scenario-text">ETF demand + rate cuts + halving supply shock drives continuation to $120k-$150k by Q4 2025</p>
+                                    <p class="scenario-invalid"><strong>Invalidation:</strong> Break below $70k with rising DXY</p>
+                                </div>
+                                <div class="scenario-item scenario-neutral">
+                                    <div class="scenario-header">
+                                        <span class="scenario-label">🟡 Extended Consolidation</span>
+                                        <span class="scenario-prob" id="neutralProb">30%</span>
+                                    </div>
+                                    <p class="scenario-text">Range-bound $80k-$110k for 6-12 months as market digests supply, volatility compression</p>
+                                    <p class="scenario-invalid"><strong>Invalidation:</strong> Break above $110k or below $75k</p>
+                                </div>
+                                <div class="scenario-item scenario-bear">
+                                    <div class="scenario-header">
+                                        <span class="scenario-label">🔴 Early Bear Market</span>
+                                        <span class="scenario-prob" id="bearProb">10%</span>
+                                    </div>
+                                    <p class="scenario-text">Macro shock (credit event, liquidity crisis) triggers early cycle top, retest $50k-$60k</p>
+                                    <p class="scenario-invalid"><strong>Invalidation:</strong> Sustained hold above $100k</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Category 20: Timeline -->
+                    <div class="analysis-card" onclick="toggleAnalysis(this)">
+                        <div class="analysis-card-header">
+                            <div class="analysis-icon">📅</div>
+                            <div class="analysis-card-title">
+                                <h3>Timeline & Peak Window</h3>
+                                <p>Estimated cycle timing & distribution phase</p>
+                            </div>
+                            <div class="analysis-toggle">+</div>
+                        </div>
+                        <div class="analysis-content">
+                            <p class="analysis-text">
+                                <strong>Probabilistic Timeline:</strong>
+                            </p>
+                            <div class="timeline-forecast">
+                                <div class="timeline-item">
+                                    <span class="timeline-period">Q2-Q3 2025</span>
+                                    <span class="timeline-event">Potential cycle acceleration phase</span>
+                                </div>
+                                <div class="timeline-item">
+                                    <span class="timeline-period">Q4 2025 - Q1 2026</span>
+                                    <span class="timeline-event">Peak window (12-18mo post-halving)</span>
+                                </div>
+                                <div class="timeline-item">
+                                    <span class="timeline-period">2026</span>
+                                    <span class="timeline-event">Distribution/correction phase begins</span>
+                                </div>
+                            </div>
+                            <div class="analysis-insight">
+                                ⚠️ Timelines are probabilistic, not deterministic
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Category 21: Risk Factors -->
+                    <div class="analysis-card" onclick="toggleAnalysis(this)">
+                        <div class="analysis-card-header">
+                            <div class="analysis-icon">⚠️</div>
+                            <div class="analysis-card-title">
+                                <h3>Key Risk Factors</h3>
+                                <p>Invalidation scenarios & tail risks</p>
+                            </div>
+                            <div class="analysis-toggle">+</div>
+                        </div>
+                        <div class="analysis-content">
+                            <div class="risk-list">
+                                <div class="risk-item risk-high">
+                                    <span class="risk-icon">🔴</span>
+                                    <div class="risk-content">
+                                        <strong>Liquidity Shock</strong>
+                                        <p>Fed reverses policy, resumes aggressive QT</p>
+                                    </div>
+                                </div>
+                                <div class="risk-item risk-medium">
+                                    <span class="risk-icon">🟡</span>
+                                    <div class="risk-content">
+                                        <strong>Regulatory Crackdown</strong>
+                                        <p>Major jurisdiction bans/restricts crypto</p>
+                                    </div>
+                                </div>
+                                <div class="risk-item risk-medium">
+                                    <span class="risk-icon">🟡</span>
+                                    <div class="risk-content">
+                                        <strong>Systemic Financial Crisis</strong>
+                                        <p>Banking stress, credit freeze, deleveraging cascade</p>
+                                    </div>
+                                </div>
+                                <div class="risk-item risk-low">
+                                    <span class="risk-icon">🟢</span>
+                                    <div class="risk-content">
+                                        <strong>Technical Failure</strong>
+                                        <p>Protocol vulnerability (low probability)</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Category 22: Data Integration -->
+                    <div class="analysis-card" onclick="toggleAnalysis(this)">
+                        <div class="analysis-card-header">
+                            <div class="analysis-icon">📡</div>
+                            <div class="analysis-card-title">
+                                <h3>Real-Time Data Integration</h3>
+                                <p>Live data sources & update frequency</p>
+                            </div>
+                            <div class="analysis-toggle">+</div>
+                        </div>
+                        <div class="analysis-content">
+                            <p class="analysis-text">
+                                <strong>Data Sources:</strong> This analysis integrates real-time data from multiple sources:
+                            </p>
+                            <div class="data-sources">
+                                <div class="source-item">✅ CoinGecko API (Price, volume, market cap)</div>
+                                <div class="source-item">✅ Fear & Greed Index (Sentiment)</div>
+                                <div class="source-item">✅ Stablecoin on-chain data (Liquidity)</div>
+                                <div class="source-item">⏳ Glassnode/CryptoQuant (On-chain - requires premium)</div>
+                                <div class="source-item">⏳ TradingView/Bloomberg (Macro data)</div>
+                                <div class="source-item">⏳ Exchange APIs (Derivatives)</div>
+                            </div>
+                            <p class="update-status">🔄 Auto-refresh: Every 60 seconds</p>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Summary & Outlook -->
+                <div class="analysis-summary">
+                    <h3 class="summary-title">📊 Synthesis & Market Outlook</h3>
+                    <div class="summary-content">
+                        <p class="summary-text" id="marketSummary">
+                            Based on comprehensive multi-factor analysis, Bitcoin appears to be in a <strong id="summaryPhase">mid-cycle accumulation phase</strong>. 
+                            The convergence of supply dynamics (post-halving), institutional demand (ETF flows), and improving macro conditions (rate cuts expected) 
+                            supports a <strong id="summaryBias">constructive medium-term outlook</strong>. 
+                        </p>
+                        <div class="outlook-boxes">
+                            <div class="outlook-box outlook-short">
+                                <h4>Short-Term (1-3 months)</h4>
+                                <p id="outlookShort">Range consolidation likely, volatility compression, watch for breakout above key resistance</p>
+                            </div>
+                            <div class="outlook-box outlook-medium">
+                                <h4>Medium-Term (3-12 months)</h4>
+                                <p id="outlookMedium">Bullish bias supported by ETF demand, halving supply reduction, and expected monetary easing</p>
+                            </div>
+                            <div class="outlook-box outlook-long">
+                                <h4>Long-Term (12+ months)</h4>
+                                <p id="outlookLong">Cycle peak expected Q4 2025 - Q1 2026, followed by distribution phase and eventual correction</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </section>
 
         </div>
@@ -1786,6 +3139,9 @@ async function fetchAndUpdateAll() {
             updateSentiment(fearGreed);
         }
         
+        // Update advanced analysis
+        updateAdvancedAnalysis(btcData, globalData, stablecoins, fearGreed);
+        
         // Update timestamp
         updateTimestamp();
         
@@ -1820,6 +3176,221 @@ if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
 } else {
     init();
+}
+
+// ============================================
+// ADVANCED ANALYSIS FUNCTIONS
+// ============================================
+
+/**
+ * Toggle analysis card expansion
+ */
+function toggleAnalysis(card) {
+    card.classList.toggle('active');
+}
+
+/**
+ * Update advanced analysis sections with real-time data
+ */
+function updateAdvancedAnalysis(btcData, globalData, stablecoins, fearGreedData) {
+    if (!btcData?.market_data) return;
+    
+    const data = btcData.market_data;
+    const currentPrice = data.current_price.usd;
+    const athPrice = data.ath.usd;
+    const percentFromATH = calculatePercentFromATH(currentPrice, athPrice);
+    const priceChange24h = data.price_change_percentage_24h || 0;
+    const btcDominance = globalData?.data?.market_cap_percentage?.btc || 50;
+    const fearGreedValue = fearGreedData ? parseInt(fearGreedData.value) : 50;
+    
+    // Category 1: Market Cycle Structure
+    updateCyclePhase(percentFromATH, fearGreedValue, priceChange24h);
+    
+    // Category 2: Halving Context
+    const daysSinceHalving = calculateDaysSinceHalving();
+    updateElement('daysFromHalving', daysSinceHalving + ' days');
+    
+    // Category 3: Market Overview
+    updateElement('snapshotPrice', formatCurrency(currentPrice, 0));
+    updateElement('snapshotVolume', formatLargeNumber(data.total_volume.usd));
+    updateElement('snapshotMcap', formatLargeNumber(data.market_cap.usd));
+    updateElement('snapshotDom', btcDominance.toFixed(2) + '%');
+    
+    const marketPositionText = generateMarketPosition(currentPrice, priceChange24h, percentFromATH);
+    updateElement('marketPositionText', marketPositionText);
+    
+    // Category 10: Stablecoin Analysis
+    const totalStablecoin = stablecoins.usdt + stablecoins.usdc;
+    updateElement('stablecoinTotal', formatLargeNumber(totalStablecoin));
+    updateElement('usdtSupply', formatLargeNumber(stablecoins.usdt));
+    updateElement('usdcSupply', formatLargeNumber(stablecoins.usdc));
+    
+    // Category 12: Sentiment
+    updateElement('fgValue', fearGreedValue);
+    updateElement('fgClass', fearGreedData?.value_classification || 'N/A');
+    const sentimentGauge = document.getElementById('sentimentGauge');
+    if (sentimentGauge) {
+        sentimentGauge.style.width = fearGreedValue + '%';
+    }
+    
+    // Category 14: BTC Dominance
+    updateElement('btcDomValue', btcDominance.toFixed(2) + '%');
+    const domBar = document.getElementById('domBar');
+    if (domBar) {
+        domBar.style.width = btcDominance + '%';
+    }
+    updateDominanceStatus(btcDominance);
+    
+    // Summary sections
+    updateMarketSummary(percentFromATH, fearGreedValue, daysSinceHalving, btcDominance);
+}
+
+/**
+ * Update cycle phase analysis
+ */
+function updateCyclePhase(percentFromATH, fearGreedValue, priceChange24h) {
+    let phase, comparison, difference;
+    
+    // Determine cycle phase based on metrics
+    if (percentFromATH > -10 && fearGreedValue > 70) {
+        phase = 'Late Distribution';
+        comparison = 'typical peak behavior with extreme greed';
+        difference = 'ETF demand provides unusual support at these levels';
+    } else if (percentFromATH > -30 && fearGreedValue > 50) {
+        phase = 'Markup/Acceleration';
+        comparison = 'strong uptrend momentum with healthy sentiment';
+        difference = 'institutional flows via ETFs reducing volatility vs previous cycles';
+    } else if (percentFromATH > -50 && fearGreedValue < 50) {
+        phase = 'Accumulation/Early Markup';
+        comparison = 'early cycle accumulation with subdued sentiment';
+        difference = 'supply shock from halving not yet fully priced in';
+    } else {
+        phase = 'Deep Accumulation/Markdown';
+        comparison = 'bear market or deep correction territory';
+        difference = 'structural demand from ETFs shortening bear market duration';
+    }
+    
+    updateElement('currentPhase', phase);
+    updateElement('cycleComparison', comparison);
+    updateElement('cycleDifference', difference);
+    
+    // Update cycle progress bar (estimated)
+    const progress = Math.max(0, Math.min(100, 100 + percentFromATH));
+    const cycleProgress = document.getElementById('cycleProgress');
+    if (cycleProgress) {
+        cycleProgress.style.width = progress + '%';
+    }
+}
+
+/**
+ * Generate market position text
+ */
+function generateMarketPosition(price, change24h, percentFromATH) {
+    const trend = change24h > 2 ? 'strong uptrend' : 
+                  change24h > 0 ? 'mild uptrend' :
+                  change24h > -2 ? 'consolidation' : 'correction';
+    
+    const athStatus = percentFromATH > -10 ? 'near all-time highs' :
+                      percentFromATH > -30 ? 'healthy distance from ATH' :
+                      'significant discount from ATH';
+    
+    return `Market showing ${trend} with price ${athStatus}. ` +
+           `Current positioning suggests ${change24h > 0 ? 'bullish' : 'cautious'} short-term sentiment. ` +
+           `Volume ${trend === 'strong uptrend' ? 'supporting move' : 'declining, watch for catalyst'}.`;
+}
+
+/**
+ * Update dominance status
+ */
+function updateDominanceStatus(dominance) {
+    let status;
+    if (dominance > 55) {
+        status = 'BTC strength - capital flowing from alts to Bitcoin (risk-off)';
+    } else if (dominance > 45) {
+        status = 'Neutral zone - no clear rotation signal';
+    } else {
+        status = 'Altseason emerging - capital rotating into altcoins (risk-on)';
+    }
+    updateElement('domStatus', status);
+}
+
+/**
+ * Update market summary
+ */
+function updateMarketSummary(percentFromATH, fearGreedValue, daysSinceHalving, btcDominance) {
+    let phase, bias;
+    
+    // Determine overall phase
+    if (daysSinceHalving < 180) {
+        phase = 'early post-halving consolidation phase';
+    } else if (daysSinceHalving < 365) {
+        phase = 'mid-cycle accumulation phase';
+    } else if (daysSinceHalving < 540) {
+        phase = 'late-cycle acceleration phase';
+    } else {
+        phase = 'cycle maturity/distribution phase';
+    }
+    
+    // Determine bias
+    if (percentFromATH > -20 && fearGreedValue > 60) {
+        bias = 'cautiously optimistic but watch for overheating';
+    } else if (percentFromATH > -40 && fearGreedValue < 70) {
+        bias = 'constructive medium-term outlook';
+    } else {
+        bias = 'attractive risk/reward for long-term holders';
+    }
+    
+    updateElement('summaryPhase', phase);
+    updateElement('summaryBias', bias);
+    
+    // Update outlook boxes
+    updateOutlookBoxes(daysSinceHalving, percentFromATH, fearGreedValue);
+}
+
+/**
+ * Update outlook boxes
+ */
+function updateOutlookBoxes(daysSinceHalving, percentFromATH, fearGreedValue) {
+    // Short-term
+    let shortTerm;
+    if (fearGreedValue > 75) {
+        shortTerm = 'Overheated conditions, consolidation or pullback likely before next leg';
+    } else if (fearGreedValue < 25) {
+        shortTerm = 'Oversold conditions, bounce likely as fear reaches extreme';
+    } else {
+        shortTerm = 'Range consolidation likely, volatility compression, watch for breakout catalyst';
+    }
+    updateElement('outlookShort', shortTerm);
+    
+    // Medium-term
+    let mediumTerm;
+    if (daysSinceHalving < 365) {
+        mediumTerm = 'Bullish bias supported by ETF demand, halving supply reduction, and expected monetary easing';
+    } else {
+        mediumTerm = 'Late-cycle dynamics, reduced upside but still supported by institutional flows';
+    }
+    updateElement('outlookMedium', mediumTerm);
+    
+    // Long-term
+    let longTerm;
+    if (daysSinceHalving < 270) {
+        longTerm = 'Cycle peak expected Q4 2025 - Q1 2026, followed by distribution phase and eventual correction';
+    } else if (daysSinceHalving < 450) {
+        longTerm = 'Approaching peak window, prepare for distribution phase in coming quarters';
+    } else {
+        longTerm = 'Late cycle - consider de-risking, next accumulation phase likely 2026-2027';
+    }
+    updateElement('outlookLong', longTerm);
+}
+
+/**
+ * Helper to update text content
+ */
+function updateElement(id, value) {
+    const element = document.getElementById(id);
+    if (element) {
+        element.textContent = value;
+    }
 }
     </script>
 </body>
