@@ -1,67 +1,161 @@
-// ===================================
-// Bitcoin Intelligence Dashboard
-// Real-Time Data Integration
-// ===================================
+/* ============================================
+   Bitcoin Intelligence Dashboard - JavaScript
+   Real-Time Data Integration & Calculations
+   ============================================ */
 
-// Global state
-let dashboardData = {
-    bitcoin: null,
-    global: null,
-    fearGreed: null,
-    stablecoins: {
-        usdt: null,
-        usdc: null
-    }
-};
-
-// Constants
+// ========== CONFIGURATION ==========
 const HALVING_DATE = new Date('2024-04-20');
 const UPDATE_INTERVAL = 60000; // 60 seconds
-let updateTimer = null;
+const API_ENDPOINTS = {
+    bitcoin: 'https://api.coingecko.com/api/v3/coins/bitcoin',
+    global: 'https://api.coingecko.com/api/v3/global',
+    usdt: 'https://api.coingecko.com/api/v3/coins/tether',
+    usdc: 'https://api.coingecko.com/api/v3/coins/usd-coin',
+    fearGreed: 'https://api.alternative.me/fng/'
+};
 
-// ===================================
-// API Fetch Functions
-// ===================================
+// ========== STATE ==========
+let marketData = {
+    bitcoin: null,
+    global: null,
+    stablecoins: null,
+    sentiment: null
+};
+
+// ========== UTILITY FUNCTIONS ==========
 
 /**
- * Fetch Bitcoin market data from CoinGecko
+ * Format number with commas and optional decimals
+ */
+function formatNumber(num, decimals = 0) {
+    if (num === null || num === undefined || isNaN(num)) return '--';
+    return new Intl.NumberFormat('en-US', {
+        minimumFractionDigits: decimals,
+        maximumFractionDigits: decimals
+    }).format(num);
+}
+
+/**
+ * Format large numbers with K, M, B, T suffixes
+ */
+function formatLargeNumber(num, decimals = 2) {
+    if (num === null || num === undefined || isNaN(num)) return '--';
+    
+    const absNum = Math.abs(num);
+    if (absNum >= 1e12) return `$${(num / 1e12).toFixed(decimals)}T`;
+    if (absNum >= 1e9) return `$${(num / 1e9).toFixed(decimals)}B`;
+    if (absNum >= 1e6) return `$${(num / 1e6).toFixed(decimals)}M`;
+    if (absNum >= 1e3) return `$${(num / 1e3).toFixed(decimals)}K`;
+    return `$${num.toFixed(decimals)}`;
+}
+
+/**
+ * Format percentage with sign
+ */
+function formatPercentage(num, decimals = 2) {
+    if (num === null || num === undefined || isNaN(num)) return '--';
+    const sign = num >= 0 ? '+' : '';
+    return `${sign}${num.toFixed(decimals)}%`;
+}
+
+/**
+ * Format date to readable string
+ */
+function formatDate(dateString) {
+    if (!dateString) return '--';
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', { 
+        year: 'numeric', 
+        month: 'short', 
+        day: 'numeric' 
+    });
+}
+
+/**
+ * Calculate days between two dates
+ */
+function daysBetween(date1, date2) {
+    const diffTime = Math.abs(date2 - date1);
+    return Math.floor(diffTime / (1000 * 60 * 60 * 24));
+}
+
+/**
+ * Update element with smooth transition
+ */
+function updateElement(elementId, value, applyClass = null) {
+    const element = document.getElementById(elementId);
+    if (!element) return;
+    
+    element.style.opacity = '0.5';
+    setTimeout(() => {
+        element.textContent = value;
+        if (applyClass) {
+            element.className = applyClass;
+        }
+        element.style.opacity = '1';
+    }, 150);
+}
+
+// ========== API FETCH FUNCTIONS ==========
+
+/**
+ * Fetch Bitcoin data from CoinGecko
  */
 async function fetchBitcoinData() {
     try {
-        const response = await fetch(
-            'https://api.coingecko.com/api/v3/coins/bitcoin?localization=false&tickers=false&community_data=false&developer_data=false'
-        );
-        
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        
+        const response = await fetch(API_ENDPOINTS.bitcoin);
+        if (!response.ok) throw new Error('Bitcoin API request failed');
         const data = await response.json();
-        dashboardData.bitcoin = data;
+        marketData.bitcoin = data;
         return data;
     } catch (error) {
         console.error('Error fetching Bitcoin data:', error);
-        updateStatusIndicator('error', 'Connection Error');
         return null;
     }
 }
 
 /**
- * Fetch global crypto market data from CoinGecko
+ * Fetch global market data from CoinGecko
  */
 async function fetchGlobalData() {
     try {
-        const response = await fetch('https://api.coingecko.com/api/v3/global');
-        
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        
+        const response = await fetch(API_ENDPOINTS.global);
+        if (!response.ok) throw new Error('Global API request failed');
         const data = await response.json();
-        dashboardData.global = data.data;
-        return data.data;
+        marketData.global = data;
+        return data;
     } catch (error) {
         console.error('Error fetching global data:', error);
+        return null;
+    }
+}
+
+/**
+ * Fetch stablecoin data
+ */
+async function fetchStablecoinData() {
+    try {
+        const [usdtResponse, usdcResponse] = await Promise.all([
+            fetch(API_ENDPOINTS.usdt),
+            fetch(API_ENDPOINTS.usdc)
+        ]);
+        
+        if (!usdtResponse.ok || !usdcResponse.ok) {
+            throw new Error('Stablecoin API request failed');
+        }
+        
+        const usdtData = await usdtResponse.json();
+        const usdcData = await usdcResponse.json();
+        
+        marketData.stablecoins = {
+            usdt: usdtData.market_data.market_cap.usd,
+            usdc: usdcData.market_data.market_cap.usd,
+            total: usdtData.market_data.market_cap.usd + usdcData.market_data.market_cap.usd
+        };
+        
+        return marketData.stablecoins;
+    } catch (error) {
+        console.error('Error fetching stablecoin data:', error);
         return null;
     }
 }
@@ -71,14 +165,10 @@ async function fetchGlobalData() {
  */
 async function fetchFearGreedIndex() {
     try {
-        const response = await fetch('https://api.alternative.me/fng/');
-        
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        
+        const response = await fetch(API_ENDPOINTS.fearGreed);
+        if (!response.ok) throw new Error('Fear & Greed API request failed');
         const data = await response.json();
-        dashboardData.fearGreed = data.data[0];
+        marketData.sentiment = data.data[0];
         return data.data[0];
     } catch (error) {
         console.error('Error fetching Fear & Greed data:', error);
@@ -86,102 +176,76 @@ async function fetchFearGreedIndex() {
     }
 }
 
-/**
- * Fetch stablecoin data (USDT and USDC)
- */
-async function fetchStablecoinData() {
-    try {
-        const [usdtResponse, usdcResponse] = await Promise.all([
-            fetch('https://api.coingecko.com/api/v3/coins/tether?localization=false&tickers=false&community_data=false&developer_data=false'),
-            fetch('https://api.coingecko.com/api/v3/coins/usd-coin?localization=false&tickers=false&community_data=false&developer_data=false')
-        ]);
-        
-        if (!usdtResponse.ok || !usdcResponse.ok) {
-            throw new Error('Failed to fetch stablecoin data');
-        }
-        
-        const [usdtData, usdcData] = await Promise.all([
-            usdtResponse.json(),
-            usdcResponse.json()
-        ]);
-        
-        dashboardData.stablecoins.usdt = usdtData;
-        dashboardData.stablecoins.usdc = usdcData;
-        
-        return {
-            usdt: usdtData,
-            usdc: usdcData
-        };
-    } catch (error) {
-        console.error('Error fetching stablecoin data:', error);
-        return null;
-    }
-}
-
-// ===================================
-// Data Processing & Calculations
-// ===================================
+// ========== CALCULATION FUNCTIONS ==========
 
 /**
- * Calculate percentage from All-Time High
+ * Calculate percentage from ATH
  */
-function calculateFromATH(currentPrice, athPrice) {
-    if (!currentPrice || !athPrice) return null;
-    return ((currentPrice - athPrice) / athPrice) * 100;
+function calculatePercentFromATH(currentPrice, ath) {
+    if (!currentPrice || !ath) return null;
+    return ((currentPrice - ath) / ath) * 100;
 }
 
 /**
  * Calculate days since last halving
  */
 function calculateDaysSinceHalving() {
-    const now = new Date();
-    const diffTime = Math.abs(now - HALVING_DATE);
-    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-    return diffDays;
+    const today = new Date();
+    return daysBetween(HALVING_DATE, today);
 }
 
 /**
- * Calculate Composite Risk Score (0-100)
- * Weighted formula based on multiple factors
+ * Calculate composite risk score (0-100)
+ * Weighted formula based on:
+ * - % From ATH (40% weight)
+ * - Fear & Greed Index (30% weight)
+ * - 24h Change % (15% weight)
+ * - BTC Dominance (15% weight)
  */
-function calculateRiskScore(btcData, fearGreedValue, globalData) {
-    if (!btcData || !fearGreedValue || !globalData) return null;
-    
-    const price = btcData.market_data.current_price.usd;
-    const ath = btcData.market_data.ath.usd;
-    const change24h = btcData.market_data.price_change_percentage_24h;
-    const btcDominance = globalData.market_cap_percentage.btc;
-    
-    // Factor 1: Distance from ATH (0-100, inverted - closer to ATH = higher risk)
-    const athDistance = ((price / ath) * 100);
-    const athScore = athDistance; // Close to ATH = high score
-    
-    // Factor 2: Fear & Greed (0-100, direct)
-    const fearGreedScore = parseFloat(fearGreedValue);
-    
-    // Factor 3: 24h change (normalized to 0-100)
-    // High positive change = higher risk, high negative = lower risk
-    const changeScore = Math.min(100, Math.max(0, (change24h + 10) * 5));
-    
-    // Factor 4: BTC Dominance (normalized)
-    // Lower dominance often means alt season / late cycle
-    const dominanceScore = 100 - btcDominance;
-    
-    // Weighted average
-    const riskScore = (
-        (athScore * 0.35) +           // 35% weight
-        (fearGreedScore * 0.35) +     // 35% weight
-        (changeScore * 0.15) +        // 15% weight
-        (dominanceScore * 0.15)       // 15% weight
-    );
-    
-    return Math.round(Math.min(100, Math.max(0, riskScore)));
+function calculateCompositeRiskScore(btcData, globalData, sentimentData) {
+    try {
+        if (!btcData || !globalData || !sentimentData) return null;
+        
+        const currentPrice = btcData.market_data.current_price.usd;
+        const ath = btcData.market_data.ath.usd;
+        const change24h = btcData.market_data.price_change_percentage_24h;
+        const btcDominance = globalData.data.market_cap_percentage.btc;
+        const fearGreed = parseInt(sentimentData.value);
+        
+        // Normalize % from ATH (closer to ATH = higher risk)
+        const percentFromATH = calculatePercentFromATH(currentPrice, ath);
+        const athScore = Math.max(0, Math.min(100, 100 + percentFromATH)); // -50% = 50, 0% = 100
+        
+        // Fear & Greed already 0-100
+        const sentimentScore = fearGreed;
+        
+        // Normalize 24h change (-10% to +10% range mapped to 0-100)
+        const changeScore = Math.max(0, Math.min(100, 50 + (change24h * 5)));
+        
+        // Normalize BTC Dominance (40-70% range, higher = lower risk)
+        const dominanceScore = Math.max(0, Math.min(100, 100 - ((btcDominance - 40) * 2)));
+        
+        // Weighted composite
+        const compositeScore = (
+            athScore * 0.40 +
+            sentimentScore * 0.30 +
+            changeScore * 0.15 +
+            dominanceScore * 0.15
+        );
+        
+        return Math.round(compositeScore);
+    } catch (error) {
+        console.error('Error calculating risk score:', error);
+        return null;
+    }
 }
 
 /**
  * Get risk zone classification
  */
 function getRiskZone(score) {
+    if (score === null || score === undefined) return { zone: 'Unknown', class: '' };
+    
     if (score <= 30) {
         return { zone: 'Accumulation', class: 'accumulation' };
     } else if (score <= 70) {
@@ -192,40 +256,171 @@ function getRiskZone(score) {
 }
 
 /**
- * Get sentiment interpretation
+ * Get risk bar color based on score
  */
-function getSentimentInterpretation(value) {
-    const v = parseInt(value);
-    if (v <= 20) return 'Extreme Fear';
-    if (v <= 40) return 'Fear Phase';
-    if (v <= 60) return 'Neutral Zone';
-    if (v <= 80) return 'Greed Phase';
-    return 'Extreme Greed';
+function getRiskBarColor(score) {
+    if (score <= 30) return '#10b981'; // Green
+    if (score <= 70) return '#f59e0b'; // Yellow
+    return '#ef4444'; // Red
 }
 
-// ===================================
-// UI Update Functions
-// ===================================
+// ========== UI UPDATE FUNCTIONS ==========
 
 /**
- * Update status indicator
+ * Update Live Market Overview section
  */
-function updateStatusIndicator(status, text) {
-    const statusDot = document.getElementById('statusDot');
-    const statusText = document.getElementById('statusText');
+function updateMarketOverview(btcData, globalData) {
+    if (!btcData) {
+        console.warn('No Bitcoin data available for market overview');
+        return;
+    }
     
-    if (status === 'live') {
-        statusDot.style.background = 'var(--accent-green)';
-        statusText.textContent = text || 'Live';
-        statusText.style.color = 'var(--accent-green)';
-    } else if (status === 'updating') {
-        statusDot.style.background = 'var(--accent-yellow)';
-        statusText.textContent = text || 'Updating...';
-        statusText.style.color = 'var(--accent-yellow)';
-    } else if (status === 'error') {
-        statusDot.style.background = 'var(--accent-red)';
-        statusText.textContent = text || 'Error';
-        statusText.style.color = 'var(--accent-red)';
+    const price = btcData.market_data.current_price.usd;
+    const change24h = btcData.market_data.price_change_percentage_24h;
+    const marketCap = btcData.market_data.market_cap.usd;
+    const volume = btcData.market_data.total_volume.usd;
+    const supply = btcData.market_data.circulating_supply;
+    const ath = btcData.market_data.ath.usd;
+    const athDate = btcData.market_data.ath_date.usd;
+    const rank = btcData.market_cap_rank;
+    
+    updateElement('currentPrice', `$${formatNumber(price, 2)}`);
+    updateElement('marketCap', formatLargeNumber(marketCap));
+    updateElement('volume24h', formatLargeNumber(volume));
+    updateElement('circulatingSupply', `${formatNumber(supply, 0)} BTC`);
+    updateElement('allTimeHigh', `$${formatNumber(ath, 2)}`);
+    updateElement('athDate', formatDate(athDate));
+    updateElement('marketCapRank', rank);
+    
+    // 24h change with color
+    const changeElement = document.getElementById('priceChange24h');
+    if (changeElement) {
+        changeElement.textContent = formatPercentage(change24h);
+        changeElement.className = change24h >= 0 ? 'card-change positive' : 'card-change negative';
+    }
+    
+    // BTC Dominance
+    if (globalData && globalData.data) {
+        const dominance = globalData.data.market_cap_percentage.btc;
+        updateElement('btcDominance', `${dominance.toFixed(2)}%`);
+    }
+}
+
+/**
+ * Update Layer 1: Price & Cycle
+ */
+function updatePriceCycle(btcData, globalData, sentimentData) {
+    if (!btcData) return;
+    
+    const price = btcData.market_data.current_price.usd;
+    const ath = btcData.market_data.ath.usd;
+    const percentFromATH = calculatePercentFromATH(price, ath);
+    const daysSinceHalving = calculateDaysSinceHalving();
+    
+    updateElement('layer1Price', `$${formatNumber(price, 2)}`);
+    updateElement('layer1ATH', `$${formatNumber(ath, 2)}`);
+    updateElement('percentFromATH', formatPercentage(percentFromATH));
+    updateElement('daysSinceHalving', formatNumber(daysSinceHalving));
+    
+    // Composite Risk Score
+    const riskScore = calculateCompositeRiskScore(btcData, globalData, sentimentData);
+    if (riskScore !== null) {
+        const { zone, class: zoneClass } = getRiskZone(riskScore);
+        
+        updateElement('riskScore', riskScore);
+        
+        const riskZoneElement = document.getElementById('riskZone');
+        if (riskZoneElement) {
+            riskZoneElement.textContent = zone;
+            riskZoneElement.className = `risk-zone ${zoneClass}`;
+        }
+        
+        // Update risk bar
+        const riskBar = document.getElementById('riskBar');
+        if (riskBar) {
+            riskBar.style.width = `${riskScore}%`;
+            riskBar.style.backgroundColor = getRiskBarColor(riskScore);
+        }
+    }
+}
+
+/**
+ * Update Layer 5: Stablecoin Liquidity
+ */
+function updateStablecoinLiquidity(stablecoinData) {
+    if (!stablecoinData) {
+        console.warn('No stablecoin data available');
+        return;
+    }
+    
+    updateElement('usdtMarketCap', formatLargeNumber(stablecoinData.usdt));
+    updateElement('usdcMarketCap', formatLargeNumber(stablecoinData.usdc));
+    updateElement('totalStablecoinCap', formatLargeNumber(stablecoinData.total));
+}
+
+/**
+ * Update Layer 7: Sentiment
+ */
+function updateSentiment(sentimentData) {
+    if (!sentimentData) {
+        console.warn('No sentiment data available');
+        return;
+    }
+    
+    const value = parseInt(sentimentData.value);
+    const classification = sentimentData.value_classification;
+    
+    updateElement('fearGreedValue', value);
+    
+    const classElement = document.getElementById('fearGreedClassification');
+    if (classElement) {
+        classElement.textContent = classification;
+        classElement.className = 'sentiment-label';
+        
+        // Apply color based on classification
+        if (classification.toLowerCase().includes('fear')) {
+            classElement.style.background = 'rgba(239, 68, 68, 0.15)';
+            classElement.style.color = '#ef4444';
+        } else if (classification.toLowerCase().includes('greed')) {
+            classElement.style.background = 'rgba(16, 185, 129, 0.15)';
+            classElement.style.color = '#10b981';
+        } else {
+            classElement.style.background = 'rgba(245, 158, 11, 0.15)';
+            classElement.style.color = '#f59e0b';
+        }
+    }
+    
+    // Sentiment interpretation
+    let interpretation = '';
+    if (value < 25) {
+        interpretation = 'Market shows extreme fear. Historically favorable for accumulation.';
+    } else if (value < 45) {
+        interpretation = 'Market sentiment is fearful. Potential buying opportunity.';
+    } else if (value < 55) {
+        interpretation = 'Market sentiment is neutral. Balanced risk/reward.';
+    } else if (value < 75) {
+        interpretation = 'Market sentiment is greedy. Caution advised.';
+    } else {
+        interpretation = 'Market shows extreme greed. High risk territory.';
+    }
+    updateElement('sentimentInterpretation', interpretation);
+    
+    // Sentiment signal
+    const signalElement = document.getElementById('sentimentSignal');
+    if (signalElement) {
+        if (value < 30) {
+            signalElement.textContent = '🟢 Contrarian Buy Zone';
+            signalElement.style.background = 'rgba(16, 185, 129, 0.15)';
+            signalElement.style.color = '#10b981';
+        } else if (value < 70) {
+            signalElement.textContent = '🟡 Neutral Zone';
+            signalElement.style.background = 'rgba(245, 158, 11, 0.15)';
+            signalElement.style.color = '#f59e0b';
+        } else {
+            signalElement.textContent = '🔴 Caution Zone';
+            signalElement.style.background = 'rgba(239, 68, 68, 0.15)';
+            signalElement.style.color = '#ef4444';
+        }
     }
 }
 
@@ -235,364 +430,78 @@ function updateStatusIndicator(status, text) {
 function updateTimestamp() {
     const now = new Date();
     const timeString = now.toLocaleTimeString('en-US', { 
-        hour12: false,
-        hour: '2-digit',
+        hour: '2-digit', 
         minute: '2-digit',
         second: '2-digit'
     });
-    
-    const lastUpdateElement = document.getElementById('lastUpdate');
-    if (lastUpdateElement) {
-        lastUpdateElement.textContent = timeString;
-    }
+    updateElement('lastUpdateTime', timeString);
 }
 
-/**
- * Format number with commas
- */
-function formatNumber(num, decimals = 0) {
-    if (num === null || num === undefined) return '--';
-    return num.toLocaleString('en-US', {
-        minimumFractionDigits: decimals,
-        maximumFractionDigits: decimals
-    });
-}
-
-/**
- * Format currency
- */
-function formatCurrency(num, decimals = 0) {
-    if (num === null || num === undefined) return '$--';
-    return '$' + formatNumber(num, decimals);
-}
-
-/**
- * Format percentage
- */
-function formatPercentage(num, decimals = 2) {
-    if (num === null || num === undefined) return '--%';
-    const sign = num >= 0 ? '+' : '';
-    return sign + num.toFixed(decimals) + '%';
-}
-
-/**
- * Format large numbers (billions, millions)
- */
-function formatLargeNumber(num, decimals = 2) {
-    if (num === null || num === undefined) return '--';
-    
-    if (num >= 1e9) {
-        return formatNumber(num / 1e9, decimals) + ' B';
-    } else if (num >= 1e6) {
-        return formatNumber(num / 1e6, decimals) + ' M';
-    }
-    return formatNumber(num, decimals);
-}
-
-/**
- * Update Market Overview section
- */
-function updateMarketOverview() {
-    const btc = dashboardData.bitcoin;
-    const global = dashboardData.global;
-    
-    if (!btc || !global) return;
-    
-    const marketData = btc.market_data;
-    
-    // Current Price
-    const priceElement = document.getElementById('currentPrice');
-    if (priceElement) {
-        priceElement.textContent = formatCurrency(marketData.current_price.usd, 0);
-    }
-    
-    // 24h Change
-    const changeElement = document.getElementById('priceChange');
-    if (changeElement) {
-        const change = marketData.price_change_percentage_24h;
-        changeElement.textContent = formatPercentage(change);
-        changeElement.className = 'card-change ' + (change >= 0 ? 'positive' : 'negative');
-    }
-    
-    // Market Cap
-    const mcapElement = document.getElementById('marketCap');
-    if (mcapElement) {
-        mcapElement.textContent = '$' + formatLargeNumber(marketData.market_cap.usd, 2);
-    }
-    
-    // Market Cap Rank
-    const rankElement = document.getElementById('marketCapRank');
-    if (rankElement) {
-        rankElement.textContent = btc.market_cap_rank || '1';
-    }
-    
-    // 24h Volume
-    const volumeElement = document.getElementById('volume24h');
-    if (volumeElement) {
-        volumeElement.textContent = '$' + formatLargeNumber(marketData.total_volume.usd, 2);
-    }
-    
-    // BTC Dominance
-    const dominanceElement = document.getElementById('btcDominance');
-    if (dominanceElement) {
-        const dominance = global.market_cap_percentage.btc;
-        dominanceElement.textContent = dominance.toFixed(2) + '%';
-    }
-}
-
-/**
- * Update Layer 1: Price & Cycle
- */
-function updateLayer1() {
-    const btc = dashboardData.bitcoin;
-    const fearGreed = dashboardData.fearGreed;
-    const global = dashboardData.global;
-    
-    if (!btc) return;
-    
-    const marketData = btc.market_data;
-    
-    // Current Price
-    const layer1PriceElement = document.getElementById('layer1Price');
-    if (layer1PriceElement) {
-        layer1PriceElement.textContent = formatCurrency(marketData.current_price.usd, 0);
-    }
-    
-    // All-Time High
-    const athPriceElement = document.getElementById('athPrice');
-    if (athPriceElement) {
-        athPriceElement.textContent = formatCurrency(marketData.ath.usd, 0);
-    }
-    
-    const athDateElement = document.getElementById('athDate');
-    if (athDateElement && marketData.ath_date.usd) {
-        const athDate = new Date(marketData.ath_date.usd);
-        athDateElement.textContent = athDate.toLocaleDateString('en-US', { 
-            year: 'numeric', 
-            month: 'short', 
-            day: 'numeric' 
-        });
-    }
-    
-    // % From ATH
-    const fromAthValue = calculateFromATH(marketData.current_price.usd, marketData.ath.usd);
-    const fromAthElement = document.getElementById('fromAth');
-    const fromAthLabelElement = document.getElementById('fromAthLabel');
-    
-    if (fromAthElement && fromAthValue !== null) {
-        fromAthElement.textContent = formatPercentage(fromAthValue);
-        
-        if (fromAthLabelElement) {
-            if (fromAthValue >= -5) {
-                fromAthLabelElement.textContent = 'Near Peak';
-                fromAthElement.style.color = 'var(--accent-red)';
-            } else if (fromAthValue >= -30) {
-                fromAthLabelElement.textContent = 'Strong Zone';
-                fromAthElement.style.color = 'var(--accent-yellow)';
-            } else {
-                fromAthLabelElement.textContent = 'Accumulation Zone';
-                fromAthElement.style.color = 'var(--accent-green)';
-            }
-        }
-    }
-    
-    // Days Since Halving
-    const daysSinceHalvingElement = document.getElementById('daysSinceHalving');
-    if (daysSinceHalvingElement) {
-        const days = calculateDaysSinceHalving();
-        daysSinceHalvingElement.textContent = formatNumber(days, 0);
-    }
-    
-    // Circulating Supply
-    const supplyElement = document.getElementById('circulatingSupply');
-    if (supplyElement) {
-        const supply = marketData.circulating_supply;
-        supplyElement.textContent = formatNumber(supply / 1e6, 2) + ' M';
-    }
-    
-    // Composite Risk Score
-    if (fearGreed && global) {
-        const riskScore = calculateRiskScore(btc, fearGreed.value, global);
-        const riskScoreElement = document.getElementById('riskScore');
-        const riskBarFillElement = document.getElementById('riskBarFill');
-        const riskZoneElement = document.getElementById('riskZone');
-        
-        if (riskScore !== null && riskScoreElement) {
-            riskScoreElement.textContent = riskScore;
-            
-            if (riskBarFillElement) {
-                riskBarFillElement.style.width = riskScore + '%';
-                
-                const { zone, class: zoneClass } = getRiskZone(riskScore);
-                riskBarFillElement.className = 'risk-bar-fill ' + zoneClass;
-                
-                if (riskZoneElement) {
-                    riskZoneElement.textContent = zone;
-                }
-            }
-        }
-    }
-}
-
-/**
- * Update Layer 5: Stablecoin Liquidity
- */
-function updateLayer5() {
-    const { usdt, usdc } = dashboardData.stablecoins;
-    
-    if (!usdt || !usdc) return;
-    
-    // USDT Market Cap
-    const usdtElement = document.getElementById('usdtMarketCap');
-    if (usdtElement) {
-        const usdtMcap = usdt.market_data.market_cap.usd;
-        usdtElement.textContent = '$' + formatLargeNumber(usdtMcap, 2);
-    }
-    
-    // USDC Market Cap
-    const usdcElement = document.getElementById('usdcMarketCap');
-    if (usdcElement) {
-        const usdcMcap = usdc.market_data.market_cap.usd;
-        usdcElement.textContent = '$' + formatLargeNumber(usdcMcap, 2);
-    }
-    
-    // Total Stablecoin
-    const totalElement = document.getElementById('totalStablecoin');
-    if (totalElement) {
-        const total = usdt.market_data.market_cap.usd + usdc.market_data.market_cap.usd;
-        totalElement.textContent = '$' + formatLargeNumber(total, 2);
-    }
-}
-
-/**
- * Update Layer 7: Sentiment
- */
-function updateLayer7() {
-    const fearGreed = dashboardData.fearGreed;
-    
-    if (!fearGreed) return;
-    
-    const value = parseInt(fearGreed.value);
-    
-    // Fear & Greed Value
-    const valueElement = document.getElementById('fearGreedValue');
-    if (valueElement) {
-        valueElement.textContent = value;
-    }
-    
-    // Sentiment Bar
-    const barElement = document.getElementById('sentimentBarFill');
-    if (barElement) {
-        barElement.style.width = value + '%';
-    }
-    
-    // Classification
-    const classElement = document.getElementById('fearGreedClassification');
-    if (classElement) {
-        classElement.textContent = fearGreed.value_classification;
-    }
-    
-    // Fear & Greed Label
-    const labelElement = document.getElementById('fearGreedLabel');
-    if (labelElement) {
-        if (value <= 25) {
-            labelElement.textContent = 'Extreme Fear - Strong Buy Signal';
-        } else if (value <= 45) {
-            labelElement.textContent = 'Fear - Accumulation Phase';
-        } else if (value <= 55) {
-            labelElement.textContent = 'Neutral - Market Balance';
-        } else if (value <= 75) {
-            labelElement.textContent = 'Greed - Caution Advised';
-        } else {
-            labelElement.textContent = 'Extreme Greed - High Risk';
-        }
-    }
-    
-    // Interpretation
-    const interpElement = document.getElementById('sentimentInterpretation');
-    if (interpElement) {
-        interpElement.textContent = getSentimentInterpretation(value);
-    }
-}
-
-/**
- * Update all dashboard sections
- */
-function updateDashboard() {
-    updateMarketOverview();
-    updateLayer1();
-    updateLayer5();
-    updateLayer7();
-    updateTimestamp();
-}
-
-// ===================================
-// Main Data Fetch & Update Flow
-// ===================================
+// ========== MAIN DATA FETCH & UPDATE ==========
 
 /**
  * Fetch all data and update dashboard
  */
-async function fetchAllData() {
-    updateStatusIndicator('updating', 'Updating...');
+async function updateDashboard() {
+    console.log('Fetching dashboard data...');
     
     try {
         // Fetch all data in parallel
-        await Promise.all([
+        const [btcData, globalData, stablecoinData, sentimentData] = await Promise.all([
             fetchBitcoinData(),
             fetchGlobalData(),
-            fetchFearGreedIndex(),
-            fetchStablecoinData()
+            fetchStablecoinData(),
+            fetchFearGreedIndex()
         ]);
         
-        // Update dashboard with new data
-        updateDashboard();
+        // Update all sections
+        if (btcData && globalData) {
+            updateMarketOverview(btcData, globalData);
+            updatePriceCycle(btcData, globalData, sentimentData);
+        }
         
-        // Update status
-        updateStatusIndicator('live', 'Live');
+        if (stablecoinData) {
+            updateStablecoinLiquidity(stablecoinData);
+        }
+        
+        if (sentimentData) {
+            updateSentiment(sentimentData);
+        }
+        
+        updateTimestamp();
+        console.log('Dashboard updated successfully');
         
     } catch (error) {
-        console.error('Error fetching dashboard data:', error);
-        updateStatusIndicator('error', 'Update Failed');
+        console.error('Error updating dashboard:', error);
+        // Dashboard will show last successful data or fallback values
     }
 }
+
+// ========== INITIALIZATION ==========
 
 /**
- * Initialize dashboard
+ * Initialize dashboard on page load
  */
-async function initDashboard() {
-    console.log('Initializing Bitcoin Intelligence Dashboard...');
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('Bitcoin Intelligence Dashboard initialized');
     
     // Initial data fetch
-    await fetchAllData();
+    updateDashboard();
     
-    // Set up auto-refresh
-    if (updateTimer) {
-        clearInterval(updateTimer);
-    }
+    // Set up auto-refresh every 60 seconds
+    setInterval(updateDashboard, UPDATE_INTERVAL);
     
-    updateTimer = setInterval(() => {
-        fetchAllData();
-    }, UPDATE_INTERVAL);
-    
-    console.log(`Dashboard initialized. Auto-refresh every ${UPDATE_INTERVAL / 1000} seconds.`);
-}
+    console.log(`Auto-refresh enabled: every ${UPDATE_INTERVAL / 1000} seconds`);
+});
 
-// ===================================
-// Initialize on Page Load
-// ===================================
+// ========== ERROR HANDLING ==========
 
-// Wait for DOM to be ready
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initDashboard);
-} else {
-    // DOM is already ready
-    initDashboard();
-}
+// Global error handler
+window.addEventListener('error', (event) => {
+    console.error('Global error:', event.error);
+});
 
-// Clean up on page unload
-window.addEventListener('beforeunload', () => {
-    if (updateTimer) {
-        clearInterval(updateTimer);
-    }
+// Unhandled promise rejection handler
+window.addEventListener('unhandledrejection', (event) => {
+    console.error('Unhandled promise rejection:', event.reason);
 });
