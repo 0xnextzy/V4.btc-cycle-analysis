@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BTC Intelligence Terminal - Professional Market Analysis</title>
+    <link rel="stylesheet" href="style-pro.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    
+    <!-- Top Bar -->
+    <header class="terminal-header">
+        <div class="header-brand">
+            <div class="brand-icon">₿</div>
+            <div class="brand-text">
+                <div class="brand-title">BTC TERMINAL</div>
+                <div class="brand-subtitle">PROFESSIONAL MARKET INTELLIGENCE</div>
+            </div>
+        </div>
+        
+        <div class="header-metrics">
+            <div class="metric-card">
+                <div class="metric-label">BTC/USD</div>
+                <div class="metric-value" id="headerPrice">$--,---</div>
+                <div class="metric-change" id="headerChange">--%</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Market Regime</div>
+                <div class="metric-value regime-value" id="marketRegime">LOADING</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Health Score</div>
+                <div class="metric-value" id="healthScore">--</div>
+                <div class="health-bar">
+                    <div class="health-bar-fill" id="healthBarFill"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="header-status">
+            <div class="status-item">
+                <span class="status-dot" id="statusDot"></span>
+                <span class="status-text" id="statusText">CONNECTING</span>
+            </div>
+            <div class="last-update" id="lastUpdate">--:--:--</div>
+        </div>
+    </header>
+
+    <!-- Main Grid -->
+    <main class="terminal-main">
+        
+        <!-- Left Panel: Cycle & Price -->
+        <section class="panel panel-left">
+            <div class="panel-header">
+                <h2 class="panel-title">CYCLE & PRICE ANALYSIS</h2>
+                <div class="panel-indicator"></div>
+            </div>
+            
+            <!-- Price Chart -->
+            <div class="chart-container">
+                <canvas id="priceChart"></canvas>
+            </div>
+            
+            <!-- Cycle Metrics -->
+            <div class="metrics-grid">
+                <div class="metric-box">
+                    <div class="metric-box-label">Current Price</div>
+                    <div class="metric-box-value" id="currentPrice">$--,---</div>
+                </div>
+                <div class="metric-box">
+                    <div class="metric-box-label">ATH Distance</div>
+                    <div class="metric-box-value" id="athDistance">--%</div>
+                </div>
+                <div class="metric-box">
+                    <div class="metric-box-label">Days Since Halving</div>
+                    <div class="metric-box-value" id="daysSinceHalving">---</div>
+                </div>
+                <div class="metric-box">
+                    <div class="metric-box-label">Cycle Position</div>
+                    <div class="metric-box-value" id="cyclePosition">--%</div>
+                </div>
+            </div>
+            
+            <!-- Cycle Top Probability -->
+            <div class="gauge-container">
+                <div class="gauge-header">
+                    <h3 class="gauge-title">CYCLE TOP PROBABILITY</h3>
+                    <div class="gauge-value" id="topProbability">--%</div>
+                </div>
+                <div class="probability-bar">
+                    <div class="probability-fill" id="topProbabilityFill"></div>
+                </div>
+                <div class="gauge-zones">
+                    <span class="zone accumulation">Accumulation</span>
+                    <span class="zone markup">Markup</span>
+                    <span class="zone distribution">Distribution</span>
+                </div>
+            </div>
+            
+            <!-- Predicted Levels -->
+            <div class="prediction-box">
+                <div class="prediction-item">
+                    <span class="prediction-label">Predicted Cycle Top</span>
+                    <span class="prediction-value" id="predictedTop">$--,---</span>
+                </div>
+                <div class="prediction-item">
+                    <span class="prediction-label">Next Cycle Bottom</span>
+                    <span class="prediction-value" id="predictedBottom">$--,---</span>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Center Panel: Macro & Liquidity -->
+        <section class="panel panel-center">
+            <div class="panel-header">
+                <h2 class="panel-title">MACRO & LIQUIDITY</h2>
+                <div class="panel-indicator"></div>
+            </div>
+            
+            <!-- Liquidity Radar -->
+            <div class="radar-container">
+                <canvas id="liquidityRadar"></canvas>
+            </div>
+            
+            <!-- Macro Indicators -->
+            <div class="macro-grid">
+                <div class="macro-card">
+                    <div class="macro-icon">💵</div>
+                    <div class="macro-content">
+                        <div class="macro-label">Global M2 Supply</div>
+                        <div class="macro-value" id="m2Value">$-- T</div>
+                        <div class="macro-trend" id="m2Trend">--%</div>
+                    </div>
+                </div>
+                <div class="macro-card">
+                    <div class="macro-icon">📊</div>
+                    <div class="macro-content">
+                        <div class="macro-label">DXY Index</div>
+                        <div class="macro-value" id="dxyValue">--</div>
+                        <div class="macro-trend" id="dxyTrend">--%</div>
+                    </div>
+                </div>
+                <div class="macro-card">
+                    <div class="macro-icon">💰</div>
+                    <div class="macro-content">
+                        <div class="macro-label">Stablecoin Supply</div>
+                        <div class="macro-value" id="stablecoinValue">$-- B</div>
+                        <div class="macro-trend" id="stablecoinTrend">--%</div>
+                    </div>
+                </div>
+                <div class="macro-card">
+                    <div class="macro-icon">😱</div>
+                    <div class="macro-content">
+                        <div class="macro-label">Fear & Greed</div>
+                        <div class="macro-value" id="fearGreedValue">--</div>
+                        <div class="macro-trend" id="fearGreedLabel">---</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Recession Risk -->
+            <div class="risk-overlay">
+                <div class="risk-header">
+                    <h3 class="risk-title">RECESSION RISK OVERLAY</h3>
+                </div>
+                <div class="risk-chart-container">
+                    <canvas id="recessionChart"></canvas>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Right Panel: Risk & Signals -->
+        <section class="panel panel-right">
+            <div class="panel-header">
+                <h2 class="panel-title">RISK & SMART SIGNALS</h2>
+                <div class="panel-indicator"></div>
+            </div>
+            
+            <!-- Crash Probability Gauge -->
+            <div class="gauge-circular" id="crashGauge">
+                <svg viewBox="0 0 200 200" class="gauge-svg">
+                    <circle cx="100" cy="100" r="80" class="gauge-bg"></circle>
+                    <circle cx="100" cy="100" r="80" class="gauge-progress" id="crashGaugeProgress"></circle>
+                </svg>
+                <div class="gauge-center">
+                    <div class="gauge-center-value" id="crashProbability">--%</div>
+                    <div class="gauge-center-label">CRASH RISK</div>
+                </div>
+            </div>
+            
+            <!-- Bubble Detection -->
+            <div class="alert-box" id="bubbleAlert">
+                <div class="alert-icon">⚠️</div>
+                <div class="alert-content">
+                    <div class="alert-title">BUBBLE DETECTION</div>
+                    <div class="alert-value" id="bubbleStatus">MONITORING</div>
+                </div>
+            </div>
+            
+            <!-- Signal Cards -->
+            <div class="signals-grid">
+                <div class="signal-card" id="whaleSignal">
+                    <div class="signal-icon">🐋</div>
+                    <div class="signal-content">
+                        <div class="signal-label">Whale Activity</div>
+                        <div class="signal-status">NEUTRAL</div>
+                    </div>
+                </div>
+                <div class="signal-card" id="volumeSignal">
+                    <div class="signal-icon">📊</div>
+                    <div class="signal-content">
+                        <div class="signal-label">Volume Trend</div>
+                        <div class="signal-status">NORMAL</div>
+                    </div>
+                </div>
+                <div class="signal-card" id="momentumSignal">
+                    <div class="signal-icon">⚡</div>
+                    <div class="signal-content">
+                        <div class="signal-label">Momentum</div>
+                        <div class="signal-status">NEUTRAL</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Risk Breakdown -->
+            <div class="risk-breakdown">
+                <h3 class="breakdown-title">RISK FACTORS</h3>
+                <div class="risk-item">
+                    <span class="risk-item-label">Overvaluation</span>
+                    <div class="risk-item-bar">
+                        <div class="risk-item-fill" id="overvaluationRisk"></div>
+                    </div>
+                    <span class="risk-item-value" id="overvaluationValue">--%</span>
+                </div>
+                <div class="risk-item">
+                    <span class="risk-item-label">Momentum Exhaustion</span>
+                    <div class="risk-item-bar">
+                        <div class="risk-item-fill" id="momentumRisk"></div>
+                    </div>
+                    <span class="risk-item-value" id="momentumValue">--%</span>
+                </div>
+                <div class="risk-item">
+                    <span class="risk-item-label">Sentiment Extreme</span>
+                    <div class="risk-item-bar">
+                        <div class="risk-item-fill" id="sentimentRisk"></div>
+                    </div>
+                    <span class="risk-item-value" id="sentimentValue">--%</span>
+                </div>
+            </div>
+        </section>
+        
+    </main>
+
+    <!-- Bottom Panel: AI & Smart Tools -->
+    <footer class="terminal-footer">
+        <div class="smart-tools">
+            
+            <div class="tool-card">
+                <div class="tool-header">
+                    <div class="tool-icon">🎯</div>
+                    <h3 class="tool-title">SMART BUY ZONE</h3>
+                </div>
+                <div class="tool-content">
+                    <div class="zone-indicator" id="buyZoneIndicator">
+                        <div class="zone-status">EVALUATING</div>
+                        <div class="zone-price">Entry: $--,---</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tool-card">
+                <div class="tool-header">
+                    <div class="tool-icon">💎</div>
+                    <h3 class="tool-title">DCA ALLOCATOR</h3>
+                </div>
+                <div class="tool-content">
+                    <div class="dca-recommendation">
+                        <div class="dca-label">Suggested Allocation</div>
+                        <div class="dca-value" id="dcaAllocation">--%</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tool-card">
+                <div class="tool-header">
+                    <div class="tool-icon">⚖️</div>
+                    <h3 class="tool-title">FAIR VALUE</h3>
+                </div>
+                <div class="tool-content">
+                    <div class="fair-value-display">
+                        <div class="fv-estimate" id="fairValue">$--,---</div>
+                        <div class="fv-deviation" id="fairValueDev">--%</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tool-card">
+                <div class="tool-header">
+                    <div class="tool-icon">🤖</div>
+                    <h3 class="tool-title">AI CYCLE METER</h3>
+                </div>
+                <div class="tool-content">
+                    <div class="cycle-meter">
+                        <div class="cycle-meter-bar">
+                            <div class="cycle-meter-fill" id="cycleMeterFill"></div>
+                            <div class="cycle-meter-marker"></div>
+                        </div>
+                        <div class="cycle-meter-labels">
+                            <span>Bear</span>
+                            <span>Accumulation</span>
+                            <span>Bull</span>
+                            <span>Distribution</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </footer>
+
+    <!-- Alert Overlay -->
+    <div class="alert-overlay" id="alertOverlay" style="display: none;">
+        <div class="alert-overlay-content">
+            <div class="alert-overlay-icon" id="alertIcon">⚠️</div>
+            <div class="alert-overlay-title" id="alertTitle">ALERT</div>
+            <div class="alert-overlay-message" id="alertMessage">Message</div>
+        </div>
+    </div>
+
+    <script type="module" src="script-pro.js"></script>
+</body>
+</html>
