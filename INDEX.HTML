@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bitcoin Intelligence Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="header-left">
+                    <h1 class="header-title">Bitcoin Intelligence Dashboard</h1>
+                    <p class="header-subtitle">Multi-Layer Market Framework</p>
+                </div>
+                <div class="header-right">
+                    <div class="status-indicator">
+                        <span class="status-dot"></span>
+                        <span class="status-text">Live</span>
+                    </div>
+                    <div class="last-update">
+                        <span id="lastUpdate">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            
+            <!-- Live Market Overview -->
+            <section class="section">
+                <h2 class="section-title">Live Market Overview</h2>
+                <div class="grid grid-4">
+                    <div class="card">
+                        <div class="card-label">Bitcoin Price</div>
+                        <div class="card-value" id="btcPrice">$0</div>
+                        <div class="card-change" id="priceChange">0%</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-label">Market Cap</div>
+                        <div class="card-value" id="marketCap">$0</div>
+                        <div class="card-sublabel">Rank #<span id="marketCapRank">-</span></div>
+                    </div>
+                    <div class="card">
+                        <div class="card-label">24h Volume</div>
+                        <div class="card-value" id="volume24h">$0</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-label">BTC Dominance</div>
+                        <div class="card-value" id="btcDominance">0%</div>
+                        <div class="card-sublabel">Market Share</div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="divider"></div>
+
+            <!-- Layer 1: Price & Cycle -->
+            <section class="section">
+                <h2 class="section-title">
+                    <span class="layer-badge">Layer 1</span>
+                    Price & Cycle
+                </h2>
+                <div class="grid grid-3">
+                    <div class="card">
+                        <div class="card-label">Current Price</div>
+                        <div class="card-value" id="layer1Price">$0</div>
+                        <div class="card-sublabel">Live Market Price</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-label">All-Time High</div>
+                        <div class="card-value" id="athPrice">$0</div>
+                        <div class="card-sublabel" id="athDate">-</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-label">% From ATH</div>
+                        <div class="card-value" id="fromATH">0%</div>
+                        <div class="card-sublabel">Distance from Peak</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-label">Days Since Halving</div>
+                        <div class="card-value" id="daysSinceHalving">0</div>
+                        <div class="card-sublabel">April 20, 2024</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-label">Circulating Supply</div>
+                        <div class="card-value" id="circulatingSupply">0</div>
+                        <div class="card-sublabel">BTC in Circulation</div>
+                    </div>
+                    <div class="card card-highlight">
+                        <div class="card-label">Composite Risk Score</div>
+                        <div class="card-value" id="riskScore">0</div>
+                        <div class="risk-bar">
+                            <div class="risk-bar-fill" id="riskBarFill"></div>
+                        </div>
+                        <div class="card-sublabel" id="riskZone">Calculating...</div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="divider"></div>
+
+            <!-- Layer 2: On-Chain Metrics -->
+            <section class="section">
+                <h2 class="section-title">
+                    <span class="layer-badge">Layer 2</span>
+                    On-Chain Metrics
+                </h2>
+                <div class="info-card">
+                    <div class="info-icon">⛓️</div>
+                    <div class="info-content">
+                        <h3 class="info-title">Advanced On-Chain Data</h3>
+                        <p class="info-text">Requires Premium Provider (Glassnode/CryptoQuant)</p>
+                        <p class="info-subtext">Metrics include: MVRV Ratio, SOPR, Active Addresses, Exchange Flows, Whale Activity</p>
+                    </div>
+                </div>
+            </section>
+
+            <div class="divider"></div>
+
+            <!-- Layer 3: Macro Liquidity -->
+            <section class="section">
+                <h2 class="section-title">
+                    <span class="layer-badge">Layer 3</span>
+                    Macro Liquidity
+                </h2>
+                <div class="info-card">
+                    <div class="info-icon">🌐</div>
+                    <div class="info-content">
+                        <h3 class="info-title">Macro Data Integration Ready</h3>
+                        <p class="info-text">S&P 500, DXY, Interest Rates require financial API</p>
+                        <p class="info-subtext">Track global liquidity conditions and correlations with traditional markets</p>
+                    </div>
+                </div>
+            </section>
+
+            <div class="divider"></div>
+
+            <!-- Layer 4: Institutional Flow -->
+            <section class="section">
+                <h2 class="section-title">
+                    <span class="layer-badge">Layer 4</span>
+                    Institutional Flow
+                </h2>
+                <div class="info-card">
+                    <div class="info-icon">🏦</div>
+                    <div class="info-content">
+                        <h3 class="info-title">ETF & Institutional Flow Integration Ready</h3>
+                        <p class="info-text">Requires institutional data provider access</p>
+                        <p class="info-subtext">Monitor Bitcoin ETF flows, institutional adoption, and large holder movements</p>
+                    </div>
+                </div>
+            </section>
+
+            <div class="divider"></div>
+
+            <!-- Layer 5: Stablecoin Liquidity -->
+            <section class="section">
+                <h2 class="section-title">
+                    <span class="layer-badge">Layer 5</span>
+                    Stablecoin Liquidity
+                </h2>
+                <div class="grid grid-3">
+                    <div class="card">
+                        <div class="card-label">USDT Market Cap</div>
+                        <div class="card-value" id="usdtCap">$0</div>
+                        <div class="card-sublabel">Tether</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-label">USDC Market Cap</div>
+                        <div class="card-value" id="usdcCap">$0</div>
+                        <div class="card-sublabel">Circle</div>
+                    </div>
+                    <div class="card card-highlight">
+                        <div class="card-label">Total Stablecoin Cap</div>
+                        <div class="card-value" id="totalStablecoinCap">$0</div>
+                        <div class="card-sublabel">Available Liquidity</div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="divider"></div>
+
+            <!-- Layer 6: Derivatives -->
+            <section class="section">
+                <h2 class="section-title">
+                    <span class="layer-badge">Layer 6</span>
+                    Derivatives
+                </h2>
+                <div class="info-card">
+                    <div class="info-icon">📊</div>
+                    <div class="info-content">
+                        <h3 class="info-title">Derivatives Data</h3>
+                        <p class="info-text">Requires exchange API integration</p>
+                        <p class="info-subtext">Open Interest, Funding Rates, Liquidations, Options Flow</p>
+                    </div>
+                </div>
+            </section>
+
+            <div class="divider"></div>
+
+            <!-- Layer 7: Sentiment -->
+            <section class="section">
+                <h2 class="section-title">
+                    <span class="layer-badge">Layer 7</span>
+                    Sentiment
+                </h2>
+                <div class="grid grid-3">
+                    <div class="card card-highlight">
+                        <div class="card-label">Fear & Greed Index</div>
+                        <div class="card-value" id="fearGreedValue">0</div>
+                        <div class="card-sublabel" id="fearGreedClassification">Loading...</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-label">Market Sentiment</div>
+                        <div class="card-value sentiment-text" id="sentimentInterpretation">-</div>
+                        <div class="card-sublabel">Crowd Psychology</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-label">Sentiment Signal</div>
+                        <div class="card-value" id="sentimentSignal">-</div>
+                        <div class="card-sublabel">Contrarian Indicator</div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p class="footer-text">
+                <strong>Educational Purpose Only.</strong> This dashboard provides market data and analysis for informational purposes. 
+                Not financial advice. Cryptocurrency investments carry significant risk. Always conduct your own research.
+            </p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
