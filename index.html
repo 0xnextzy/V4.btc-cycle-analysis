@@ -3,334 +3,1461 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BTC Intelligence Terminal - Professional Market Analysis</title>
-    <link rel="stylesheet" href="style-pro.css">
+    <title>Bitcoin Cycle & Macro Intelligence Dashboard</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0b0f14;
+            --bg-panel: #11161d;
+            --bg-elevated: #1a1f2e;
+            --border-color: rgba(255, 255, 255, 0.06);
+            --text-primary: #e6edf3;
+            --text-secondary: #8b98a5;
+            --text-muted: #6e7681;
+            --bullish: #00ff9c;
+            --neutral: #f0b90b;
+            --bearish: #ff4d4f;
+            --info: #4da3ff;
+            --warning: #ff8c42;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* TOP NAV BAR */
+        .top-nav {
+            background: var(--bg-panel);
+            border-bottom: 1px solid var(--border-color);
+            padding: 16px 24px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-content {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            font-size: 32px;
+            animation: pulse-glow 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { filter: drop-shadow(0 0 6px var(--bullish)); }
+            50% { filter: drop-shadow(0 0 12px var(--bullish)); }
+        }
+
+        .logo-text h1 {
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .logo-text p {
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+
+        .nav-stats {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+        }
+
+        .nav-stat {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .nav-stat-label {
+            font-size: 10px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .nav-stat-value {
+            font-size: 18px;
+            font-weight: 700;
+            margin-top: 2px;
+        }
+
+        .nav-stat-value.bullish { color: var(--bullish); text-shadow: 0 0 10px rgba(0, 255, 156, 0.3); }
+        .nav-stat-value.bearish { color: var(--bearish); text-shadow: 0 0 10px rgba(255, 77, 79, 0.3); }
+        .nav-stat-value.neutral { color: var(--neutral); }
+
+        .health-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 24px;
+            font-size: 12px;
+            font-weight: 600;
+            border: 1px solid;
+        }
+
+        .health-badge.excellent {
+            background: rgba(0, 255, 156, 0.1);
+            border-color: rgba(0, 255, 156, 0.3);
+            color: var(--bullish);
+        }
+
+        .health-badge.good {
+            background: rgba(77, 163, 255, 0.1);
+            border-color: rgba(77, 163, 255, 0.3);
+            color: var(--info);
+        }
+
+        .health-badge.fair {
+            background: rgba(240, 185, 11, 0.1);
+            border-color: rgba(240, 185, 11, 0.3);
+            color: var(--neutral);
+        }
+
+        .health-badge.poor {
+            background: rgba(255, 77, 79, 0.1);
+            border-color: rgba(255, 77, 79, 0.3);
+            color: var(--bearish);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--bullish);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* MAIN DASHBOARD */
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .card {
+            background: var(--bg-panel);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: rgba(255, 255, 255, 0.12);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .card-title {
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+        }
+
+        .card-badge {
+            font-size: 10px;
+            padding: 4px 10px;
+            background: rgba(77, 163, 255, 0.15);
+            border: 1px solid rgba(77, 163, 255, 0.3);
+            border-radius: 6px;
+            color: var(--info);
+            font-weight: 600;
+        }
+
+        .span-3 { grid-column: span 3; }
+        .span-4 { grid-column: span 4; }
+        .span-6 { grid-column: span 6; }
+        .span-8 { grid-column: span 8; }
+        .span-12 { grid-column: span 12; }
+
+        /* CHART CONTAINER */
+        .chart-container {
+            position: relative;
+            height: 280px;
+            margin-top: 16px;
+        }
+
+        .chart-container.large {
+            height: 350px;
+        }
+
+        .chart-container.small {
+            height: 200px;
+        }
+
+        /* LAYER SYSTEM */
+        .layers-container {
+            display: grid;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .layer-item {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .layer-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .layer-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .layer-score {
+            font-size: 16px;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 6px;
+        }
+
+        .layer-score.bullish {
+            background: rgba(0, 255, 156, 0.2);
+            color: var(--bullish);
+        }
+
+        .layer-score.neutral {
+            background: rgba(240, 185, 11, 0.2);
+            color: var(--neutral);
+        }
+
+        .layer-score.bearish {
+            background: rgba(255, 77, 79, 0.2);
+            color: var(--bearish);
+        }
+
+        .layer-bar {
+            height: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .layer-bar-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.6s ease, background-color 0.3s ease;
+        }
+
+        .layer-description {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 8px;
+        }
+
+        /* MARKET HEALTH GAUGE */
+        .health-display {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .health-score {
+            font-size: 56px;
+            font-weight: 800;
+            margin: 16px 0;
+            background: linear-gradient(135deg, var(--bullish), var(--info));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .health-label {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        /* METRICS GRID */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        .metric {
+            background: var(--bg-elevated);
+            padding: 16px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .metric:hover {
+            border-color: rgba(77, 163, 255, 0.3);
+            background: rgba(77, 163, 255, 0.05);
+        }
+
+        .metric-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .metric-sub {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        /* SUPPORT/RESISTANCE */
+        .structure-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .structure-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+        }
+
+        .structure-type {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .structure-price {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .structure-strength {
+            font-size: 11px;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        .structure-strength.strong {
+            background: rgba(0, 255, 156, 0.2);
+            color: var(--bullish);
+        }
+
+        .structure-strength.moderate {
+            background: rgba(240, 185, 11, 0.2);
+            color: var(--neutral);
+        }
+
+        .structure-strength.weak {
+            background: rgba(255, 77, 79, 0.2);
+            color: var(--bearish);
+        }
+
+        /* SIGNALS */
+        .signals-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        .signal-card {
+            background: var(--bg-elevated);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px;
+            transition: all 0.3s ease;
+        }
+
+        .signal-card.active {
+            border-color: var(--bullish);
+            background: rgba(0, 255, 156, 0.05);
+            animation: signal-pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes signal-pulse {
+            0%, 100% { box-shadow: 0 0 15px rgba(0, 255, 156, 0.3); }
+            50% { box-shadow: 0 0 25px rgba(0, 255, 156, 0.5); }
+        }
+
+        .signal-card.warning {
+            border-color: var(--warning);
+            animation: warning-pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes warning-pulse {
+            0%, 100% { box-shadow: 0 0 15px rgba(255, 140, 66, 0.3); }
+            50% { box-shadow: 0 0 25px rgba(255, 140, 66, 0.5); }
+        }
+
+        .signal-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .signal-icon {
+            font-size: 28px;
+        }
+
+        .signal-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .signal-status {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        /* ALERTS */
+        .alert-box {
+            padding: 16px 20px;
+            border-radius: 12px;
+            border: 1px solid;
+            margin-top: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .alert-box.warning {
+            background: rgba(255, 140, 66, 0.1);
+            border-color: rgba(255, 140, 66, 0.3);
+            color: var(--warning);
+        }
+
+        .alert-box.danger {
+            background: rgba(255, 77, 79, 0.1);
+            border-color: rgba(255, 77, 79, 0.3);
+            color: var(--bearish);
+        }
+
+        .alert-icon {
+            font-size: 24px;
+        }
+
+        .alert-text {
+            flex: 1;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        /* FOOTER */
+        .footer {
+            background: var(--bg-panel);
+            border-top: 1px solid var(--border-color);
+            padding: 32px 24px;
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        .footer-text {
+            font-size: 12px;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            max-width: 900px;
+            margin: 0 auto 16px;
+        }
+
+        .footer-disclaimer {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 1200px) {
+            .span-3, .span-4, .span-6, .span-8 {
+                grid-column: span 12;
+            }
+            
+            .nav-stats {
+                flex-wrap: wrap;
+                gap: 16px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 16px;
+            }
+            
+            .grid {
+                gap: 16px;
+            }
+            
+            .card {
+                padding: 16px;
+            }
+            
+            .nav-content {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .chart-container {
+                height: 250px;
+            }
+        }
+
+        /* LOADING ANIMATION */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            border-top-color: var(--bullish);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
 </head>
 <body>
-    
-    <!-- Top Bar -->
-    <header class="terminal-header">
-        <div class="header-brand">
-            <div class="brand-icon">₿</div>
-            <div class="brand-text">
-                <div class="brand-title">BTC TERMINAL</div>
-                <div class="brand-subtitle">PROFESSIONAL MARKET INTELLIGENCE</div>
+    <!-- TOP NAV BAR -->
+    <nav class="top-nav">
+        <div class="nav-content">
+            <div class="nav-logo">
+                <div class="logo-icon">₿</div>
+                <div class="logo-text">
+                    <h1>Bitcoin Cycle & Macro Intelligence</h1>
+                    <p>Professional Market Analysis Dashboard</p>
+                </div>
             </div>
-        </div>
-        
-        <div class="header-metrics">
-            <div class="metric-card">
-                <div class="metric-label">BTC/USD</div>
-                <div class="metric-value" id="headerPrice">$--,---</div>
-                <div class="metric-change" id="headerChange">--%</div>
-            </div>
-            <div class="metric-card">
-                <div class="metric-label">Market Regime</div>
-                <div class="metric-value regime-value" id="marketRegime">LOADING</div>
-            </div>
-            <div class="metric-card">
-                <div class="metric-label">Health Score</div>
-                <div class="metric-value" id="healthScore">--</div>
-                <div class="health-bar">
-                    <div class="health-bar-fill" id="healthBarFill"></div>
+            
+            <div class="nav-stats">
+                <div class="nav-stat">
+                    <div class="nav-stat-label">BTC Price</div>
+                    <div class="nav-stat-value" id="navPrice">--</div>
+                </div>
+                <div class="nav-stat">
+                    <div class="nav-stat-label">24h Change</div>
+                    <div class="nav-stat-value" id="navChange">--</div>
+                </div>
+                <div class="nav-stat">
+                    <div class="nav-stat-label">Market Regime</div>
+                    <div class="nav-stat-value neutral" id="navRegime">--</div>
+                </div>
+                <div class="health-badge" id="navHealthBadge">
+                    <span class="status-dot"></span>
+                    <span id="navHealth">Loading...</span>
                 </div>
             </div>
         </div>
-        
-        <div class="header-status">
-            <div class="status-item">
-                <span class="status-dot" id="statusDot"></span>
-                <span class="status-text" id="statusText">CONNECTING</span>
-            </div>
-            <div class="last-update" id="lastUpdate">--:--:--</div>
-        </div>
-    </header>
+    </nav>
 
-    <!-- Main Grid -->
-    <main class="terminal-main">
+    <!-- MAIN DASHBOARD -->
+    <div class="container">
         
-        <!-- Left Panel: Cycle & Price -->
-        <section class="panel panel-left">
-            <div class="panel-header">
-                <h2 class="panel-title">CYCLE & PRICE ANALYSIS</h2>
-                <div class="panel-indicator"></div>
-            </div>
-            
-            <!-- Price Chart -->
-            <div class="chart-container">
-                <canvas id="priceChart"></canvas>
-            </div>
-            
-            <!-- Cycle Metrics -->
-            <div class="metrics-grid">
-                <div class="metric-box">
-                    <div class="metric-box-label">Current Price</div>
-                    <div class="metric-box-value" id="currentPrice">$--,---</div>
+        <!-- ROW 1: PRICE CHART + MARKET HEALTH -->
+        <div class="grid">
+            <div class="card span-8">
+                <div class="card-header">
+                    <h2 class="card-title">Bitcoin Price Analysis</h2>
+                    <span class="card-badge">Real-Time</span>
                 </div>
-                <div class="metric-box">
-                    <div class="metric-box-label">ATH Distance</div>
-                    <div class="metric-box-value" id="athDistance">--%</div>
-                </div>
-                <div class="metric-box">
-                    <div class="metric-box-label">Days Since Halving</div>
-                    <div class="metric-box-value" id="daysSinceHalving">---</div>
-                </div>
-                <div class="metric-box">
-                    <div class="metric-box-label">Cycle Position</div>
-                    <div class="metric-box-value" id="cyclePosition">--%</div>
+                <div class="chart-container large">
+                    <canvas id="priceChart"></canvas>
                 </div>
             </div>
-            
-            <!-- Cycle Top Probability -->
-            <div class="gauge-container">
-                <div class="gauge-header">
-                    <h3 class="gauge-title">CYCLE TOP PROBABILITY</h3>
-                    <div class="gauge-value" id="topProbability">--%</div>
-                </div>
-                <div class="probability-bar">
-                    <div class="probability-fill" id="topProbabilityFill"></div>
-                </div>
-                <div class="gauge-zones">
-                    <span class="zone accumulation">Accumulation</span>
-                    <span class="zone markup">Markup</span>
-                    <span class="zone distribution">Distribution</span>
-                </div>
-            </div>
-            
-            <!-- Predicted Levels -->
-            <div class="prediction-box">
-                <div class="prediction-item">
-                    <span class="prediction-label">Predicted Cycle Top</span>
-                    <span class="prediction-value" id="predictedTop">$--,---</span>
-                </div>
-                <div class="prediction-item">
-                    <span class="prediction-label">Next Cycle Bottom</span>
-                    <span class="prediction-value" id="predictedBottom">$--,---</span>
-                </div>
-            </div>
-        </section>
-        
-        <!-- Center Panel: Macro & Liquidity -->
-        <section class="panel panel-center">
-            <div class="panel-header">
-                <h2 class="panel-title">MACRO & LIQUIDITY</h2>
-                <div class="panel-indicator"></div>
-            </div>
-            
-            <!-- Liquidity Radar -->
-            <div class="radar-container">
-                <canvas id="liquidityRadar"></canvas>
-            </div>
-            
-            <!-- Macro Indicators -->
-            <div class="macro-grid">
-                <div class="macro-card">
-                    <div class="macro-icon">💵</div>
-                    <div class="macro-content">
-                        <div class="macro-label">Global M2 Supply</div>
-                        <div class="macro-value" id="m2Value">$-- T</div>
-                        <div class="macro-trend" id="m2Trend">--%</div>
-                    </div>
-                </div>
-                <div class="macro-card">
-                    <div class="macro-icon">📊</div>
-                    <div class="macro-content">
-                        <div class="macro-label">DXY Index</div>
-                        <div class="macro-value" id="dxyValue">--</div>
-                        <div class="macro-trend" id="dxyTrend">--%</div>
-                    </div>
-                </div>
-                <div class="macro-card">
-                    <div class="macro-icon">💰</div>
-                    <div class="macro-content">
-                        <div class="macro-label">Stablecoin Supply</div>
-                        <div class="macro-value" id="stablecoinValue">$-- B</div>
-                        <div class="macro-trend" id="stablecoinTrend">--%</div>
-                    </div>
-                </div>
-                <div class="macro-card">
-                    <div class="macro-icon">😱</div>
-                    <div class="macro-content">
-                        <div class="macro-label">Fear & Greed</div>
-                        <div class="macro-value" id="fearGreedValue">--</div>
-                        <div class="macro-trend" id="fearGreedLabel">---</div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Recession Risk -->
-            <div class="risk-overlay">
-                <div class="risk-header">
-                    <h3 class="risk-title">RECESSION RISK OVERLAY</h3>
-                </div>
-                <div class="risk-chart-container">
-                    <canvas id="recessionChart"></canvas>
-                </div>
-            </div>
-        </section>
-        
-        <!-- Right Panel: Risk & Signals -->
-        <section class="panel panel-right">
-            <div class="panel-header">
-                <h2 class="panel-title">RISK & SMART SIGNALS</h2>
-                <div class="panel-indicator"></div>
-            </div>
-            
-            <!-- Crash Probability Gauge -->
-            <div class="gauge-circular" id="crashGauge">
-                <svg viewBox="0 0 200 200" class="gauge-svg">
-                    <circle cx="100" cy="100" r="80" class="gauge-bg"></circle>
-                    <circle cx="100" cy="100" r="80" class="gauge-progress" id="crashGaugeProgress"></circle>
-                </svg>
-                <div class="gauge-center">
-                    <div class="gauge-center-value" id="crashProbability">--%</div>
-                    <div class="gauge-center-label">CRASH RISK</div>
-                </div>
-            </div>
-            
-            <!-- Bubble Detection -->
-            <div class="alert-box" id="bubbleAlert">
-                <div class="alert-icon">⚠️</div>
-                <div class="alert-content">
-                    <div class="alert-title">BUBBLE DETECTION</div>
-                    <div class="alert-value" id="bubbleStatus">MONITORING</div>
-                </div>
-            </div>
-            
-            <!-- Signal Cards -->
-            <div class="signals-grid">
-                <div class="signal-card" id="whaleSignal">
-                    <div class="signal-icon">🐋</div>
-                    <div class="signal-content">
-                        <div class="signal-label">Whale Activity</div>
-                        <div class="signal-status">NEUTRAL</div>
-                    </div>
-                </div>
-                <div class="signal-card" id="volumeSignal">
-                    <div class="signal-icon">📊</div>
-                    <div class="signal-content">
-                        <div class="signal-label">Volume Trend</div>
-                        <div class="signal-status">NORMAL</div>
-                    </div>
-                </div>
-                <div class="signal-card" id="momentumSignal">
-                    <div class="signal-icon">⚡</div>
-                    <div class="signal-content">
-                        <div class="signal-label">Momentum</div>
-                        <div class="signal-status">NEUTRAL</div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Risk Breakdown -->
-            <div class="risk-breakdown">
-                <h3 class="breakdown-title">RISK FACTORS</h3>
-                <div class="risk-item">
-                    <span class="risk-item-label">Overvaluation</span>
-                    <div class="risk-item-bar">
-                        <div class="risk-item-fill" id="overvaluationRisk"></div>
-                    </div>
-                    <span class="risk-item-value" id="overvaluationValue">--%</span>
-                </div>
-                <div class="risk-item">
-                    <span class="risk-item-label">Momentum Exhaustion</span>
-                    <div class="risk-item-bar">
-                        <div class="risk-item-fill" id="momentumRisk"></div>
-                    </div>
-                    <span class="risk-item-value" id="momentumValue">--%</span>
-                </div>
-                <div class="risk-item">
-                    <span class="risk-item-label">Sentiment Extreme</span>
-                    <div class="risk-item-bar">
-                        <div class="risk-item-fill" id="sentimentRisk"></div>
-                    </div>
-                    <span class="risk-item-value" id="sentimentValue">--%</span>
-                </div>
-            </div>
-        </section>
-        
-    </main>
 
-    <!-- Bottom Panel: AI & Smart Tools -->
-    <footer class="terminal-footer">
-        <div class="smart-tools">
-            
-            <div class="tool-card">
-                <div class="tool-header">
-                    <div class="tool-icon">🎯</div>
-                    <h3 class="tool-title">SMART BUY ZONE</h3>
+            <div class="card span-4">
+                <div class="card-header">
+                    <h2 class="card-title">Market Health Score</h2>
                 </div>
-                <div class="tool-content">
-                    <div class="zone-indicator" id="buyZoneIndicator">
-                        <div class="zone-status">EVALUATING</div>
-                        <div class="zone-price">Entry: $--,---</div>
+                <div class="health-display">
+                    <canvas id="healthGauge" style="max-height: 180px;"></canvas>
+                    <div class="health-score" id="healthScore">--</div>
+                    <div class="health-label" id="healthLabel">Analyzing...</div>
+                </div>
+                <div id="healthAlert"></div>
+            </div>
+        </div>
+
+        <!-- ROW 2: KEY METRICS -->
+        <div class="grid">
+            <div class="card span-12">
+                <div class="card-header">
+                    <h2 class="card-title">Market Metrics</h2>
+                </div>
+                <div class="metrics-grid">
+                    <div class="metric">
+                        <div class="metric-label">Current Price</div>
+                        <div class="metric-value" id="currentPrice">--</div>
+                        <div class="metric-sub" id="priceChange">--</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-label">Market Cap</div>
+                        <div class="metric-value" id="marketCap">--</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-label">24h Volume</div>
+                        <div class="metric-value" id="volume">--</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-label">BTC Dominance</div>
+                        <div class="metric-value" id="dominance">--</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-label">Days Since Halving</div>
+                        <div class="metric-value" id="daysHalving">--</div>
+                        <div class="metric-sub">April 20, 2024</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-label">% From ATH</div>
+                        <div class="metric-value" id="fromATH">--</div>
                     </div>
                 </div>
             </div>
-            
-            <div class="tool-card">
-                <div class="tool-header">
-                    <div class="tool-icon">💎</div>
-                    <h3 class="tool-title">DCA ALLOCATOR</h3>
+        </div>
+
+        <!-- ROW 3: LAYER 1-7 ANALYSIS -->
+        <div class="grid">
+            <div class="card span-6">
+                <div class="card-header">
+                    <h2 class="card-title">Layer 1-7 Market Analysis</h2>
+                    <span class="card-badge">Multi-Factor</span>
                 </div>
-                <div class="tool-content">
-                    <div class="dca-recommendation">
-                        <div class="dca-label">Suggested Allocation</div>
-                        <div class="dca-value" id="dcaAllocation">--%</div>
+                <div class="layers-container" id="layersContainer"></div>
+            </div>
+
+            <div class="card span-6">
+                <div class="card-header">
+                    <h2 class="card-title">Market Structure & Support</h2>
+                    <span class="card-badge">Auto-Detected</span>
+                </div>
+                <div class="structure-list" id="structureList"></div>
+            </div>
+        </div>
+
+        <!-- ROW 4: SMART SIGNALS -->
+        <div class="grid">
+            <div class="card span-12">
+                <div class="card-header">
+                    <h2 class="card-title">Smart Trading Signals</h2>
+                </div>
+                <div class="signals-grid" id="signalsGrid"></div>
+            </div>
+        </div>
+
+        <!-- ROW 5: CYCLE & SENTIMENT -->
+        <div class="grid">
+            <div class="card span-6">
+                <div class="card-header">
+                    <h2 class="card-title">Cycle Position</h2>
+                </div>
+                <div class="chart-container small">
+                    <canvas id="cycleChart"></canvas>
+                </div>
+                <div class="metrics-grid" style="margin-top: 16px;">
+                    <div class="metric">
+                        <div class="metric-label">Cycle Position</div>
+                        <div class="metric-value" id="cyclePosition">--</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-label">Top Probability</div>
+                        <div class="metric-value" id="topProb">--</div>
                     </div>
                 </div>
             </div>
-            
-            <div class="tool-card">
-                <div class="tool-header">
-                    <div class="tool-icon">⚖️</div>
-                    <h3 class="tool-title">FAIR VALUE</h3>
+
+            <div class="card span-6">
+                <div class="card-header">
+                    <h2 class="card-title">Fear & Greed Index</h2>
                 </div>
-                <div class="tool-content">
-                    <div class="fair-value-display">
-                        <div class="fv-estimate" id="fairValue">$--,---</div>
-                        <div class="fv-deviation" id="fairValueDev">--%</div>
+                <div class="chart-container small">
+                    <canvas id="sentimentChart"></canvas>
+                </div>
+                <div class="metrics-grid" style="margin-top: 16px;">
+                    <div class="metric">
+                        <div class="metric-label">Fear & Greed</div>
+                        <div class="metric-value" id="fearGreed">--</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-label">Classification</div>
+                        <div class="metric-value" id="fearLabel" style="font-size: 16px;">--</div>
                     </div>
                 </div>
             </div>
-            
-            <div class="tool-card">
-                <div class="tool-header">
-                    <div class="tool-icon">🤖</div>
-                    <h3 class="tool-title">AI CYCLE METER</h3>
+        </div>
+
+        <!-- ROW 6: ADDITIONAL INFO -->
+        <div class="grid">
+            <div class="card span-12">
+                <div class="card-header">
+                    <h2 class="card-title">Market Information</h2>
                 </div>
-                <div class="tool-content">
-                    <div class="cycle-meter">
-                        <div class="cycle-meter-bar">
-                            <div class="cycle-meter-fill" id="cycleMeterFill"></div>
-                            <div class="cycle-meter-marker"></div>
-                        </div>
-                        <div class="cycle-meter-labels">
-                            <span>Bear</span>
-                            <span>Accumulation</span>
-                            <span>Bull</span>
-                            <span>Distribution</span>
-                        </div>
+                <div class="metrics-grid">
+                    <div class="metric">
+                        <div class="metric-label">Stablecoin Liquidity</div>
+                        <div class="metric-value" id="stablecoin">--</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-label">All-Time High</div>
+                        <div class="metric-value" id="ath">--</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-label">Circulating Supply</div>
+                        <div class="metric-value" id="supply">--</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-label">Last Update</div>
+                        <div class="metric-value" id="lastUpdate" style="font-size: 14px;">--</div>
                     </div>
                 </div>
             </div>
-            
+        </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-text">
+            <strong>Educational Disclaimer:</strong> This dashboard provides market data and analysis for educational purposes only. 
+            All indicators are probabilistic models and should not be used as the sole basis for investment decisions.
+            Not financial advice. Cryptocurrency investments carry significant risk. Always conduct your own research.
+        </div>
+        <div class="footer-disclaimer">
+            Data Sources: CoinGecko API • Alternative.me Fear & Greed Index • Real-time Multi-Factor Analysis Engine
+            <br>© 2024 Bitcoin Cycle & Macro Intelligence Dashboard • Updates every 60 seconds
         </div>
     </footer>
 
-    <!-- Alert Overlay -->
-    <div class="alert-overlay" id="alertOverlay" style="display: none;">
-        <div class="alert-overlay-content">
-            <div class="alert-overlay-icon" id="alertIcon">⚠️</div>
-            <div class="alert-overlay-title" id="alertTitle">ALERT</div>
-            <div class="alert-overlay-message" id="alertMessage">Message</div>
-        </div>
-    </div>
+    <script>
+        // ============================================
+        // CONFIGURATION
+        // ============================================
+        const CONFIG = {
+            HALVING_DATE: new Date('2024-04-20'),
+            GENESIS_DATE: new Date('2009-01-03'),
+            UPDATE_INTERVAL: 60000,
+            FETCH_TIMEOUT: 8000,
+            API: {
+                bitcoin: 'https://api.coingecko.com/api/v3/coins/bitcoin',
+                global: 'https://api.coingecko.com/api/v3/global',
+                usdt: 'https://api.coingecko.com/api/v3/coins/tether',
+                usdc: 'https://api.coingecko.com/api/v3/coins/usd-coin',
+                fearGreed: 'https://api.alternative.me/fng/'
+            }
+        };
 
-    <script type="module" src="script-pro.js"></script>
+        // State
+        let charts = {};
+        let priceHistory = [];
+        let lastValues = {};
+
+        // ============================================
+        // UTILITIES
+        // ============================================
+        function safe(num, fallback = 0) {
+            return isFinite(num) && !isNaN(num) ? num : fallback;
+        }
+
+        function fmt(num, decimals = 0) {
+            if (!isFinite(num)) return '--';
+            return new Intl.NumberFormat('en-US', { 
+                minimumFractionDigits: decimals,
+                maximumFractionDigits: decimals 
+            }).format(num);
+        }
+
+        function fmtLarge(num) {
+            if (!isFinite(num)) return '--';
+            const abs = Math.abs(num);
+            if (abs >= 1e12) return `$${(num/1e12).toFixed(2)}T`;
+            if (abs >= 1e9) return `$${(num/1e9).toFixed(2)}B`;
+            if (abs >= 1e6) return `$${(num/1e6).toFixed(2)}M`;
+            return `$${fmt(num, 0)}`;
+        }
+
+        function fmtPercent(num) {
+            if (!isFinite(num)) return '--';
+            return `${num >= 0 ? '+' : ''}${num.toFixed(2)}%`;
+        }
+
+        async function fetchJSON(url) {
+            try {
+                const controller = new AbortController();
+                const timeout = setTimeout(() => controller.abort(), CONFIG.FETCH_TIMEOUT);
+                const response = await fetch(url, { signal: controller.signal });
+                clearTimeout(timeout);
+                if (!response.ok) throw new Error('HTTP error');
+                return await response.json();
+            } catch (error) {
+                console.error('Fetch error:', error);
+                return null;
+            }
+        }
+
+        function getDays(date) {
+            return Math.floor((Date.now() - date) / (1000 * 60 * 60 * 24));
+        }
+
+        // ============================================
+        // LAYER 1-7 SCORING SYSTEM
+        // ============================================
+        const LayerSystem = {
+            // Layer 1: Price Trend
+            scorePriceTrend(price, ema50, ema200) {
+                let score = 50;
+                if (price > ema200) score += 25;
+                if (price > ema50) score += 15;
+                if (ema50 > ema200) score += 10;
+                return safe(score, 50);
+            },
+
+            // Layer 2: Momentum (using 24h change as proxy)
+            scoreMomentum(change24h) {
+                let score = 50;
+                if (change24h > 5) score = 85;
+                else if (change24h > 2) score = 70;
+                else if (change24h > 0) score = 60;
+                else if (change24h > -2) score = 40;
+                else if (change24h > -5) score = 30;
+                else score = 15;
+                return safe(score, 50);
+            },
+
+            // Layer 3: Volatility
+            scoreVolatility(change24h) {
+                const vol = Math.abs(change24h);
+                let score = 50;
+                if (vol < 2) score = 70; // Low volatility = healthier
+                else if (vol < 5) score = 50;
+                else if (vol < 10) score = 30;
+                else score = 20;
+                return safe(score, 50);
+            },
+
+            // Layer 4: Liquidity & Macro
+            scoreLiquidity(stablecoinCap, btcDom) {
+                let score = 50;
+                if (stablecoinCap > 140e9) score += 20;
+                else if (stablecoinCap > 120e9) score += 10;
+                if (btcDom > 50) score += 15;
+                else if (btcDom > 45) score += 5;
+                return safe(Math.min(100, score), 50);
+            },
+
+            // Layer 5: Sentiment
+            scoreSentiment(fearGreed) {
+                // Contrarian: extreme fear = opportunity
+                let score = 50;
+                if (fearGreed < 25) score = 80; // Extreme fear = buy
+                else if (fearGreed < 40) score = 70;
+                else if (fearGreed < 55) score = 50;
+                else if (fearGreed < 70) score = 40;
+                else if (fearGreed < 85) score = 25;
+                else score = 10; // Extreme greed = caution
+                return safe(score, 50);
+            },
+
+            // Layer 6: Market Structure
+            scoreStructure(price, ath, cyclePos) {
+                let score = 50;
+                const pctFromATH = ((price - ath) / ath) * 100;
+                if (pctFromATH > -10) score = 30; // Too close to ATH
+                else if (pctFromATH > -30) score = 50;
+                else if (pctFromATH > -50) score = 70;
+                else score = 85; // Deep drawdown = opportunity
+                
+                if (cyclePos < 0.3) score = Math.min(100, score + 15);
+                return safe(score, 50);
+            },
+
+            // Layer 7: Cycle Position
+            scoreCyclePosition(cyclePos, daysHalving) {
+                let score = 50;
+                if (cyclePos < 0.2) score = 85;
+                else if (cyclePos < 0.4) score = 70;
+                else if (cyclePos < 0.6) score = 50;
+                else if (cyclePos < 0.8) score = 30;
+                else score = 15;
+                
+                // Adjust for time since halving
+                if (daysHalving < 180) score = Math.min(100, score + 10);
+                else if (daysHalving > 550) score = Math.max(0, score - 10);
+                
+                return safe(score, 50);
+            },
+
+            // Calculate all layers
+            calculateAll(data) {
+                const ema50 = data.price * 0.98; // Simplified EMA approximation
+                const ema200 = data.price * 0.95;
+                
+                return {
+                    layer1: this.scorePriceTrend(data.price, ema50, ema200),
+                    layer2: this.scoreMomentum(data.change24h),
+                    layer3: this.scoreVolatility(data.change24h),
+                    layer4: this.scoreLiquidity(data.stablecoin, data.dominance),
+                    layer5: this.scoreSentiment(data.fearGreed),
+                    layer6: this.scoreStructure(data.price, data.ath, data.cyclePos),
+                    layer7: this.scoreCyclePosition(data.cyclePos, data.daysHalving)
+                };
+            },
+
+            // Composite Market Health Score
+            calculateMarketHealth(layers) {
+                const weights = [0.20, 0.15, 0.10, 0.15, 0.10, 0.15, 0.15];
+                const values = [layers.layer1, layers.layer2, layers.layer3, layers.layer4, 
+                               layers.layer5, layers.layer6, layers.layer7];
+                const score = values.reduce((sum, val, i) => sum + val * weights[i], 0);
+                return Math.round(safe(score, 50));
+            }
+        };
+
+        // ============================================
+        // MARKET STRUCTURE (Support/Resistance)
+        // ============================================
+        const MarketStructure = {
+            detectStructure(price, ath, cyclePos) {
+                const structure = [];
+                
+                // Recent ATH as resistance
+                structure.push({
+                    type: 'Resistance',
+                    price: ath,
+                    strength: 'Strong'
+                });
+                
+                // Psychological levels
+                const roundLevel = Math.floor(price / 10000) * 10000;
+                if (price < roundLevel + 5000) {
+                    structure.push({
+                        type: 'Support',
+                        price: roundLevel,
+                        strength: 'Moderate'
+                    });
+                }
+                
+                // Cycle-based support
+                const genesis = getDays(CONFIG.GENESIS_DATE);
+                const support = 0.0000001 * Math.pow(genesis, 5.8);
+                structure.push({
+                    type: 'Support',
+                    price: support,
+                    strength: 'Strong'
+                });
+                
+                // Recent swing levels (simplified)
+                structure.push({
+                    type: 'Support',
+                    price: price * 0.85,
+                    strength: 'Weak'
+                });
+                
+                structure.push({
+                    type: 'Resistance',
+                    price: price * 1.15,
+                    strength: 'Moderate'
+                });
+                
+                return structure.sort((a, b) => b.price - a.price);
+            }
+        };
+
+        // ============================================
+        // SMART SIGNALS
+        // ============================================
+        const SmartSignals = {
+            evaluate(data, layers, health) {
+                const signals = [];
+                
+                // Buy Zone
+                const buyActive = data.cyclePos < 0.3 && data.fearGreed < 35 && data.fromATH < -30;
+                signals.push({
+                    icon: '🟢',
+                    title: 'Smart Buy Zone',
+                    status: buyActive ? 'ACTIVE - Accumulation Phase' : 'Not Active',
+                    active: buyActive
+                });
+                
+                // DCA Signal
+                let dcaStatus = 'Monitor';
+                if (data.cyclePos < 0.4 && health > 60) dcaStatus = 'Aggressive (3x normal)';
+                else if (data.cyclePos < 0.6) dcaStatus = 'Normal (1x)';
+                else if (data.cyclePos < 0.8) dcaStatus = 'Conservative (0.5x)';
+                else dcaStatus = 'Pause DCA';
+                
+                signals.push({
+                    icon: '🔵',
+                    title: 'DCA Recommended',
+                    status: dcaStatus,
+                    active: dcaStatus !== 'Pause DCA'
+                });
+                
+                // Hold Signal
+                const holdActive = data.cyclePos >= 0.3 && data.cyclePos <= 0.7 && health > 40;
+                signals.push({
+                    icon: '🟡',
+                    title: 'Hold & Monitor',
+                    status: holdActive ? 'ACTIVE - Stable Phase' : 'Not Recommended',
+                    active: holdActive
+                });
+                
+                // Exit Warning
+                const exitActive = data.cyclePos > 0.8 || health < 30 || data.fearGreed > 85;
+                signals.push({
+                    icon: '🔴',
+                    title: 'Exit Warning',
+                    status: exitActive ? '⚠️ Consider Taking Profits' : 'Not Active',
+                    active: exitActive,
+                    warning: exitActive
+                });
+                
+                return signals;
+            }
+        };
+
+        // ============================================
+        // CYCLE CALCULATIONS
+        // ============================================
+        function calculateCyclePosition(price) {
+            const days = getDays(CONFIG.GENESIS_DATE);
+            const support = 0.0000001 * Math.pow(days, 5.8);
+            const resistance = 0.00001 * Math.pow(days, 5.8);
+            const pos = (price - support) / (resistance - support);
+            return Math.max(0, Math.min(1, safe(pos, 0.5)));
+        }
+
+        // ============================================
+        // CHART INITIALIZATION
+        // ============================================
+        function initCharts() {
+            // Price Chart
+            const priceCtx = document.getElementById('priceChart');
+            charts.price = new Chart(priceCtx, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'BTC Price',
+                        data: [],
+                        borderColor: '#00ff9c',
+                        backgroundColor: 'rgba(0, 255, 156, 0.1)',
+                        borderWidth: 2,
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'rgba(17, 22, 29, 0.95)',
+                            titleColor: '#e6edf3',
+                            bodyColor: '#8b98a5',
+                            borderColor: '#00ff9c',
+                            borderWidth: 1
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                            ticks: { color: '#6e7681', font: { size: 10 } }
+                        },
+                        y: {
+                            grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                            ticks: {
+                                color: '#6e7681',
+                                callback: v => '$' + v.toLocaleString()
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Health Gauge
+            const healthCtx = document.getElementById('healthGauge');
+            charts.health = new Chart(healthCtx, {
+                type: 'doughnut',
+                data: {
+                    datasets: [{
+                        data: [0, 100],
+                        backgroundColor: ['#00ff9c', 'rgba(255, 255, 255, 0.05)'],
+                        borderWidth: 0,
+                        circumference: 180,
+                        rotation: 270
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '75%',
+                    plugins: { legend: { display: false }, tooltip: { enabled: false } }
+                }
+            });
+
+            // Cycle Chart
+            const cycleCtx = document.getElementById('cycleChart');
+            charts.cycle = new Chart(cycleCtx, {
+                type: 'doughnut',
+                data: {
+                    datasets: [{
+                        data: [0, 100],
+                        backgroundColor: ['#4da3ff', 'rgba(255, 255, 255, 0.05)'],
+                        borderWidth: 0,
+                        circumference: 180,
+                        rotation: 270
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '75%',
+                    plugins: { legend: { display: false }, tooltip: { enabled: false } }
+                }
+            });
+
+            // Sentiment Chart
+            const sentCtx = document.getElementById('sentimentChart');
+            charts.sentiment = new Chart(sentCtx, {
+                type: 'doughnut',
+                data: {
+                    datasets: [{
+                        data: [0, 100],
+                        backgroundColor: ['#f0b90b', 'rgba(255, 255, 255, 0.05)'],
+                        borderWidth: 0,
+                        circumference: 180,
+                        rotation: 270
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '75%',
+                    plugins: { legend: { display: false }, tooltip: { enabled: false } }
+                }
+            });
+        }
+
+        // ============================================
+        // UPDATE DASHBOARD
+        // ============================================
+        async function updateDashboard() {
+            console.log('🔄 Updating dashboard...');
+            
+            try {
+                const [btc, global, usdt, usdc, sentiment] = await Promise.all([
+                    fetchJSON(CONFIG.API.bitcoin),
+                    fetchJSON(CONFIG.API.global),
+                    fetchJSON(CONFIG.API.usdt),
+                    fetchJSON(CONFIG.API.usdc),
+                    fetchJSON(CONFIG.API.fearGreed)
+                ]);
+
+                if (!btc?.market_data) {
+                    console.error('Invalid data');
+                    return;
+                }
+
+                // Extract data
+                const price = btc.market_data.current_price.usd;
+                const change24h = btc.market_data.price_change_percentage_24h;
+                const marketCap = btc.market_data.market_cap.usd;
+                const volume = btc.market_data.total_volume.usd;
+                const ath = btc.market_data.ath.usd;
+                const supply = btc.market_data.circulating_supply;
+                const dominance = global?.data?.market_cap_percentage?.btc || 50;
+                
+                const usdtCap = usdt?.market_data?.market_cap?.usd || 0;
+                const usdcCap = usdc?.market_data?.market_cap?.usd || 0;
+                const stablecoin = usdtCap + usdcCap;
+                
+                const fearGreed = sentiment?.data?.[0] ? parseInt(sentiment.data[0].value) : 50;
+                const fearLabel = sentiment?.data?.[0]?.value_classification || 'Neutral';
+
+                // Calculations
+                const cyclePos = calculateCyclePosition(price);
+                const fromATH = ((price - ath) / ath) * 100;
+                const daysHalving = getDays(CONFIG.HALVING_DATE);
+                const topProb = Math.min(100, cyclePos * 100 + (daysHalving / 550) * 50);
+
+                const data = {
+                    price, change24h, marketCap, volume, ath, supply, dominance,
+                    stablecoin, fearGreed, cyclePos, fromATH, daysHalving
+                };
+
+                // Calculate layers
+                const layers = LayerSystem.calculateAll(data);
+                const health = LayerSystem.calculateMarketHealth(layers);
+                
+                // Market structure
+                const structure = MarketStructure.detectStructure(price, ath, cyclePos);
+                
+                // Smart signals
+                const signals = SmartSignals.evaluate(data, layers, health);
+
+                // Update UI
+                updateUI(data, layers, health, structure, signals, fearLabel, topProb);
+                updateCharts(price, health, cyclePos, fearGreed);
+
+                console.log('✅ Updated successfully');
+            } catch (error) {
+                console.error('❌ Error:', error);
+            }
+        }
+
+        // ============================================
+        // UPDATE UI
+        // ============================================
+        function updateUI(data, layers, health, structure, signals, fearLabel, topProb) {
+            // Top nav
+            document.getElementById('navPrice').textContent = `$${fmt(data.price, 2)}`;
+            const navChange = document.getElementById('navChange');
+            navChange.textContent = fmtPercent(data.change24h);
+            navChange.className = 'nav-stat-value ' + (data.change24h >= 0 ? 'bullish' : 'bearish');
+            
+            let regime = 'Accumulation';
+            if (data.cyclePos > 0.7) regime = 'Distribution';
+            else if (data.cyclePos > 0.4) regime = 'Markup';
+            document.getElementById('navRegime').textContent = regime;
+            
+            const healthBadge = document.getElementById('navHealthBadge');
+            const healthClass = health >= 75 ? 'excellent' : health >= 60 ? 'good' : 
+                               health >= 40 ? 'fair' : 'poor';
+            healthBadge.className = `health-badge ${healthClass}`;
+            document.getElementById('navHealth').textContent = `Health: ${health}/100`;
+
+            // Metrics
+            document.getElementById('currentPrice').textContent = `$${fmt(data.price, 2)}`;
+            document.getElementById('priceChange').textContent = fmtPercent(data.change24h);
+            document.getElementById('marketCap').textContent = fmtLarge(data.marketCap);
+            document.getElementById('volume').textContent = fmtLarge(data.volume);
+            document.getElementById('dominance').textContent = `${data.dominance.toFixed(2)}%`;
+            document.getElementById('daysHalving').textContent = data.daysHalving;
+            document.getElementById('fromATH').textContent = fmtPercent(data.fromATH);
+            document.getElementById('cyclePosition').textContent = data.cyclePos.toFixed(3);
+            document.getElementById('topProb').textContent = `${Math.round(topProb)}%`;
+            document.getElementById('fearGreed').textContent = data.fearGreed;
+            document.getElementById('fearLabel').textContent = fearLabel;
+            document.getElementById('stablecoin').textContent = fmtLarge(data.stablecoin);
+            document.getElementById('ath').textContent = `$${fmt(data.ath, 2)}`;
+            document.getElementById('supply').textContent = `${fmt(data.supply, 0)} BTC`;
+            
+            const now = new Date();
+            document.getElementById('lastUpdate').textContent = 
+                now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+
+            // Health display
+            document.getElementById('healthScore').textContent = health;
+            const healthLabel = health >= 75 ? 'Excellent Market Health' :
+                               health >= 60 ? 'Good Market Conditions' :
+                               health >= 40 ? 'Fair - Monitor Closely' :
+                               'Poor - High Caution';
+            document.getElementById('healthLabel').textContent = healthLabel;
+            
+            const healthAlert = document.getElementById('healthAlert');
+            if (health < 30) {
+                healthAlert.innerHTML = `
+                    <div class="alert-box danger">
+                        <span class="alert-icon">⚠️</span>
+                        <span class="alert-text">CAUTION: Market health is poor. High risk environment.</span>
+                    </div>`;
+            } else if (health > 85) {
+                healthAlert.innerHTML = `
+                    <div class="alert-box warning">
+                        <span class="alert-icon">🔥</span>
+                        <span class="alert-text">WARNING: Market may be overheated. Monitor for correction.</span>
+                    </div>`;
+            } else {
+                healthAlert.innerHTML = '';
+            }
+
+            // Layers
+            updateLayers(layers);
+            
+            // Structure
+            updateStructure(structure);
+            
+            // Signals
+            updateSignals(signals);
+        }
+
+        function updateLayers(layers) {
+            const container = document.getElementById('layersContainer');
+            const layerData = [
+                { name: 'Layer 1: Price Trend', score: layers.layer1, desc: 'EMA alignment & trend direction' },
+                { name: 'Layer 2: Momentum', score: layers.layer2, desc: 'Short-term momentum strength' },
+                { name: 'Layer 3: Volatility', score: layers.layer3, desc: 'Market volatility assessment' },
+                { name: 'Layer 4: Liquidity & Macro', score: layers.layer4, desc: 'Global liquidity conditions' },
+                { name: 'Layer 5: Sentiment', score: layers.layer5, desc: 'Fear & Greed analysis' },
+                { name: 'Layer 6: Market Structure', score: layers.layer6, desc: 'Support/resistance integrity' },
+                { name: 'Layer 7: Cycle Position', score: layers.layer7, desc: 'Current cycle phase' }
+            ];
+
+            container.innerHTML = layerData.map(layer => {
+                const scoreClass = layer.score >= 70 ? 'bullish' : layer.score >= 40 ? 'neutral' : 'bearish';
+                const barColor = layer.score >= 70 ? '#00ff9c' : layer.score >= 40 ? '#f0b90b' : '#ff4d4f';
+                
+                return `
+                    <div class="layer-item">
+                        <div class="layer-header">
+                            <span class="layer-name">${layer.name}</span>
+                            <span class="layer-score ${scoreClass}">${Math.round(layer.score)}</span>
+                        </div>
+                        <div class="layer-bar">
+                            <div class="layer-bar-fill" style="width: ${layer.score}%; background: ${barColor};"></div>
+                        </div>
+                        <div class="layer-description">${layer.desc}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function updateStructure(structure) {
+            const container = document.getElementById('structureList');
+            container.innerHTML = structure.slice(0, 5).map(item => `
+                <div class="structure-item">
+                    <span class="structure-type">${item.type}</span>
+                    <span class="structure-price">$${fmt(item.price, 0)}</span>
+                    <span class="structure-strength ${item.strength.toLowerCase()}">${item.strength}</span>
+                </div>
+            `).join('');
+        }
+
+        function updateSignals(signals) {
+            const container = document.getElementById('signalsGrid');
+            container.innerHTML = signals.map(signal => {
+                const activeClass = signal.active ? 'active' : '';
+                const warningClass = signal.warning ? 'warning' : '';
+                return `
+                    <div class="signal-card ${activeClass} ${warningClass}">
+                        <div class="signal-header">
+                            <span class="signal-icon">${signal.icon}</span>
+                            <div>
+                                <div class="signal-title">${signal.title}</div>
+                                <div class="signal-status">${signal.status}</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function updateCharts(price, health, cyclePos, fearGreed) {
+            // Update price chart
+            const now = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+            if (charts.price.data.labels.length > 20) {
+                charts.price.data.labels.shift();
+                charts.price.data.datasets[0].data.shift();
+            }
+            charts.price.data.labels.push(now);
+            charts.price.data.datasets[0].data.push(price);
+            charts.price.update('none');
+
+            // Update health gauge
+            charts.health.data.datasets[0].data = [health, 100 - health];
+            const healthColor = health >= 70 ? '#00ff9c' : health >= 40 ? '#f0b90b' : '#ff4d4f';
+            charts.health.data.datasets[0].backgroundColor[0] = healthColor;
+            charts.health.update('none');
+
+            // Update cycle gauge
+            charts.cycle.data.datasets[0].data = [cyclePos * 100, 100 - cyclePos * 100];
+            charts.cycle.update('none');
+
+            // Update sentiment gauge
+            charts.sentiment.data.datasets[0].data = [fearGreed, 100 - fearGreed];
+            const sentColor = fearGreed < 30 ? '#ff4d4f' : fearGreed < 50 ? '#ff8c42' : 
+                             fearGreed < 70 ? '#f0b90b' : '#00ff9c';
+            charts.sentiment.data.datasets[0].backgroundColor[0] = sentColor;
+            charts.sentiment.update('none');
+        }
+
+        // ============================================
+        // INITIALIZE
+        // ============================================
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('🚀 Bitcoin Cycle & Macro Intelligence Dashboard Initialized');
+            console.log('📊 Layer 1-7 Analysis System Active');
+            initCharts();
+            updateDashboard();
+            setInterval(updateDashboard, CONFIG.UPDATE_INTERVAL);
+            console.log(`⏱️  Auto-refresh every ${CONFIG.UPDATE_INTERVAL / 1000} seconds`);
+        });
+    </script>
 </body>
 </html>
