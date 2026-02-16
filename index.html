@@ -1,0 +1,1300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bitcoin Cycle Analysis — PRO Dashboard V2 | Real Intelligence</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+        
+        :root {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --bg-tertiary: #1c2128;
+            --bg-elevated: #21262d;
+            --accent-orange: #f7931a;
+            --accent-blue: #00d4ff;
+            --accent-purple: #a855f7;
+            --accent-green: #10b981;
+            --accent-red: #ef4444;
+            --text-primary: #ffffff;
+            --text-secondary: #c9d1d9;
+            --text-tertiary: #8b949e;
+            --text-muted: #6e7681;
+            --border: rgba(255, 255, 255, 0.1);
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        /* Loading Screen */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-primary);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            transition: opacity 0.5s ease;
+        }
+        
+        .loading-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .loading-logo {
+            font-size: 3rem;
+            margin-bottom: 24px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.05); }
+        }
+        
+        .loading-text {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+        
+        .loading-status {
+            font-size: 0.875rem;
+            color: var(--text-tertiary);
+            margin-bottom: 32px;
+        }
+        
+        .loading-bar {
+            width: 300px;
+            height: 3px;
+            background: var(--bg-tertiary);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        
+        .loading-progress {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-orange), var(--accent-blue));
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        /* Top Bar */
+        .top-bar {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            padding: 16px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .top-bar-left {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent-orange), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .btc-price-bar {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .price-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-orange);
+        }
+        
+        .price-change {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 6px;
+        }
+        
+        .price-change.positive {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--accent-green);
+        }
+        
+        .price-change.negative {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--accent-red);
+        }
+        
+        .top-bar-right {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+        
+        .composite-badge {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 20px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+        }
+        
+        .composite-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-tertiary);
+        }
+        
+        .composite-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-orange), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .regime-badge {
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .regime-risk-on {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--accent-green);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+        
+        .regime-risk-off {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--accent-red);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+        
+        .regime-transition {
+            background: rgba(251, 191, 36, 0.15);
+            color: #fbbf24;
+            border: 1px solid rgba(251, 191, 36, 0.3);
+        }
+        
+        /* Main Container */
+        .main-container {
+            padding: 40px;
+            max-width: 2000px;
+            margin: 0 auto;
+        }
+        
+        /* Grid System */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+        
+        .grid-col-12 { grid-column: span 12; }
+        .grid-col-8 { grid-column: span 8; }
+        .grid-col-6 { grid-column: span 6; }
+        .grid-col-4 { grid-column: span 4; }
+        .grid-col-3 { grid-column: span 3; }
+        
+        /* Card Component */
+        .card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 32px;
+            transition: all 0.3s ease;
+        }
+        
+        .card:hover {
+            border-color: rgba(247, 147, 26, 0.3);
+            box-shadow: 0 0 30px rgba(247, 147, 26, 0.2);
+        }
+        
+        .card-header {
+            margin-bottom: 24px;
+        }
+        
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        
+        .card-subtitle {
+            font-size: 0.875rem;
+            color: var(--text-tertiary);
+        }
+        
+        /* Cycle Phase Gauge */
+        .cycle-gauge-container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        
+        .cycle-gauge {
+            width: 100%;
+            aspect-ratio: 1;
+            position: relative;
+        }
+        
+        .gauge-svg {
+            transform: rotate(-90deg);
+        }
+        
+        .gauge-bg {
+            fill: none;
+            stroke: var(--bg-tertiary);
+            stroke-width: 20;
+        }
+        
+        .gauge-progress {
+            fill: none;
+            stroke: url(#gaugeGradient);
+            stroke-width: 20;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 1s ease;
+        }
+        
+        .gauge-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+        
+        .gauge-phase {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+        
+        .gauge-confidence {
+            font-size: 0.875rem;
+            color: var(--text-tertiary);
+        }
+        
+        /* Probability Bars */
+        .probability-section {
+            margin-top: 24px;
+        }
+        
+        .probability-title {
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+            color: var(--text-tertiary);
+        }
+        
+        .probability-item {
+            margin-bottom: 16px;
+        }
+        
+        .probability-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+        
+        .probability-label {
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+        
+        .probability-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            font-weight: 700;
+        }
+        
+        .probability-bar {
+            height: 8px;
+            background: var(--bg-tertiary);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .probability-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 1s ease;
+        }
+        
+        .prob-top { background: linear-gradient(90deg, var(--accent-red), var(--accent-orange)); }
+        .prob-bull { background: linear-gradient(90deg, var(--accent-green), var(--accent-blue)); }
+        .prob-bear { background: linear-gradient(90deg, #6b7280, #374151); }
+        
+        /* Phase Indicator */
+        .phase-indicator {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 24px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            margin-top: 24px;
+        }
+        
+        .phase-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            animation: pulse-dot 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        /* Layer Analysis */
+        .layer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+        }
+        
+        .layer-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .layer-card:hover {
+            border-color: var(--accent-blue);
+            transform: translateY(-4px);
+        }
+        
+        .layer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        
+        .layer-title {
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .layer-score {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        
+        .layer-status {
+            font-size: 0.75rem;
+            color: var(--text-tertiary);
+            margin-bottom: 12px;
+        }
+        
+        .layer-bar {
+            height: 6px;
+            background: var(--bg-tertiary);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        
+        .layer-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-orange), var(--accent-blue));
+            transition: width 1s ease;
+        }
+        
+        /* Market Metrics */
+        .metric-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .metric-row:last-child {
+            border-bottom: none;
+        }
+        
+        .metric-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+        
+        .metric-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+        
+        /* Badge */
+        .info-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+        
+        .badge-real {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--accent-green);
+        }
+        
+        .badge-proxy {
+            background: rgba(251, 191, 36, 0.15);
+            color: #fbbf24;
+        }
+        
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .grid-col-8, .grid-col-6, .grid-col-4, .grid-col-3 {
+                grid-column: span 12;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .top-bar {
+                flex-direction: column;
+                gap: 16px;
+                padding: 16px 20px;
+            }
+            
+            .main-container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loading-screen">
+        <div class="loading-logo">₿</div>
+        <div class="loading-text">Bitcoin PRO Dashboard V2</div>
+        <div class="loading-status" id="loading-status">Initializing...</div>
+        <div class="loading-bar">
+            <div class="loading-progress" id="loading-progress"></div>
+        </div>
+    </div>
+    
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="top-bar-left">
+            <div class="logo">BITCOIN CYCLE — PRO V2</div>
+            <div class="btc-price-bar">
+                <div class="price-value" id="btc-price">$--</div>
+                <div class="price-change positive" id="btc-change">+0.00%</div>
+            </div>
+        </div>
+        <div class="top-bar-right">
+            <div class="composite-badge">
+                <span class="composite-label">Composite Score</span>
+                <span class="composite-value" id="composite-score">--</span>
+            </div>
+            <div class="regime-badge regime-risk-on" id="regime-badge">RISK ON</div>
+        </div>
+    </div>
+    
+    <!-- Main Dashboard -->
+    <div class="main-container">
+        <!-- Row 1: Hero Panels -->
+        <div class="dashboard-grid">
+            <!-- Cycle Phase Gauge -->
+            <div class="grid-col-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Cycle Phase Engine</h2>
+                        <p class="card-subtitle">Multi-factor phase detection</p>
+                    </div>
+                    <div class="cycle-gauge-container">
+                        <div class="cycle-gauge">
+                            <svg class="gauge-svg" viewBox="0 0 200 200">
+                                <defs>
+                                    <linearGradient id="gaugeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                        <stop offset="0%" style="stop-color:#10b981;stop-opacity:1" />
+                                        <stop offset="50%" style="stop-color:#f7931a;stop-opacity:1" />
+                                        <stop offset="100%" style="stop-color:#ef4444;stop-opacity:1" />
+                                    </linearGradient>
+                                </defs>
+                                <circle class="gauge-bg" cx="100" cy="100" r="80" />
+                                <circle class="gauge-progress" id="gauge-circle" cx="100" cy="100" r="80" 
+                                        stroke-dasharray="502.65" stroke-dashoffset="502.65" />
+                            </svg>
+                            <div class="gauge-center">
+                                <div class="gauge-phase" id="gauge-phase">--</div>
+                                <div class="gauge-confidence" id="gauge-confidence">--% confidence</div>
+                            </div>
+                        </div>
+                        <div class="phase-indicator">
+                            <div class="phase-dot" id="phase-dot" style="background: var(--accent-blue);"></div>
+                            <span id="phase-description">Analyzing market conditions...</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Probabilities -->
+                    <div class="probability-section">
+                        <div class="probability-title">Market Probabilities</div>
+                        <div class="probability-item">
+                            <div class="probability-header">
+                                <span class="probability-label">Cycle Top Risk</span>
+                                <span class="probability-value" id="prob-top-value">--%</span>
+                            </div>
+                            <div class="probability-bar">
+                                <div class="probability-fill prob-top" id="prob-top-bar" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        <div class="probability-item">
+                            <div class="probability-header">
+                                <span class="probability-label">Bull Continuation</span>
+                                <span class="probability-value" id="prob-bull-value">--%</span>
+                            </div>
+                            <div class="probability-bar">
+                                <div class="probability-fill prob-bull" id="prob-bull-bar" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        <div class="probability-item">
+                            <div class="probability-header">
+                                <span class="probability-label">Bear Scenario</span>
+                                <span class="probability-value" id="prob-bear-value">--%</span>
+                            </div>
+                            <div class="probability-bar">
+                                <div class="probability-fill prob-bear" id="prob-bear-bar" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Layer Analysis Panel -->
+            <div class="grid-col-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">7-Layer Intelligence System <span class="info-badge badge-real">REAL DATA</span></h2>
+                        <p class="card-subtitle">Adaptive weighting based on market regime</p>
+                    </div>
+                    <div class="layer-grid" id="layer-grid">
+                        <!-- Layers populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Row 2: Market Intelligence -->
+        <div class="dashboard-grid">
+            <!-- Market Regime -->
+            <div class="grid-col-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Market Regime Engine <span class="info-badge badge-real">5-FACTOR</span></h2>
+                        <p class="card-subtitle">Multi-dimensional regime analysis</p>
+                    </div>
+                    <div id="regime-details"></div>
+                </div>
+            </div>
+            
+            <!-- Key Metrics -->
+            <div class="grid-col-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Key Market Metrics</h2>
+                        <p class="card-subtitle">Real-time market intelligence</p>
+                    </div>
+                    <div id="key-metrics"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // ==================== DATA CACHE SYSTEM ====================
+        class DataCache {
+            constructor() {
+                this.cache = {};
+                this.ttl = 300000; // 5 minutes
+            }
+            
+            set(key, value) {
+                this.cache[key] = {
+                    value,
+                    timestamp: Date.now()
+                };
+                try {
+                    localStorage.setItem(`btc_pro_${key}`, JSON.stringify(this.cache[key]));
+                } catch (e) {
+                    console.warn('[Cache] LocalStorage not available');
+                }
+            }
+            
+            get(key) {
+                let cached = this.cache[key];
+                if (!cached) {
+                    try {
+                        const stored = localStorage.getItem(`btc_pro_${key}`);
+                        if (stored) cached = JSON.parse(stored);
+                    } catch (e) {}
+                }
+                
+                if (!cached) return null;
+                if (Date.now() - cached.timestamp > this.ttl) return null;
+                return cached.value;
+            }
+            
+            getStale(key) {
+                let cached = this.cache[key];
+                if (!cached) {
+                    try {
+                        const stored = localStorage.getItem(`btc_pro_${key}`);
+                        if (stored) cached = JSON.parse(stored);
+                    } catch (e) {}
+                }
+                return cached ? cached.value : null;
+            }
+        }
+        
+        const cache = new DataCache();
+        
+        // ==================== GLOBAL STATE ====================
+        let btcData = { price: null, change24h: null, marketCap: null, volume24h: null, ath: null };
+        let onChainData = { mvrv: null, source: null };
+        let sentimentData = { value: null, classification: null, source: null };
+        let macroData = { liquidityScore: null, source: null };
+        let layerScores = { layer1: 0, layer2: 0, layer3: 0, layer4: 0, layer5: 0, layer6: 0, layer7: 0 };
+        let currentWeights = { layer1: 0.15, layer2: 0.15, layer3: 0.10, layer4: 0.15, layer5: 0.15, layer6: 0.15, layer7: 0.15 };
+        
+        // ==================== HELPER FUNCTIONS ====================
+        function formatCurrency(value) {
+            if (!value) return '--';
+            if (value >= 1e12) return `$${(value / 1e12).toFixed(2)}T`;
+            if (value >= 1e9) return `$${(value / 1e9).toFixed(2)}B`;
+            if (value >= 1e6) return `$${(value / 1e6).toFixed(2)}M`;
+            return `$${value.toLocaleString('en-US', { maximumFractionDigits: 0 })}`;
+        }
+        
+        function calculateDaysSinceHalving() {
+            const halvingDate = new Date('2024-04-20T00:09:00Z');
+            return Math.floor((Date.now() - halvingDate) / (1000 * 60 * 60 * 24));
+        }
+        
+        function updateLoadingProgress(percent, status) {
+            document.getElementById('loading-progress').style.width = `${percent}%`;
+            document.getElementById('loading-status').textContent = status;
+        }
+        
+        // ==================== API FETCH FUNCTIONS ====================
+        async function fetchBitcoinData() {
+            try {
+                updateLoadingProgress(20, 'Fetching Bitcoin price...');
+                const cached = cache.get('btcData');
+                if (cached) return cached;
+                
+                const response = await fetch('https://api.coingecko.com/api/v3/coins/bitcoin?localization=false&tickers=false&community_data=false&developer_data=false&sparkline=false');
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                
+                const data = await response.json();
+                const marketData = data.market_data;
+                
+                btcData = {
+                    price: marketData.current_price.usd,
+                    change24h: marketData.price_change_percentage_24h,
+                    marketCap: marketData.market_cap.usd,
+                    volume24h: marketData.total_volume.usd,
+                    ath: marketData.ath.usd
+                };
+                
+                cache.set('btcData', btcData);
+                console.log('[BTC] Data fetched:', btcData);
+                return btcData;
+            } catch (error) {
+                console.error('[BTC] Error:', error);
+                return cache.getStale('btcData') || btcData;
+            }
+        }
+        
+        async function fetchFearGreedIndex() {
+            try {
+                updateLoadingProgress(40, 'Fetching sentiment data...');
+                const cached = cache.get('fearGreed');
+                if (cached) return cached;
+                
+                const response = await fetch('https://api.alternative.me/fng/?limit=1');
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                
+                const data = await response.json();
+                sentimentData = {
+                    value: parseInt(data.data[0].value),
+                    classification: data.data[0].value_classification,
+                    timestamp: data.data[0].timestamp,
+                    source: 'real'
+                };
+                
+                cache.set('fearGreed', sentimentData);
+                console.log('[Sentiment] Fear & Greed:', sentimentData);
+                return sentimentData;
+            } catch (error) {
+                console.error('[Sentiment] Error:', error);
+                const stale = cache.getStale('fearGreed');
+                if (stale) return stale;
+                
+                // Fallback to neutral
+                return {
+                    value: 50,
+                    classification: 'Neutral',
+                    source: 'fallback'
+                };
+            }
+        }
+        
+        // ==================== CALCULATION FUNCTIONS ====================
+        function calculateProxyMVRV(price) {
+            const ma200w = 32847; // Bitcoin 200-week MA (update periodically)
+            const ratio = price / ma200w;
+            
+            let mvrv;
+            if (ratio > 3) mvrv = 3.5;
+            else if (ratio > 2) mvrv = 2.5;
+            else if (ratio > 1.5) mvrv = 1.8;
+            else if (ratio > 1) mvrv = 1.2;
+            else if (ratio > 0.8) mvrv = 0.9;
+            else mvrv = 0.5;
+            
+            onChainData = { mvrv, source: 'proxy' };
+            console.log('[MVRV] Proxy calculated:', onChainData);
+            return onChainData;
+        }
+        
+        function scoreFromMVRV(mvrv) {
+            if (mvrv < 0.5) return 95;
+            if (mvrv < 1) return 85;
+            if (mvrv < 1.5) return 70;
+            if (mvrv < 2) return 55;
+            if (mvrv < 2.5) return 40;
+            if (mvrv < 3) return 25;
+            return 10;
+        }
+        
+        function scoreFromFearGreed(fgValue) {
+            if (fgValue < 20) return 90;
+            if (fgValue < 35) return 75;
+            if (fgValue < 50) return 60;
+            if (fgValue < 65) return 50;
+            if (fgValue < 80) return 35;
+            return 15;
+        }
+        
+        function calculateLiquidityProxy(marketCap) {
+            let score = 50;
+            if (marketCap > 2e12) score = 70;
+            else if (marketCap > 1.5e12) score = 65;
+            else if (marketCap > 1e12) score = 60;
+            else if (marketCap > 800e9) score = 55;
+            else score = 45;
+            
+            macroData = { liquidityScore: score, source: 'proxy' };
+            return macroData;
+        }
+        
+        function calculateLayerScores() {
+            updateLoadingProgress(60, 'Calculating layer scores...');
+            const { price, ath, change24h, marketCap, volume24h } = btcData;
+            
+            // Layer 1: Price Structure
+            const priceFromAth = ((price - ath) / ath) * 100;
+            if (priceFromAth > -5) layerScores.layer1 = 90;
+            else if (priceFromAth > -15) layerScores.layer1 = 80;
+            else if (priceFromAth > -30) layerScores.layer1 = 70;
+            else if (priceFromAth > -50) layerScores.layer1 = 55;
+            else if (priceFromAth > -70) layerScores.layer1 = 35;
+            else layerScores.layer1 = 20;
+            
+            // Layer 2: On-Chain (MVRV)
+            layerScores.layer2 = scoreFromMVRV(onChainData.mvrv);
+            
+            // Layer 3: Sentiment (Fear & Greed)
+            layerScores.layer3 = scoreFromFearGreed(sentimentData.value);
+            
+            // Layer 4: Technical Momentum
+            if (change24h > 5) layerScores.layer4 = 85;
+            else if (change24h > 2) layerScores.layer4 = 70;
+            else if (change24h > 0) layerScores.layer4 = 55;
+            else if (change24h > -2) layerScores.layer4 = 40;
+            else if (change24h > -5) layerScores.layer4 = 30;
+            else layerScores.layer4 = 15;
+            
+            // Layer 5: Macro Liquidity
+            layerScores.layer5 = macroData.liquidityScore;
+            
+            // Layer 6: Institutional Flow
+            const volRatio = volume24h / marketCap;
+            if (volRatio > 0.05) layerScores.layer6 = 75;
+            else if (volRatio > 0.03) layerScores.layer6 = 65;
+            else if (volRatio > 0.02) layerScores.layer6 = 55;
+            else if (volRatio > 0.01) layerScores.layer6 = 45;
+            else layerScores.layer6 = 30;
+            
+            // Layer 7: Cycle Timing
+            const daysSince = calculateDaysSinceHalving();
+            if (daysSince < 365) layerScores.layer7 = 80;
+            else if (daysSince < 730) layerScores.layer7 = 65;
+            else if (daysSince < 1095) layerScores.layer7 = 45;
+            else layerScores.layer7 = 30;
+            
+            console.log('[Layers] Scores calculated:', layerScores);
+        }
+        
+        function getAdaptiveWeights(regime) {
+            const weights = { ...currentWeights };
+            
+            if (regime === 'RISK ON') {
+                weights.layer4 = 0.20;
+                weights.layer3 = 0.15;
+                weights.layer2 = 0.12;
+                weights.layer5 = 0.12;
+                weights.layer1 = 0.15;
+                weights.layer6 = 0.15;
+                weights.layer7 = 0.11;
+            } else if (regime === 'RISK OFF') {
+                weights.layer5 = 0.20;
+                weights.layer2 = 0.20;
+                weights.layer4 = 0.10;
+                weights.layer3 = 0.08;
+                weights.layer1 = 0.15;
+                weights.layer6 = 0.15;
+                weights.layer7 = 0.12;
+            }
+            
+            currentWeights = weights;
+            return weights;
+        }
+        
+        function calculateCompositeScore() {
+            const composite = Math.round(
+                layerScores.layer1 * currentWeights.layer1 +
+                layerScores.layer2 * currentWeights.layer2 +
+                layerScores.layer3 * currentWeights.layer3 +
+                layerScores.layer4 * currentWeights.layer4 +
+                layerScores.layer5 * currentWeights.layer5 +
+                layerScores.layer6 * currentWeights.layer6 +
+                layerScores.layer7 * currentWeights.layer7
+            );
+            
+            console.log('[Composite] Score:', composite, 'Weights:', currentWeights);
+            return composite;
+        }
+        
+        function determineMarketRegime() {
+            updateLoadingProgress(75, 'Analyzing market regime...');
+            const { price, ath } = btcData;
+            let riskScore = 0;
+            let factors = [];
+            
+            // Factor 1: Price Structure (20%)
+            const ma200w = 32847;
+            if (price > ma200w) {
+                riskScore += 20;
+                factors.push('BTC > 200W MA');
+            } else {
+                factors.push('BTC < 200W MA');
+            }
+            
+            // Factor 2: On-Chain (25%)
+            if (onChainData.mvrv < 1.5) {
+                riskScore += 25;
+                factors.push('MVRV Undervalued');
+            } else if (onChainData.mvrv > 2.5) {
+                riskScore -= 10;
+                factors.push('MVRV Overvalued');
+            } else {
+                riskScore += 12;
+                factors.push('MVRV Fair');
+            }
+            
+            // Factor 3: Sentiment (15%)
+            if (sentimentData.value < 35) {
+                riskScore += 15;
+                factors.push('Fear Territory');
+            } else if (sentimentData.value > 75) {
+                riskScore -= 10;
+                factors.push('Greed Warning');
+            } else {
+                riskScore += 7;
+                factors.push('Neutral Sentiment');
+            }
+            
+            // Factor 4: Liquidity (20%)
+            if (macroData.liquidityScore > 60) {
+                riskScore += 20;
+                factors.push('Strong Liquidity');
+            } else if (macroData.liquidityScore > 50) {
+                riskScore += 10;
+                factors.push('Moderate Liquidity');
+            }
+            
+            // Factor 5: Institutional (20%)
+            const volRatio = btcData.volume24h / btcData.marketCap;
+            if (volRatio > 0.03) {
+                riskScore += 20;
+                factors.push('High Institutional Activity');
+            } else if (volRatio > 0.02) {
+                riskScore += 10;
+                factors.push('Normal Activity');
+            }
+            
+            // Determine Regime
+            let regime, confidence, posture;
+            if (riskScore >= 70) {
+                regime = 'RISK ON';
+                confidence = Math.min(95, riskScore + 10);
+                posture = 'Accumulate & Trend Follow';
+            } else if (riskScore >= 40) {
+                regime = 'TRANSITION';
+                confidence = 70;
+                posture = 'Reduce Risk Gradually';
+            } else {
+                regime = 'RISK OFF';
+                confidence = Math.min(90, 100 - riskScore);
+                posture = 'Capital Preservation';
+            }
+            
+            const bullishFactors = factors.filter(f => 
+                f.includes('>') || f.includes('Under') || f.includes('Fear') || 
+                f.includes('Strong') || f.includes('High')
+            ).length;
+            
+            console.log('[Regime]', regime, 'Score:', riskScore, 'Factors:', factors);
+            
+            return {
+                regime,
+                confidence,
+                posture,
+                riskScore,
+                factors,
+                signalCount: `${bullishFactors}/5 bullish signals`
+            };
+        }
+        
+        function determineCyclePhase(score) {
+            if (score >= 81) return { name: 'Euphoria', color: '#f97316', confidence: 85, desc: 'Extreme optimism, top risk elevated' };
+            if (score >= 61) return { name: 'Bull Expansion', color: '#fbbf24', confidence: 80, desc: 'Strong uptrend, momentum building' };
+            if (score >= 41) return { name: 'Early Bull', color: '#00d4ff', confidence: 78, desc: 'Recovery phase, accumulation ending' };
+            if (score >= 21) return { name: 'Accumulation', color: '#10b981', confidence: 75, desc: 'Bottom formation, smart money buying' };
+            return { name: 'Bear Market', color: '#6b7280', confidence: 70, desc: 'Downtrend active, risk management critical' };
+        }
+        
+        function calculateProbabilities(composite) {
+            let topProb = 0, bullProb = 0, bearProb = 0;
+            
+            if (composite > 80) {
+                topProb = 60 + (composite - 80) * 2;
+                bullProb = Math.max(5, 100 - topProb - 10);
+                bearProb = 5;
+            } else if (composite > 60) {
+                bullProb = 50 + (composite - 60);
+                topProb = 15;
+                bearProb = 100 - bullProb - topProb;
+            } else if (composite > 40) {
+                bullProb = 40;
+                bearProb = 30;
+                topProb = 5;
+            } else {
+                bearProb = 60 + (40 - composite);
+                bullProb = Math.max(5, 100 - bearProb - 5);
+                topProb = 5;
+            }
+            
+            // Adjust with MVRV
+            if (onChainData.mvrv > 3) {
+                topProb = Math.min(90, topProb + 20);
+                bullProb = Math.max(5, bullProb - 15);
+            }
+            if (onChainData.mvrv < 0.8) {
+                bearProb = Math.max(5, bearProb - 20);
+                bullProb += 15;
+            }
+            
+            // Adjust with sentiment
+            if (sentimentData.value > 85) {
+                topProb = Math.min(92, topProb + 15);
+                bullProb = Math.max(3, bullProb - 10);
+            }
+            if (sentimentData.value < 20) {
+                bearProb = Math.max(3, bearProb - 15);
+                bullProb += 12;
+            }
+            
+            // Normalize
+            const total = topProb + bullProb + bearProb;
+            topProb = Math.round((topProb / total) * 100);
+            bullProb = Math.round((bullProb / total) * 100);
+            bearProb = 100 - topProb - bullProb;
+            
+            console.log('[Probabilities] Top:', topProb, 'Bull:', bullProb, 'Bear:', bearProb);
+            return { topProb, bullProb, bearProb };
+        }
+        
+        function explainConfidence() {
+            const bullishLayers = Object.values(layerScores).filter(s => s > 60).length;
+            const bearishLayers = Object.values(layerScores).filter(s => s < 40).length;
+            const neutralLayers = 7 - bullishLayers - bearishLayers;
+            
+            return {
+                explanation: `Based on ${bullishLayers}/7 bullish layers`,
+                bullish: bullishLayers,
+                neutral: neutralLayers,
+                bearish: bearishLayers,
+                strength: bullishLayers >= 5 ? 'Strong' : bullishLayers >= 3 ? 'Moderate' : 'Weak'
+            };
+        }
+        
+        // ==================== UI UPDATE FUNCTIONS ====================
+        function updateDashboard() {
+            updateLoadingProgress(85, 'Rendering dashboard...');
+            const { price, change24h } = btcData;
+            
+            // Top Bar
+            document.getElementById('btc-price').textContent = formatCurrency(price);
+            const changeEl = document.getElementById('btc-change');
+            changeEl.textContent = `${change24h >= 0 ? '+' : ''}${change24h.toFixed(2)}%`;
+            changeEl.className = `price-change ${change24h >= 0 ? 'positive' : 'negative'}`;
+            
+            // Determine regime first (needed for adaptive weights)
+            const regimeResult = determineMarketRegime();
+            getAdaptiveWeights(regimeResult.regime);
+            
+            // Calculate composite
+            const composite = calculateCompositeScore();
+            document.getElementById('composite-score').textContent = composite;
+            
+            // Update regime badge
+            const badge = document.getElementById('regime-badge');
+            badge.textContent = regimeResult.regime;
+            badge.className = `regime-badge regime-${regimeResult.regime.toLowerCase().replace(' ', '-')}`;
+            
+            // Cycle Phase
+            const phase = determineCyclePhase(composite);
+            document.getElementById('gauge-phase').textContent = phase.name;
+            const confidence = explainConfidence();
+            document.getElementById('gauge-confidence').textContent = `${phase.confidence}% confidence (${confidence.explanation})`;
+            
+            // Update gauge
+            const circumference = 502.65;
+            const offset = circumference - (composite / 100) * circumference;
+            document.getElementById('gauge-circle').style.strokeDashoffset = offset;
+            
+            // Phase indicator
+            document.getElementById('phase-dot').style.background = phase.color;
+            document.getElementById('phase-description').textContent = phase.desc;
+            
+            // Probabilities
+            const probs = calculateProbabilities(composite);
+            document.getElementById('prob-top-value').textContent = `${probs.topProb}%`;
+            document.getElementById('prob-top-bar').style.width = `${probs.topProb}%`;
+            document.getElementById('prob-bull-value').textContent = `${probs.bullProb}%`;
+            document.getElementById('prob-bull-bar').style.width = `${probs.bullProb}%`;
+            document.getElementById('prob-bear-value').textContent = `${probs.bearProb}%`;
+            document.getElementById('prob-bear-bar').style.width = `${probs.bearProb}%`;
+            
+            // Update layers
+            updateLayerGrid();
+            
+            // Update regime details
+            updateRegimeDetails(regimeResult);
+            
+            // Update key metrics
+            updateKeyMetrics();
+            
+            updateLoadingProgress(100, 'Complete!');
+        }
+        
+        function updateLayerGrid() {
+            const layers = [
+                { id: 1, name: 'Price Structure', score: layerScores.layer1, weight: currentWeights.layer1, status: `${((btcData.price - btcData.ath) / btcData.ath * 100).toFixed(1)}% from ATH`, source: 'real' },
+                { id: 2, name: 'On-Chain (MVRV)', score: layerScores.layer2, weight: currentWeights.layer2, status: `MVRV: ${onChainData.mvrv.toFixed(2)}`, source: onChainData.source },
+                { id: 3, name: 'Sentiment (F&G)', score: layerScores.layer3, weight: currentWeights.layer3, status: `${sentimentData.classification} (${sentimentData.value})`, source: sentimentData.source },
+                { id: 4, name: 'Tech Momentum', score: layerScores.layer4, weight: currentWeights.layer4, status: `24h: ${btcData.change24h.toFixed(2)}%`, source: 'real' },
+                { id: 5, name: 'Macro Liquidity', score: layerScores.layer5, weight: currentWeights.layer5, status: `Market cap trend`, source: macroData.source },
+                { id: 6, name: 'Institutional', score: layerScores.layer6, weight: currentWeights.layer6, status: `Vol/MCap: ${(btcData.volume24h / btcData.marketCap * 100).toFixed(2)}%`, source: 'real' },
+                { id: 7, name: 'Cycle Timing', score: layerScores.layer7, weight: currentWeights.layer7, status: `Day ${calculateDaysSinceHalving()} since halving`, source: 'real' }
+            ];
+            
+            const grid = document.getElementById('layer-grid');
+            grid.innerHTML = layers.map(layer => `
+                <div class="layer-card">
+                    <div class="layer-header">
+                        <span class="layer-title">L${layer.id}: ${layer.name} <span class="info-badge badge-${layer.source}">${layer.source === 'real' ? 'REAL' : layer.source === 'proxy' ? 'PROXY' : 'FALLBACK'}</span></span>
+                        <span class="layer-score" style="color: ${layer.score > 70 ? 'var(--accent-green)' : layer.score > 40 ? '#fbbf24' : 'var(--accent-red)'}">
+                            ${layer.score}
+                        </span>
+                    </div>
+                    <div class="layer-status">${layer.status} • Weight: ${(layer.weight * 100).toFixed(0)}%</div>
+                    <div class="layer-bar">
+                        <div class="layer-bar-fill" style="width: ${layer.score}%"></div>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function updateRegimeDetails(regimeResult) {
+            const html = `
+                <div class="metric-row">
+                    <span class="metric-label">Regime Status</span>
+                    <span class="metric-value" style="color: ${regimeResult.regime === 'RISK ON' ? 'var(--accent-green)' : regimeResult.regime === 'TRANSITION' ? '#fbbf24' : 'var(--accent-red)'}">
+                        ${regimeResult.regime}
+                    </span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">Confidence Level</span>
+                    <span class="metric-value">${regimeResult.confidence}%</span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">Risk Score</span>
+                    <span class="metric-value">${regimeResult.riskScore}/100</span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">Bullish Signals</span>
+                    <span class="metric-value">${regimeResult.signalCount}</span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">Recommended Posture</span>
+                    <span class="metric-value">${regimeResult.posture}</span>
+                </div>
+                <div style="margin-top: 16px; padding: 12px; background: var(--bg-tertiary); border-radius: 8px; font-size: 0.75rem; color: var(--text-secondary);">
+                    <strong>Active Factors:</strong><br>
+                    ${regimeResult.factors.map(f => `• ${f}`).join('<br>')}
+                </div>
+            `;
+            document.getElementById('regime-details').innerHTML = html;
+        }
+        
+        function updateKeyMetrics() {
+            const html = `
+                <div class="metric-row">
+                    <span class="metric-label">Market Cap</span>
+                    <span class="metric-value">${formatCurrency(btcData.marketCap)}</span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">24h Volume</span>
+                    <span class="metric-value">${formatCurrency(btcData.volume24h)}</span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">All-Time High</span>
+                    <span class="metric-value">${formatCurrency(btcData.ath)}</span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">ATH Distance</span>
+                    <span class="metric-value">${(((btcData.price - btcData.ath) / btcData.ath) * 100).toFixed(1)}%</span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">MVRV Proxy</span>
+                    <span class="metric-value">${onChainData.mvrv.toFixed(2)} <span class="info-badge badge-${onChainData.source}">${onChainData.source.toUpperCase()}</span></span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">Fear & Greed</span>
+                    <span class="metric-value">${sentimentData.value} - ${sentimentData.classification} <span class="info-badge badge-${sentimentData.source}">${sentimentData.source.toUpperCase()}</span></span>
+                </div>
+            `;
+            document.getElementById('key-metrics').innerHTML = html;
+        }
+        
+        // ==================== INITIALIZATION ====================
+        async function initialize() {
+            console.log('[Init] Starting PRO Dashboard V2...');
+            
+            try {
+                // Fetch all data
+                await fetchBitcoinData();
+                await fetchFearGreedIndex();
+                
+                // Calculate derived data
+                calculateProxyMVRV(btcData.price);
+                calculateLiquidityProxy(btcData.marketCap);
+                
+                // Calculate scores
+                calculateLayerScores();
+                
+                // Update dashboard
+                updateDashboard();
+                
+                // Hide loading screen
+                setTimeout(() => {
+                    document.getElementById('loading-screen').classList.add('hidden');
+                }, 1500);
+                
+                // Auto-refresh every 60 seconds
+                setInterval(async () => {
+                    console.log('[Auto-Update] Refreshing data...');
+                    await fetchBitcoinData();
+                    await fetchFearGreedIndex();
+                    calculateProxyMVRV(btcData.price);
+                    calculateLiquidityProxy(btcData.marketCap);
+                    calculateLayerScores();
+                    updateDashboard();
+                }, 60000);
+                
+                console.log('[Init] Complete!');
+            } catch (error) {
+                console.error('[Init] Error:', error);
+                setTimeout(() => {
+                    document.getElementById('loading-screen').classList.add('hidden');
+                    alert('Failed to load data. Please refresh the page.');
+                }, 2000);
+            }
+        }
+        
+        // Start
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initialize);
+        } else {
+            initialize();
+        }
+    </script>
+</body>
+</html>
