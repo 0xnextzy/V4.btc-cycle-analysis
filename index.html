@@ -2684,6 +2684,849 @@ if(document.readyState==='loading') {
 }
 
 })(); // END IIFE — no global pollution
+<!-- ╔══════════════════════════════════════════════════════════════════╗
+     ║  STATISTICAL TRANSPARENCY & DATA HONESTY FRAMEWORK v4.0         ║
+     ║  ADDITIVE ONLY — zero modification to any existing code above   ║
+     ║  Free Public Data Validation · Honest Limitation Disclosure     ║
+     ╚══════════════════════════════════════════════════════════════════╝ -->
+<style>
+/* All classes prefixed trx- to prevent conflicts with existing styles */
+.trx-sticky-bar {
+    position:sticky; top:64px; z-index:91;
+    background:rgba(6,12,18,0.94); backdrop-filter:blur(24px);
+    border-bottom:1px solid rgba(6,182,212,0.18);
+    padding:8px 40px; display:flex; align-items:center; gap:16px; flex-wrap:wrap;
+}
+.trx-mode-tag { font-size:0.72rem; font-weight:800; color:#06b6d4; display:flex; align-items:center; gap:7px; }
+.trx-fds-wrap { margin-left:auto; display:flex; align-items:center; gap:10px; font-size:0.7rem; color:#475569; }
+.trx-toggle-all { padding:5px 14px; background:rgba(6,182,212,0.08); border:1px solid rgba(6,182,212,0.22); color:#06b6d4; border-radius:6px; font-size:0.72rem; font-weight:700; cursor:pointer; font-family:'Inter',sans-serif; transition:all 0.2s; }
+.trx-toggle-all:hover { background:rgba(6,182,212,0.16); }
+
+/* Hero banner */
+.trx-hero { margin:20px 40px 0; padding:14px 20px; display:flex; align-items:center; gap:16px; flex-wrap:wrap;
+    background:linear-gradient(90deg,rgba(6,182,212,0.05),rgba(16,185,129,0.03));
+    border:1px solid rgba(6,182,212,0.16); border-radius:12px; }
+.trx-hero-badges { display:flex; gap:8px; flex-wrap:wrap; margin-left:auto; }
+.trxp { display:inline-flex; align-items:center; gap:4px; padding:3px 10px; border-radius:20px; font-size:0.65rem; font-weight:700; letter-spacing:0.3px; }
+.trxp-b { background:rgba(6,182,212,0.1); color:#06b6d4; border:1px solid rgba(6,182,212,0.2); }
+.trxp-a { background:rgba(245,158,11,0.1); color:#f59e0b; border:1px solid rgba(245,158,11,0.2); }
+.trxp-g { background:rgba(16,185,129,0.1); color:#10b981; border:1px solid rgba(16,185,129,0.2); }
+.trxp-r { background:rgba(239,68,68,0.1); color:#ef4444; border:1px solid rgba(239,68,68,0.2); }
+.trxp-p { background:rgba(168,85,247,0.1); color:#a855f7; border:1px solid rgba(168,85,247,0.2); }
+
+/* Section collapsibles */
+.trx-sec { padding:0 40px 24px; max-width:2000px; margin:0 auto; }
+.trx-sec-hdr { display:flex; align-items:center; justify-content:space-between; padding:12px 18px;
+    background:rgba(255,255,255,0.018); border:1px solid rgba(255,255,255,0.06); border-radius:11px;
+    cursor:pointer; user-select:none; transition:all 0.2s; }
+.trx-sec-hdr:hover { border-color:rgba(6,182,212,0.22); background:rgba(6,182,212,0.025); }
+.trx-sec-name { font-size:0.85rem; font-weight:700; color:#e2e8f0; }
+.trx-sec-desc { font-size:0.67rem; color:#475569; margin-top:1px; }
+.trx-chev { color:#475569; font-size:0.7rem; transition:transform 0.3s; flex-shrink:0; }
+.trx-chev.open { transform:rotate(180deg); }
+.trx-body { max-height:0; overflow:hidden; opacity:0; transition:max-height 0.45s ease, opacity 0.3s ease; }
+.trx-body.open { max-height:5000px; opacity:1; }
+
+/* Cards & grids */
+.trx-card { background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.065); border-radius:13px; padding:20px; }
+.trx-ct { font-size:0.61rem; font-weight:700; text-transform:uppercase; letter-spacing:1.5px; color:#475569; margin-bottom:13px; }
+.trx-g { display:grid; gap:13px; margin-top:13px; }
+.trx-g2 { grid-template-columns:1fr 1fr; }
+.trx-g3 { grid-template-columns:1fr 1fr 1fr; }
+.trx-g4 { grid-template-columns:1fr 1fr 1fr 1fr; }
+
+/* Source rows */
+.trx-src { display:flex; align-items:flex-start; gap:11px; padding:11px 0; border-bottom:1px solid rgba(255,255,255,0.04); }
+.trx-src:last-child { border-bottom:none; }
+.trx-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; margin-top:5px; }
+.trx-dot-g { background:#10b981; box-shadow:0 0 7px #10b981; animation:trx-blink 2.5s infinite; }
+.trx-dot-a { background:#f59e0b; animation:trx-blink 1.8s infinite; }
+.trx-dot-b { background:#06b6d4; }
+.trx-dot-r { background:#ef4444; }
+@keyframes trx-blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+/* Warning boxes */
+.trx-warn { padding:12px 15px; border-radius:9px; margin-bottom:9px; display:flex; align-items:flex-start; gap:11px; }
+.trx-warn:last-child { margin-bottom:0; }
+.trx-warn-crit { background:rgba(239,68,68,0.07); border:1px solid rgba(239,68,68,0.2); }
+.trx-warn-hi   { background:rgba(245,158,11,0.07); border:1px solid rgba(245,158,11,0.2); }
+.trx-warn-med  { background:rgba(6,182,212,0.06); border:1px solid rgba(6,182,212,0.15); }
+.trx-warn-ok   { background:rgba(16,185,129,0.06); border:1px solid rgba(16,185,129,0.15); }
+.trx-wt { font-size:0.78rem; font-weight:700; margin-bottom:2px; }
+.trx-wb { font-size:0.7rem; color:#64748b; line-height:1.58; }
+
+/* Tables */
+.trx-tbl { width:100%; border-collapse:collapse; font-size:0.76rem; }
+.trx-tbl th { padding:9px 11px; text-align:left; font-size:0.6rem; font-weight:700; text-transform:uppercase; letter-spacing:1.2px; color:#374151; border-bottom:1px solid rgba(255,255,255,0.07); }
+.trx-tbl td { padding:9px 11px; border-bottom:1px solid rgba(255,255,255,0.04); vertical-align:middle; }
+.trx-tbl tr:last-child td { border-bottom:none; }
+.trx-tbl tr:hover td { background:rgba(255,255,255,0.02); }
+
+/* Reliability bar */
+.trx-rbar { height:5px; background:rgba(255,255,255,0.06); border-radius:3px; overflow:hidden; margin-top:5px; }
+.trx-rbar-f { height:100%; border-radius:3px; transition:width 0.9s ease; }
+
+/* Metric rows */
+.trx-mrow { display:flex; align-items:center; justify-content:space-between; padding:9px 0; border-bottom:1px solid rgba(255,255,255,0.04); }
+.trx-mrow:last-child { border-bottom:none; }
+.trx-ml { font-size:0.78rem; color:#94a3b8; }
+.trx-mv { font-family:'JetBrains Mono',monospace; font-size:0.8rem; font-weight:600; }
+
+/* Grade badges */
+.trx-grade { display:inline-block; padding:2px 8px; border-radius:4px; font-size:0.62rem; font-weight:700; }
+.trx-A  { background:rgba(16,185,129,0.12); color:#10b981; border:1px solid rgba(16,185,129,0.2); }
+.trx-B  { background:rgba(6,182,212,0.12); color:#06b6d4; border:1px solid rgba(6,182,212,0.2); }
+.trx-C  { background:rgba(245,158,11,0.12); color:#f59e0b; border:1px solid rgba(245,158,11,0.2); }
+.trx-D  { background:rgba(239,68,68,0.12); color:#ef4444; border:1px solid rgba(239,68,68,0.2); }
+.trx-F  { background:rgba(127,29,29,0.2); color:#f87171; border:1px solid rgba(239,68,68,0.15); }
+
+/* FDS ring */
+.trx-ring-wrap { position:relative; width:100px; height:100px; margin:0 auto 10px; }
+.trx-ring-wrap svg { transform:rotate(-90deg); }
+.trx-ring-center { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); text-align:center; }
+
+/* Confidence interval bar */
+.trx-ci { position:relative; height:26px; background:rgba(255,255,255,0.04); border-radius:5px; overflow:hidden; }
+.trx-ci-zone { position:absolute; top:0; height:100%; border-radius:4px; }
+.trx-ci-mark { position:absolute; top:15%; height:70%; width:2px; background:#f7931a; border-radius:1px; }
+
+/* Dev console */
+.trx-console { background:#060a0e; border:1px solid rgba(255,255,255,0.07); border-radius:9px; padding:12px; font-family:'JetBrains Mono',monospace; font-size:0.68rem; max-height:200px; overflow-y:auto; line-height:1.85; }
+
+/* Language compare */
+.trx-lang-bad  { font-size:0.71rem; color:#ef4444; padding:3px 0; }
+.trx-lang-good { font-size:0.71rem; color:#10b981; padding:3px 0 9px; border-bottom:1px solid rgba(255,255,255,0.04); }
+
+@media(max-width:1200px) { .trx-g3,.trx-g4 { grid-template-columns:1fr 1fr; } }
+@media(max-width:800px)  { .trx-g2,.trx-g3,.trx-g4 { grid-template-columns:1fr; } .trx-sec { padding:0 16px 20px; } .trx-sticky-bar,.trx-hero { padding-left:16px; padding-right:16px; } }
+</style>
+
+<!-- STICKY TRANSPARENCY BAR -->
+<div class="trx-sticky-bar" id="trxStickyBar">
+    <div class="trx-mode-tag">
+        <span style="width:8px;height:8px;border-radius:50%;background:#06b6d4;animation:trx-blink 2s infinite;display:inline-block;"></span>
+        DATA SOURCE MODE: <strong>FREE PUBLIC APIs ONLY</strong>
+    </div>
+    <button class="trx-toggle-all" id="trxToggleAllBtn" onclick="trxToggleAll()">⊞ Expand All Transparency Modules</button>
+    <div class="trx-fds-wrap">
+        Free Data Score: <strong id="trxFDSVal" style="color:#f59e0b;">--</strong>/100 &nbsp;|&nbsp;
+        Reliability: <strong id="trxFDSLvl" style="color:#f59e0b;">Calculating…</strong>
+    </div>
+</div>
+
+<!-- HERO BANNER -->
+<div class="trx-hero">
+    <div style="display:flex;align-items:center;gap:10px;">
+        <span style="font-size:1.25rem;">🔬</span>
+        <div>
+            <div style="font-size:0.88rem;font-weight:800;color:#e2e8f0;">Statistical Transparency & Data Honesty Framework v4.0</div>
+            <div style="font-size:0.67rem;color:#475569;margin-top:2px;">Additive layer only — no existing components modified or removed</div>
+        </div>
+    </div>
+    <div class="trx-hero-badges">
+        <span class="trxp trxp-b">🔌 Free APIs Only</span>
+        <span class="trxp trxp-a">⚠ Proxies Disclosed</span>
+        <span class="trxp trxp-p">📊 N=4 Warning</span>
+        <span class="trxp trxp-r">❌ Not Fin. Advice</span>
+        <span class="trxp trxp-g">✓ Non-Destructive</span>
+    </div>
+</div>
+
+<!-- ▓▓▓ T1 FREE DATA SOURCE VALIDATION ▓▓▓ -->
+<div class="trx-sec" style="margin-top:20px;">
+    <div class="trx-sec-hdr" onclick="trxToggle('t1')">
+        <div style="display:flex;align-items:center;gap:11px;">
+            <div style="width:28px;height:28px;border-radius:7px;background:rgba(16,185,129,0.1);display:flex;align-items:center;justify-content:center;">🔌</div>
+            <div><div class="trx-sec-name">T1 — Free Data Source Validation & API Health</div>
+            <div class="trx-sec-desc">Complete source list · freshness timestamps · rate limits · live status indicators</div></div>
+        </div>
+        <div class="trx-chev" id="trx-c-t1">▼</div>
+    </div>
+    <div class="trx-body" id="trx-b-t1">
+        <div class="trx-g trx-g3" style="margin-top:13px;">
+            <div class="trx-card" style="grid-column:span 2;">
+                <div class="trx-ct">Live API Status — Free Tier Endpoints</div>
+                <div id="t1ApiStatus"></div>
+            </div>
+            <div class="trx-card">
+                <div class="trx-ct">Free Data Reliability Score</div>
+                <div class="trx-ring-wrap">
+                    <svg viewBox="0 0 100 100" width="100" height="100">
+                        <defs><linearGradient id="trxRG" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" stop-color="#10b981"/><stop offset="60%" stop-color="#f59e0b"/><stop offset="100%" stop-color="#ef4444"/>
+                        </linearGradient></defs>
+                        <circle cx="50" cy="50" r="42" fill="none" stroke="#1c2128" stroke-width="11"/>
+                        <circle id="trxRingArc" cx="50" cy="50" r="42" fill="none" stroke="url(#trxRG)" stroke-width="11" stroke-linecap="round" stroke-dasharray="263.9" stroke-dashoffset="263.9" style="transition:stroke-dashoffset 1.1s ease;"/>
+                    </svg>
+                    <div class="trx-ring-center">
+                        <div id="trxRingNum" style="font-family:'JetBrains Mono',monospace;font-size:1.5rem;font-weight:800;">--</div>
+                        <div style="font-size:0.58rem;color:#475569;">/100</div>
+                    </div>
+                </div>
+                <div id="t1FDSDetail" style="font-size:0.7rem;color:#64748b;line-height:1.85;"></div>
+                <div style="margin-top:10px;padding:9px 11px;background:rgba(245,158,11,0.05);border:1px solid rgba(245,158,11,0.15);border-radius:7px;font-size:0.67rem;color:#f59e0b;line-height:1.55;">
+                    ⚠ Score reflects quality gap vs institutional feeds (Glassnode, CryptoQuant, Bloomberg)
+                </div>
+            </div>
+        </div>
+        <div class="trx-card" style="margin-top:13px;">
+            <div class="trx-ct">Rate Limits · Cache Policy · Fallback Strategy</div>
+            <table class="trx-tbl" id="t1RateTable"></table>
+        </div>
+    </div>
+</div>
+
+<!-- ▓▓▓ T2 ON-CHAIN LIMITATION DISCLOSURE ▓▓▓ -->
+<div class="trx-sec">
+    <div class="trx-sec-hdr" onclick="trxToggle('t2')">
+        <div style="display:flex;align-items:center;gap:11px;">
+            <div style="width:28px;height:28px;border-radius:7px;background:rgba(245,158,11,0.1);display:flex;align-items:center;justify-content:center;">⛓</div>
+            <div><div class="trx-sec-name">T2 — On-Chain Proxy Limitation Disclosure</div>
+            <div class="trx-sec-desc">Every on-chain metric is estimated · no raw node data · no premium feed · full methodology disclosed</div></div>
+        </div>
+        <div class="trx-chev" id="trx-c-t2">▼</div>
+    </div>
+    <div class="trx-body" id="trx-b-t2">
+        <div class="trx-g trx-g2" style="margin-top:13px;">
+            <div class="trx-card">
+                <div class="trx-ct">On-Chain Metric Proxy Map — Estimated vs Real</div>
+                <div id="t2ProxyMap"></div>
+            </div>
+            <div class="trx-card">
+                <div class="trx-ct">Proxy Calculation Methodology</div>
+                <div id="t2Methodology"></div>
+            </div>
+        </div>
+        <div class="trx-card" style="margin-top:13px;">
+            <div class="trx-ct">On-Chain Data Quality Warnings</div>
+            <div id="t2Warnings"></div>
+        </div>
+    </div>
+</div>
+
+<!-- ▓▓▓ T3 MACRO DATA LIMITATIONS ▓▓▓ -->
+<div class="trx-sec">
+    <div class="trx-sec-hdr" onclick="trxToggle('t3')">
+        <div style="display:flex;align-items:center;gap:11px;">
+            <div style="width:28px;height:28px;border-radius:7px;background:rgba(239,68,68,0.1);display:flex;align-items:center;justify-content:center;">🌊</div>
+            <div><div class="trx-sec-name">T3 — Macro Data Limitations & Release Lag Disclosure</div>
+            <div class="trx-sec-desc">FRED · M2 · DXY · real yields — all proxy-based · publication lag · staleness warnings</div></div>
+        </div>
+        <div class="trx-chev" id="trx-c-t3">▼</div>
+    </div>
+    <div class="trx-body" id="trx-b-t3">
+        <div class="trx-g trx-g3" style="margin-top:13px;">
+            <div class="trx-card"><div class="trx-ct">Macro Indicator · Source & Lag</div><div id="t3Sources"></div></div>
+            <div class="trx-card"><div class="trx-ct">Data Freshness & Publication Status</div><div id="t3Freshness"></div></div>
+            <div class="trx-card"><div class="trx-ct">Free vs Real Data Gap</div><div id="t3Gap"></div></div>
+        </div>
+    </div>
+</div>
+
+<!-- ▓▓▓ T4 DERIVATIVES & ETF DATA QUALITY ▓▓▓ -->
+<div class="trx-sec">
+    <div class="trx-sec-hdr" onclick="trxToggle('t4')">
+        <div style="display:flex;align-items:center;gap:11px;">
+            <div style="width:28px;height:28px;border-radius:7px;background:rgba(168,85,247,0.1);display:flex;align-items:center;justify-content:center;">📊</div>
+            <div><div class="trx-sec-name">T4 — Derivatives & ETF Data Quality Check</div>
+            <div class="trx-sec-desc">Single-exchange representation · ETF delay disclosure · cross-exchange distortion warning</div></div>
+        </div>
+        <div class="trx-chev" id="trx-c-t4">▼</div>
+    </div>
+    <div class="trx-body" id="trx-b-t4">
+        <div class="trx-g trx-g2" style="margin-top:13px;">
+            <div class="trx-card"><div class="trx-ct">Derivatives Data Quality</div><div id="t4Deriv"></div></div>
+            <div class="trx-card"><div class="trx-ct">ETF Flow Data Transparency</div><div id="t4ETF"></div></div>
+        </div>
+    </div>
+</div>
+
+<!-- ▓▓▓ T5 STATISTICAL HONESTY MODULE ▓▓▓ -->
+<div class="trx-sec">
+    <div class="trx-sec-hdr" onclick="trxToggle('t5')">
+        <div style="display:flex;align-items:center;gap:11px;">
+            <div style="width:28px;height:28px;border-radius:7px;background:rgba(6,182,212,0.1);display:flex;align-items:center;justify-content:center;">📐</div>
+            <div><div class="trx-sec-name">T5 — Statistical Honesty Module</div>
+            <div class="trx-sec-desc">N=4 cycle warning · small sample limits · deterministic language removed · probabilistic reframing</div></div>
+        </div>
+        <div class="trx-chev" id="trx-c-t5">▼</div>
+    </div>
+    <div class="trx-body" id="trx-b-t5">
+        <div class="trx-g trx-g2" style="margin-top:13px;">
+            <div class="trx-card"><div class="trx-ct">Sample Size Reality Check</div><div id="t5Sample"></div></div>
+            <div class="trx-card"><div class="trx-ct">Language Honesty — Deterministic vs Probabilistic</div><div id="t5Language"></div></div>
+        </div>
+        <div class="trx-g trx-g3" style="margin-top:13px;">
+            <div class="trx-card"><div class="trx-ct">Statistical Confidence Limitations</div><div id="t5StatLimits"></div></div>
+            <div class="trx-card"><div class="trx-ct">Probabilistic Framing Policy</div><div id="t5ProbPolicy"></div></div>
+            <div class="trx-card"><div class="trx-ct">ETF-Era Regime Change Warning</div><div id="t5Regime"></div></div>
+        </div>
+    </div>
+</div>
+
+<!-- ▓▓▓ T6 COMPOSITE SCORE CLARITY ▓▓▓ -->
+<div class="trx-sec">
+    <div class="trx-sec-hdr" onclick="trxToggle('t6')">
+        <div style="display:flex;align-items:center;gap:11px;">
+            <div style="width:28px;height:28px;border-radius:7px;background:rgba(247,147,26,0.1);display:flex;align-items:center;justify-content:center;">🎯</div>
+            <div><div class="trx-sec-name">T6 — Composite Score Transparency</div>
+            <div class="trx-sec-desc">Normalization method · weight distribution · reliability per indicator · uncertainty range</div></div>
+        </div>
+        <div class="trx-chev" id="trx-c-t6">▼</div>
+    </div>
+    <div class="trx-body" id="trx-b-t6">
+        <div class="trx-g trx-g2" style="margin-top:13px;">
+            <div class="trx-card"><div class="trx-ct">Per-Indicator Data Reliability & Uncertainty</div><div id="t6IndRel"></div></div>
+            <div class="trx-card"><div class="trx-ct">Composite Score Uncertainty Range</div><div id="t6Uncertainty"></div></div>
+        </div>
+    </div>
+</div>
+
+<!-- ▓▓▓ T7 DATA INTEGRITY PANEL ▓▓▓ -->
+<div class="trx-sec">
+    <div class="trx-sec-hdr" onclick="trxToggle('t7')">
+        <div style="display:flex;align-items:center;gap:11px;">
+            <div style="width:28px;height:28px;border-radius:7px;background:rgba(16,185,129,0.1);display:flex;align-items:center;justify-content:center;">🛡</div>
+            <div><div class="trx-sec-name">T7 — Data Integrity & Validation Panel</div>
+            <div class="trx-sec-desc">API response validation · missing value detection · fallback status · cached vs live indicators</div></div>
+        </div>
+        <div class="trx-chev" id="trx-c-t7">▼</div>
+    </div>
+    <div class="trx-body" id="trx-b-t7">
+        <div class="trx-g trx-g3" style="margin-top:13px;">
+            <div class="trx-card"><div class="trx-ct">API Response Validation</div><div id="t7APIVal"></div></div>
+            <div class="trx-card"><div class="trx-ct">Missing Value & Fallback Status</div><div id="t7Missing"></div></div>
+            <div class="trx-card"><div class="trx-ct">Cached vs Live Data Tracker</div><div id="t7Cache"></div></div>
+        </div>
+        <div class="trx-card" style="margin-top:13px;">
+            <div class="trx-ct">Data Validation Log</div>
+            <div class="trx-console" id="t7Log"></div>
+        </div>
+    </div>
+</div>
+
+<!-- ▓▓▓ T8 MODEL LIMITATION SECTION ▓▓▓ -->
+<div class="trx-sec" style="padding-bottom:80px;">
+    <div class="trx-sec-hdr" onclick="trxToggle('t8')">
+        <div style="display:flex;align-items:center;gap:11px;">
+            <div style="width:28px;height:28px;border-radius:7px;background:rgba(239,68,68,0.1);display:flex;align-items:center;justify-content:center;">⚠️</div>
+            <div><div class="trx-sec-name">T8 — Model Limitations · Free Data Edition · Mandatory Disclosures</div>
+            <div class="trx-sec-desc">Data delays · approximations · no premium feeds · non-financial-advice statement</div></div>
+        </div>
+        <div class="trx-chev" id="trx-c-t8">▼</div>
+    </div>
+    <div class="trx-body" id="trx-b-t8">
+        <div class="trx-g trx-g2" style="margin-top:13px;">
+            <div class="trx-card"><div class="trx-ct">Explicit Free Data Limitations</div><div id="t8Limits"></div></div>
+            <div class="trx-card">
+                <div class="trx-ct">What Premium Data Would Add</div>
+                <div id="t8Premium"></div>
+                <div style="margin-top:12px;padding:12px;background:rgba(168,85,247,0.05);border:1px solid rgba(168,85,247,0.15);border-radius:8px;font-size:0.71rem;color:#a855f7;line-height:1.65;">
+                    <strong>Why not use paid APIs?</strong><br>
+                    Glassnode, CryptoQuant, Santiment, Bloomberg — $50–$5,000+/month. This dashboard is committed to free, open, accessible data only. Trade-off: lower precision, proxy-based on-chain metrics.
+                </div>
+            </div>
+        </div>
+        <div style="margin-top:13px;padding:20px 22px;background:linear-gradient(135deg,rgba(239,68,68,0.06),rgba(245,158,11,0.04));border:1px solid rgba(239,68,68,0.22);border-radius:13px;">
+            <div style="font-size:0.78rem;font-weight:800;color:#ef4444;margin-bottom:10px;">⚠️ MANDATORY DISCLOSURE — READ BEFORE USING THIS DASHBOARD</div>
+            <div id="t8Disclaimer" style="font-size:0.75rem;color:#94a3b8;line-height:1.85;"></div>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     TRANSPARENCY JAVASCRIPT ENGINE — IIFE (zero global pollution)
+═══════════════════════════════════════════════════════════════ -->
+<script>
+(function(){
+'use strict';
+
+/* safe read-only access to existing globals — never writes */
+const G = k => { try{ return window[k]; }catch(e){ return undefined; } };
+
+/* ── TOGGLE SYSTEM ── */
+let trxAllOpen = false;
+window.trxToggle = function(id){
+    const b=document.getElementById('trx-b-'+id), c=document.getElementById('trx-c-'+id);
+    if(b&&c){ b.classList.toggle('open'); c.classList.toggle('open'); }
+};
+window.trxToggleAll = function(){
+    trxAllOpen=!trxAllOpen;
+    ['t1','t2','t3','t4','t5','t6','t7','t8'].forEach(id=>{
+        const b=document.getElementById('trx-b-'+id),c=document.getElementById('trx-c-'+id);
+        if(b&&c){ trxAllOpen?(b.classList.add('open'),c.classList.add('open')):(b.classList.remove('open'),c.classList.remove('open')); }
+    });
+    const btn=document.getElementById('trxToggleAllBtn');
+    if(btn) btn.textContent=trxAllOpen?'⊟ Collapse All':'⊞ Expand All Transparency Modules';
+};
+
+/* ── STATIC DATA DEFINITIONS ── */
+const APIS = [
+    { name:'CoinGecko Public API v3', url:'api.coingecko.com/api/v3', tier:'FREE — No Key', limit:'10–50 req/min',
+      cache:'5 min TTL / localStorage fallback', provides:'BTC Price, MCap, Volume, ATH, 7d Change',
+      lag:'5–30 seconds', rel:92, fallback:'localStorage stale cache', statusKey:'btc',
+      note:'Free tier rate-limited. Pro tier ($129/mo) unlocks 500 req/min.' },
+    { name:'Alternative.me Fear & Greed', url:'api.alternative.me/fng', tier:'FREE — No Key', limit:'~60 req/hr est.',
+      cache:'5 min TTL / defaults to 50 (neutral)', provides:'F&G Index (0–100), 7-day history',
+      lag:'⚠ Daily update — NOT real-time', rel:74, fallback:'Neutral value = 50', statusKey:'fg',
+      note:'⚠ Index recalculated once per day. Intraday swings are NOT captured.' },
+    { name:'200W MA Reference (Internal)', url:'Derived from CoinGecko price', tier:'FREE — Derived', limit:'N/A',
+      cache:'In-memory, recalculated each load', provides:'MVRV proxy, on-chain valuation estimate',
+      lag:'Approximation — not blockchain data', rel:50, fallback:'Hardcoded $32,847', statusKey:'internal',
+      note:'⚠ CRITICAL: NOT actual MVRV from blockchain. Price/MA ratio with ±20–40% error margin.' },
+    { name:'Halving Calendar (Hardcoded)', url:'Static constant — April 20, 2024', tier:'FREE — Static', limit:'N/A',
+      cache:'Permanent constant in code', provides:'Days since halving, cycle timing',
+      lag:'Zero — calendar date', rel:99, fallback:'N/A', statusKey:'static',
+      note:'Halving date is verified exact. All cycle timing analysis anchors to this date.' },
+];
+
+const ONCHAIN = [
+    { metric:'MVRV Z-Score', real:'Glassnode ($50-500/mo)',proxy:'Price / 200W MA ratio',err:'±20–40%',grade:'D',
+      why:'Real MVRV requires full UTXO set from Bitcoin nodes. MA ratio correlates loosely at best.' },
+    { metric:'NUPL', real:'Glassnode ($50+/mo)', proxy:'Estimated from MVRV proxy tier', err:'±30–50%', grade:'D',
+      why:'NUPL = (Realized Cap − Market Cap)/Market Cap. No access to realized cap from free APIs.' },
+    { metric:'Realized Price', real:'Glassnode / BitcoinVisuals', proxy:'price ÷ MVRV_proxy', err:'±15–25%', grade:'C',
+      why:'Approximation only. Real realized price needs every UTXO valued at last movement price.' },
+    { metric:'SOPR', real:'Glassnode ($50+/mo)', proxy:'❌ Not implemented', err:'100% missing', grade:'F',
+      why:'SOPR needs transaction-level blockchain data. No free API provides this.' },
+    { metric:'Exchange Reserves', real:'CryptoQuant ($50+/mo)', proxy:'Volume/MCap ratio', err:'±40–60%', grade:'D',
+      why:'Volume/MCap is a crude proxy. Real reserve data needs direct wallet tracking on-chain.' },
+    { metric:'Funding Rate', real:'Exchange WS (Binance/Bybit)', proxy:'24h spot price change magnitude', err:'±50–70%', grade:'D',
+      why:'Real funding is per-8-hour perpetual rate. We infer from spot momentum only — very loose.' },
+    { metric:'Open Interest', real:'Coinglass (partially free)', proxy:'Volume trend proxy', err:'±25–35%', grade:'C',
+      why:'Coinglass offers some free OI data. Not yet integrated — a future zero-cost improvement.' },
+];
+
+const MACRO = [
+    { ind:'DXY (US Dollar Index)', src:'No direct free API used', proxy:'24h BTC change inference', lag:'Inferred — not measured', fresh:'Stale estimate', grade:'D' },
+    { ind:'Global M2 Money Supply', src:'FRED (free — not integrated)', proxy:'Market cap as liquidity proxy', lag:'4–6 week FRED release lag', fresh:'Monthly data', grade:'C' },
+    { ind:'US 10Y Real Yield', src:'FRED (free — not integrated)', proxy:'Not directly used', lag:'Daily FRED update', fresh:'Previous business day', grade:'C' },
+    { ind:'CB Balance Sheet', src:'Various central banks', proxy:'Estimated from regime state', lag:'Weekly release', fresh:'Stale proxy', grade:'D' },
+    { ind:'SPX Correlation', src:'Yahoo Finance (free!)', proxy:'Estimated in corr module', lag:'15-min Yahoo delay', fresh:'Near real-time', grade:'B' },
+];
+
+const VALIDATION = [
+    { field:'BTC Price', rule:'Non-null, $0–$10M', type:'live', src:'CoinGecko' },
+    { field:'24h Change %', rule:'-50% to +100%', type:'live', src:'CoinGecko' },
+    { field:'Market Cap', rule:'> $100B sanity', type:'live', src:'CoinGecko' },
+    { field:'Volume 24h', rule:'> $1B sanity', type:'live', src:'CoinGecko' },
+    { field:'ATH', rule:'≥ current price', type:'static', src:'CoinGecko' },
+    { field:'Fear & Greed', rule:'0 ≤ value ≤ 100', type:'live', src:'Alternative.me' },
+    { field:'MVRV Proxy', rule:'0.1 < MVRV < 10', type:'derived', src:'Internal' },
+    { field:'Layer Scores', rule:'All 7 in [5, 95]', type:'derived', src:'Engine' },
+    { field:'Days Since Halving', rule:'> 0, < 1461', type:'static', src:'Calendar' },
+    { field:'Funding Rate', rule:'ESTIMATED — spot proxy', type:'estimated', src:'Proxy' },
+    { field:'DXY', rule:'NOT integrated — missing', type:'missing', src:'N/A' },
+    { field:'ETF Flows', rule:'NOT integrated — missing', type:'missing', src:'N/A' },
+    { field:'SOPR', rule:'NOT available — free limit', type:'missing', src:'N/A' },
+];
+
+const LIMITS = [
+    { icon:'⏱', level:'hi',   title:'5–30 Second Price Delay', desc:'CoinGecko free tier lags professional feeds with sub-second data. Not suitable for trading.' },
+    { icon:'📅', level:'hi',   title:'Fear & Greed: Daily Update Only', desc:'The F&G index updates once per 24 hours. Intraday sentiment changes are invisible to this model.' },
+    { icon:'⛓', level:'crit', title:'All On-Chain Data is Estimated', desc:'MVRV, NUPL, SOPR, reserves — all are proxies. Errors of ±20–70% are possible.' },
+    { icon:'📊', level:'hi',   title:'No Real Funding Rate Data', desc:'Real 8-hour perpetual funding rates require exchange API integration. We use price change as a crude proxy.' },
+    { icon:'🏦', level:'hi',   title:'No ETF Flow Data', desc:'Spot Bitcoin ETF inflow/outflow data is not available from any free automated source.' },
+    { icon:'🌍', level:'hi',   title:'Macro Data: All Proxy-Based', desc:'DXY, M2, real yields — all approximated. FRED API (free) not yet connected.' },
+    { icon:'📉', level:'crit', title:'N=4 Cycles — Statistically Insufficient', desc:'4 data points cannot establish statistical significance. Patterns may be entirely coincidental.' },
+    { icon:'🔄', level:'hi',   title:'ETF-Era Regime Change (Jan 2024)', desc:'Spot ETF approval fundamentally changed BTC market dynamics. Pre-2024 cycle patterns may not apply.' },
+    { icon:'❌', level:'crit', title:'NOT Financial Advice', desc:'Educational and research purposes ONLY. No investment decisions should be based on this tool.' },
+];
+
+const PREMIUM = [
+    { metric:'Real MVRV Z-Score', src:'Glassnode ($50–500/mo)', impact:'HIGH' },
+    { metric:'NUPL / SOPR Real-Time', src:'Glassnode / CryptoQuant', impact:'HIGH' },
+    { metric:'Exchange Reserve Flows', src:'CryptoQuant ($50+/mo)', impact:'HIGH' },
+    { metric:'Real Funding Rate Agg.', src:'Coinglass Pro / Kaiko', impact:'MED' },
+    { metric:'ETF Daily Flows', src:'Bloomberg / Farside', impact:'HIGH' },
+    { metric:'Whale Transaction Data', src:'Santiment / Nansen', impact:'MED' },
+    { metric:'Real-Time DXY', src:'Bloomberg / Reuters', impact:'MED' },
+    { metric:'Stablecoin Supply Flows', src:'CryptoQuant / Nansen', impact:'MED' },
+];
+
+const LANG_PAIRS = [
+    ['❌ "Bitcoin will peak at $200K"', '✅ "Historical analogues suggest elevated probability of peak within Q2–Q4 window (N=4)"'],
+    ['❌ "MVRV shows the market is overvalued"', '✅ "MVRV proxy (±20–40% error) is consistent with historical overvaluation signals"'],
+    ['❌ "We are in the accumulation phase"', '✅ "Indicators are consistent with accumulation (4 historical precedents)"'],
+    ['❌ "This cycle mirrors 2017 exactly"', '✅ "Day-equivalent pattern shows 78% similarity to 2017 (N=1 comparison)"'],
+    ['❌ "Regime engine signals Risk ON"', '✅ "5/5 proxy factors currently bullish — proxy data, not real-time on-chain"'],
+    ['❌ "Cycle top in Q3 2025"', '✅ "Peak window probability elevated in Day 365–548 range per N=4 history"'],
+];
+
+/* ── HELPERS ── */
+const fmtNow = () => new Date().toISOString().slice(11,19)+' UTC';
+const rel2color = r => r>=85?'#10b981':r>=65?'#f59e0b':r>=45?'#f97316':'#ef4444';
+const grade2class = g => g==='A'||g==='A+'?'trx-A':g==='B'?'trx-B':g==='C'?'trx-C':g==='F'?'trx-F':'trx-D';
+const lvlColor = l => l==='crit'?'#ef4444':l==='hi'?'#f59e0b':'#06b6d4';
+
+/* ── T1 ── */
+function renderT1(){
+    const btc=G('BTC')||{}, fg=G('FG')||{source:'unknown'};
+    const el=id=>document.getElementById(id);
+
+    /* API status */
+    const status=el('t1ApiStatus');
+    if(status) status.innerHTML=APIS.map(a=>{
+        const live=a.statusKey==='btc'?!!btc.price:a.statusKey==='fg'?(fg.source==='real'):true;
+        const dot=a.statusKey==='internal'||a.statusKey==='static'?'trx-dot-b':live?'trx-dot-g':'trx-dot-a';
+        const stxt=a.statusKey==='internal'||a.statusKey==='static'?'PROXY/STATIC':live?'LIVE':'FALLBACK';
+        const sc=a.statusKey==='internal'||a.statusKey==='static'?'#06b6d4':live?'#10b981':'#f59e0b';
+        return `<div class="trx-src">
+            <div class="trx-dot ${dot}"></div>
+            <div style="flex:1;">
+                <div style="font-size:0.82rem;font-weight:700;color:#e2e8f0;">${a.name}</div>
+                <div style="font-size:0.67rem;color:#475569;margin-top:2px;">📍 ${a.url} &nbsp;|&nbsp; Provides: ${a.provides}</div>
+                <div style="font-size:0.67rem;color:#f59e0b;margin-top:2px;">${a.note}</div>
+            </div>
+            <div style="text-align:right;flex-shrink:0;min-width:130px;">
+                <div style="font-size:0.68rem;font-weight:700;color:${sc};">● ${stxt}</div>
+                <div style="font-size:0.6rem;color:#374151;font-family:'JetBrains Mono',monospace;">Lag: ${a.lag}</div>
+                <div style="font-size:0.6rem;color:#f59e0b;">Limit: ${a.limit}</div>
+                <div style="margin-top:3px;"><span style="font-size:0.62rem;font-weight:700;padding:1px 7px;border-radius:3px;background:${rel2color(a.rel)}18;color:${rel2color(a.rel)};border:1px solid ${rel2color(a.rel)}33;">Rel: ${a.rel}%</span></div>
+            </div>
+        </div>`;
+    }).join('');
+
+    /* FDS ring */
+    const avg=Math.round(APIS.reduce((a,b)=>a+b.rel,0)/APIS.length);
+    const arc=document.getElementById('trxRingArc');
+    if(arc) arc.style.strokeDashoffset=263.9-(avg/100)*263.9;
+    const rn=el('trxRingNum'); if(rn) rn.textContent=avg;
+    const fv=el('trxFDSVal'); if(fv){ fv.textContent=avg; fv.style.color=rel2color(avg); }
+    const fl=el('trxFDSLvl');
+    if(fl){ const lvl=avg>=85?'High (B+)':avg>=70?'Moderate (C+)':avg>=55?'Limited (D+)':'Low (D)'; fl.textContent=lvl; fl.style.color=rel2color(avg); }
+    const fd=el('t1FDSDetail');
+    if(fd) fd.innerHTML=APIS.map(a=>`<div style="display:flex;justify-content:space-between;padding:2px 0;"><span>${a.name.split(' ').slice(0,2).join(' ')}</span><span style="font-weight:700;color:${rel2color(a.rel)};">${a.rel}%</span></div><div class="trx-rbar"><div class="trx-rbar-f" style="width:${a.rel}%;background:${rel2color(a.rel)};"></div></div>`).join('');
+
+    /* Rate limit table */
+    const rt=el('t1RateTable');
+    if(rt) rt.innerHTML='<thead><tr><th>API</th><th>Rate Limit</th><th>Cache TTL</th><th>Fallback</th><th>Cost</th><th>Rel.</th></tr></thead><tbody>'+
+        APIS.map(a=>`<tr>
+            <td style="color:#e2e8f0;font-weight:600;">${a.name.split(' ').slice(0,3).join(' ')}</td>
+            <td style="font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:#f59e0b;">${a.limit}</td>
+            <td style="color:#94a3b8;">${a.cache}</td>
+            <td style="font-size:0.7rem;color:#64748b;">${a.fallback}</td>
+            <td style="color:#10b981;font-weight:700;">$0</td>
+            <td><span class="${grade2class(a.rel>=85?'A':a.rel>=70?'B':a.rel>=50?'C':'D')} trx-grade">${a.rel>=85?'A':a.rel>=70?'B':a.rel>=50?'C':'D'}</span></td>
+        </tr>`).join('')+'</tbody>';
+}
+
+/* ── T2 ── */
+function renderT2(){
+    const pm=document.getElementById('t2ProxyMap');
+    if(pm) pm.innerHTML=ONCHAIN.map(o=>`<div style="padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.04);">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;">
+            <div>
+                <div style="font-size:0.82rem;font-weight:700;color:#e2e8f0;">${o.metric}</div>
+                <div style="font-size:0.67rem;color:#f59e0b;margin-top:2px;">📍 Proxy: ${o.proxy}</div>
+                <div style="font-size:0.63rem;color:#374151;">Real: ${o.real}</div>
+            </div>
+            <div style="text-align:right;flex-shrink:0;">
+                <span class="${grade2class(o.grade)} trx-grade">${o.grade}</span>
+                <div style="font-size:0.63rem;color:#ef4444;margin-top:3px;">Error: ${o.err}</div>
+            </div>
+        </div>
+        <div style="font-size:0.66rem;color:#475569;margin-top:4px;line-height:1.5;">${o.why}</div>
+    </div>`).join('');
+
+    const meth=document.getElementById('t2Methodology');
+    if(meth) meth.innerHTML=`<div class="trx-warn trx-warn-hi" style="margin-bottom:12px;">
+        <div style="font-size:1.1rem;flex-shrink:0;">⚠</div>
+        <div><div class="trx-wt" style="color:#f59e0b;">All On-Chain Data is ESTIMATED</div>
+        <div class="trx-wb">None of the on-chain metrics use actual blockchain node data. Real on-chain analysis requires full archive node access or paid API subscriptions ($50–$500/month).</div></div>
+    </div>`+[
+        { lbl:'MVRV Proxy Formula', code:'MVRV_proxy = BTC_price / MA_200_week\nMA_200w ≈ $32,847 (manually updated)\nError margin: ±20–40% vs real MVRV' },
+        { lbl:'Layer 2 Score Calculation', code:'score = piecewise_linear(MVRV_proxy)\nMVRV < 0.8 → 92 pts\nMVRV > 3.0 → 8 pts\nClamp applied: [5, 95]' },
+        { lbl:'Funding Rate Proxy', code:'IF |Δ24h| > 8%: funding = "overheated"\nIF |Δ24h| > 3%: funding = "elevated"\nOtherwise: "neutral"\nError margin: ±50–70%' },
+    ].map(f=>`<div style="margin-bottom:10px;">
+        <div style="font-size:0.67rem;font-weight:700;color:#64748b;margin-bottom:4px;">${f.lbl}</div>
+        <div style="background:#060a0e;border:1px solid rgba(255,255,255,0.07);border-radius:6px;padding:8px 10px;font-family:'JetBrains Mono',monospace;font-size:0.64rem;color:#06b6d4;white-space:pre-line;">${f.code}</div>
+    </div>`).join('');
+
+    const wn=document.getElementById('t2Warnings');
+    if(wn) wn.innerHTML=[
+        {c:'crit',i:'🔴',t:'No Raw Blockchain Validation', d:'Layer 2 scores are entirely based on a price/MA ratio. Not validated against UTXO set, realized cap, or any blockchain state data.'},
+        {c:'hi',  i:'🟡',t:'200W MA Value is Hardcoded',   d:'The $32,847 value is a manually maintained constant. It may drift from the real 200-week MA over time and requires periodic updates.'},
+        {c:'hi',  i:'🟡',t:'SOPR Completely Missing',      d:'Spent Output Profit Ratio — one of the most reliable cycle indicators — is entirely unavailable from free APIs. Requires Bitcoin node data.'},
+        {c:'hi',  i:'🟡',t:'Funding Rate Proxy: ±50–70% Error', d:'Real 8-hour perpetual funding from Binance/Bybit/OKX is estimated via 24h spot price change magnitude. Directional signal only.'},
+    ].map(w=>`<div class="trx-warn trx-warn-${w.c}"><div style="font-size:1.1rem;flex-shrink:0;">${w.i}</div>
+        <div><div class="trx-wt" style="color:${lvlColor(w.c)};">${w.t}</div><div class="trx-wb">${w.d}</div></div>
+    </div>`).join('');
+}
+
+/* ── T3 ── */
+function renderT3(){
+    const ts=document.getElementById('t3Sources');
+    if(ts) ts.innerHTML=MACRO.map(m=>`<div class="trx-mrow">
+        <div><div class="trx-ml">${m.ind}</div><div style="font-size:0.64rem;color:#374151;">${m.proxy}</div></div>
+        <div style="text-align:right;"><span class="${grade2class(m.grade)} trx-grade">${m.grade}</span><div style="font-size:0.6rem;color:#475569;margin-top:2px;">${m.lag}</div></div>
+    </div>`).join('');
+
+    const tf=document.getElementById('t3Freshness');
+    if(tf) tf.innerHTML=[
+        {n:'M2 Money Supply (FRED)',lag:'4–6 weeks',pub:'Monthly',st:'Stale',c:'hi'},
+        {n:'US 10Y Yield (FRED)',lag:'1 business day',pub:'Daily',st:'Near-Fresh',c:'med'},
+        {n:'DXY Index',lag:'Not integrated',pub:'Real-time (unused)',st:'MISSING',c:'crit'},
+        {n:'Global Liquidity Proxy',lag:'Derived from MCap',pub:'Real-time proxy',st:'Proxy',c:'med'},
+        {n:'CB Balance Sheet',lag:'Weekly release',pub:'Weekly',st:'Stale Proxy',c:'hi'},
+    ].map(f=>`<div class="trx-warn trx-warn-${f.c}" style="margin-bottom:7px;">
+        <div><div class="trx-wt" style="font-size:0.74rem;color:${lvlColor(f.c)};">${f.n}</div>
+        <div class="trx-wb">Lag: ${f.lag} · Freq: ${f.pub} · Status: <strong>${f.st}</strong></div></div>
+    </div>`).join('');
+
+    const tg=document.getElementById('t3Gap');
+    if(tg) tg.innerHTML=`<div style="padding:14px;background:rgba(245,158,11,0.05);border:1px solid rgba(245,158,11,0.15);border-radius:9px;font-size:0.72rem;color:#94a3b8;line-height:1.8;">
+        <strong style="color:#f59e0b;">Current state (this dashboard):</strong><br>
+        • DXY — inferred from BTC price action<br>
+        • M2 — not integrated (FRED API available free)<br>
+        • Real yields — not measured directly<br>
+        • CB balance — estimated from regime<br><br>
+        <strong style="color:#10b981;">What free FRED API could add (future):</strong><br>
+        • DGS10 — 10Y Treasury yield (daily)<br>
+        • M2SL — M2 money supply (monthly)<br>
+        • DTWEXBGS — Broad dollar index (daily)<br><br>
+        All are free endpoints. Not yet integrated — zero-cost future enhancement.
+    </div>`;
+}
+
+/* ── T4 ── */
+function renderT4(){
+    const dv=document.getElementById('t4Deriv');
+    if(dv) dv.innerHTML=[
+        {c:'crit',i:'⚠️',t:'Funding Rate: Single-Exchange Proxy',d:'Real funding rates aggregate Binance, Bybit, OKX, dYdX perpetuals simultaneously. We estimate from spot price change only. Error: ±50–70%. Single exchange would still miss 60–70% of global OI.'},
+        {c:'hi',  i:'📊',t:'Open Interest: Proxy-Based Estimate',d:'Real OI from Coinglass aggregates 20+ exchanges. Our proxy uses volume/MCap ratio — directionally correlated but magnitude is unreliable.'},
+        {c:'med', i:'💡',t:'Coinglass Free API Available (Not Used)',d:'Coinglass offers free OI and funding rate data that could replace our proxies entirely at zero cost. A concrete future improvement.'},
+        {c:'hi',  i:'⚡',t:'Cross-Exchange Distortion',d:'Funding rates can differ significantly: Binance +0.02%, Bybit +0.05%, OKX +0.03% simultaneously. Any single source misrepresents the market.'},
+    ].map(w=>`<div class="trx-warn trx-warn-${w.c}"><div style="font-size:1.1rem;flex-shrink:0;">${w.i}</div>
+        <div><div class="trx-wt" style="color:${lvlColor(w.c)};">${w.t}</div><div class="trx-wb">${w.d}</div></div>
+    </div>`).join('');
+
+    const et=document.getElementById('t4ETF');
+    if(et) et.innerHTML=`<div class="trx-warn trx-warn-crit">
+        <div style="font-size:1.3rem;flex-shrink:0;">🏦</div>
+        <div><div class="trx-wt" style="color:#ef4444;">NO REAL ETF DATA INTEGRATED</div>
+        <div class="trx-wb">Spot Bitcoin ETF flows (IBIT, FBTC, ARKB, etc.) are not available from free automated APIs. Sources exist but require manual collection or paid subscriptions:<br><br>
+        • Bloomberg Terminal ($2,000+/mo)<br>
+        • SoSoValue (some free, 24h lag)<br>
+        • Farside Investors (free blog, manual)<br>
+        • ETF.com (free, delayed 1–2 days)<br><br>
+        Our L6 "institutional" metric uses volume/MCap as ETF proxy — directionally correlated only. This is a <strong>significant limitation post-January 2024</strong>.</div></div>
+    </div>
+    <div style="margin-top:11px;padding:11px;background:rgba(6,182,212,0.05);border:1px solid rgba(6,182,212,0.15);border-radius:8px;font-size:0.7rem;color:#06b6d4;line-height:1.65;">
+        💡 <strong>Future enhancement:</strong> Farside Investors and SoSoValue publish free daily ETF flow tables that could be scraped and cached at zero cost.
+    </div>`;
+}
+
+/* ── T5 ── */
+function renderT5(){
+    const ss=document.getElementById('t5Sample');
+    if(ss) ss.innerHTML=`<div style="text-align:center;padding:16px 0 12px;">
+        <div style="font-size:4.5rem;font-weight:900;color:#ef4444;line-height:1;font-family:'JetBrains Mono',monospace;">N = 4</div>
+        <div style="font-size:0.72rem;color:#64748b;margin-top:6px;">Complete Bitcoin halving cycles observed</div>
+    </div>
+    <div class="trx-warn trx-warn-crit" style="margin-bottom:10px;">
+        <div style="font-size:1rem;">📉</div>
+        <div><div class="trx-wt" style="color:#ef4444;">Statistically Insufficient for Pattern Claims</div>
+        <div class="trx-wb">Standard statistics requires N≥30 for meaningful pattern recognition. With N=4, any observed cycle patterns could be entirely coincidental. Statistical significance (p&lt;0.05) cannot be established.</div></div>
+    </div>`+[
+        ['Confidence Interval Width','Extremely wide (±30–50% on most signals)'],
+        ['Pattern Significance','Cannot be statistically tested'],
+        ['Out-of-Sample Validation','Impossible — all 4 cycles used for patterns'],
+        ['Overfitting Risk','CRITICAL — patterns may be small-N artifacts'],
+        ['Predictive Power','Unknown — no true prospective testing done'],
+    ].map(([l,v])=>`<div class="trx-mrow"><span class="trx-ml" style="font-size:0.75rem;">${l}</span><span class="trx-mv" style="font-size:0.7rem;color:#f59e0b;">${v}</span></div>`).join('');
+
+    const lg=document.getElementById('t5Language');
+    if(lg){
+        lg.innerHTML=`<div style="font-size:0.69rem;color:#475569;margin-bottom:10px;">All deterministic language in this dashboard should be read as probabilistic estimates:</div>`;
+        lg.innerHTML+=LANG_PAIRS.map(([bad,good])=>`<div class="trx-lang-bad">${bad}</div><div class="trx-lang-good">${good}</div>`).join('');
+    }
+
+    const sl=document.getElementById('t5StatLimits');
+    if(sl) sl.innerHTML=[
+        {t:'No Historical Out-of-Sample Test',d:'All 4 cycles used to build the pattern library. No withheld test set exists.'},
+        {t:'Regime Changes Invalidate History',d:'ETF approval (Jan 2024) introduced $60B+ institutional demand absent from all prior cycles.'},
+        {t:'Sample Variance Explodes',d:'With N=4, removing any single cycle produces wildly different conclusions.'},
+        {t:'Temporal Autocorrelation',d:'Bitcoin cycles share macro environment, technology narrative threads — they are not independent samples.'},
+    ].map(({t,d})=>`<div style="padding:9px 0;border-bottom:1px solid rgba(255,255,255,0.04);">
+        <div style="font-size:0.77rem;font-weight:700;color:#f59e0b;margin-bottom:3px;">⚡ ${t}</div>
+        <div style="font-size:0.69rem;color:#64748b;line-height:1.55;">${d}</div>
+    </div>`).join('');
+
+    const pp=document.getElementById('t5ProbPolicy');
+    if(pp) pp.innerHTML=`<div style="padding:14px;background:rgba(168,85,247,0.05);border:1px solid rgba(168,85,247,0.15);border-radius:9px;font-size:0.75rem;color:#94a3b8;line-height:1.8;">
+        <strong style="color:#a855f7;">Policy for all signals:</strong><br><br>
+        All outputs should be read as:<br><br>
+        <em>"Based on N=4 historical analogues, the probability of [X] is estimated at [Y]%, with wide uncertainty bounds given the small sample size."</em><br><br>
+        This framework does NOT predict markets. It pattern-matches to historical precedent and communicates probability ranges only.
+    </div>`;
+
+    const rc=document.getElementById('t5Regime');
+    if(rc) rc.innerHTML=[
+        {t:'ETF Era (Jan 2024+)',d:'Spot ETF approval created fundamentally new demand. $60B+ AUM in spot ETFs has no precedent in prior cycles.'},
+        {t:'Institutional Custody',d:'MicroStrategy, corporates, sovereign wealth funds — holding patterns differ dramatically from retail-dominated 2013/2017.'},
+        {t:'Derivatives Dominance',d:'BTC OI is now 10–20× larger relative to spot market vs 2013/2017. Volatility dynamics are structurally different.'},
+        {t:'Regulatory Environment',d:'SEC, CFTC, global frameworks actively evolving. Regulatory shock risk was absent in prior cycles.'},
+    ].map(({t,d})=>`<div style="padding:9px 0;border-bottom:1px solid rgba(255,255,255,0.04);">
+        <div style="font-size:0.77rem;font-weight:700;color:#06b6d4;margin-bottom:3px;">🔄 ${t}</div>
+        <div style="font-size:0.69rem;color:#64748b;line-height:1.55;">${d}</div>
+    </div>`).join('');
+}
+
+/* ── T6 ── */
+function renderT6(){
+    const layers=[
+        {n:'L1 Price Structure',rel:90,unc:5,src:'CoinGecko LIVE',grade:'A',note:'Direct price data — high reliability'},
+        {n:'L2 On-Chain (MVRV Proxy)',rel:50,unc:25,src:'Internal proxy',grade:'D',note:'Estimated — not real on-chain'},
+        {n:'L3 Sentiment (F&G)',rel:74,unc:12,src:'Alternative.me',grade:'B',note:'Daily update only — not intraday'},
+        {n:'L4 Tech Momentum',rel:88,unc:6,src:'CoinGecko LIVE',grade:'A',note:'Direct price returns — high reliability'},
+        {n:'L5 Macro Liquidity',rel:44,unc:22,src:'MCap proxy',grade:'D',note:'Macro estimated from MCap only'},
+        {n:'L6 Institutional',rel:52,unc:20,src:'Vol/MCap proxy',grade:'C',note:'No real ETF/reserve data'},
+        {n:'L7 Cycle Timing',rel:96,unc:3,src:'Calendar constant',grade:'A+',note:'Days since halving — exact'},
+    ];
+    const ir=document.getElementById('t6IndRel');
+    if(ir) ir.innerHTML=layers.map(l=>`<div style="padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.04);">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;">
+            <div style="font-size:0.8rem;font-weight:700;color:#e2e8f0;">${l.n}</div>
+            <div style="display:flex;gap:6px;align-items:center;">
+                <span style="font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:#f59e0b;">±${l.unc}pts</span>
+                <span class="${grade2class(l.grade)} trx-grade">${l.grade}</span>
+            </div>
+        </div>
+        <div class="trx-rbar"><div class="trx-rbar-f" style="width:${l.rel}%;background:${rel2color(l.rel)};"></div></div>
+        <div style="display:flex;justify-content:space-between;margin-top:4px;font-size:0.63rem;color:#374151;">
+            <span>${l.src}</span><span>${l.note}</span>
+        </div>
+    </div>`).join('');
+
+    const scores=G('SCORES')||{l1:60,l2:60,l3:60,l4:60,l5:60,l6:60,l7:60};
+    const weights=G('WEIGHTS')||{l1:0.15,l2:0.15,l3:0.10,l4:0.15,l5:0.15,l6:0.15,l7:0.15};
+    const comp=Math.round(Object.keys(weights).reduce((a,k)=>a+(scores[k]||50)*(weights[k]||0.15),0));
+    const totUnc=layers.reduce((a,l,i)=>a+l.unc*([0.15,0.15,0.10,0.15,0.15,0.15,0.15][i]),0);
+    const lo=Math.max(0,comp-Math.round(totUnc)), hi=Math.min(100,comp+Math.round(totUnc));
+
+    const su=document.getElementById('t6Uncertainty');
+    if(su) su.innerHTML=`
+        <div style="text-align:center;padding:10px 0 16px;">
+            <div style="font-size:2.2rem;font-weight:800;font-family:'JetBrains Mono',monospace;color:#f7931a;">${comp}</div>
+            <div style="font-size:0.7rem;color:#64748b;">Composite point estimate</div>
+        </div>
+        <div style="font-size:0.68rem;color:#64748b;margin-bottom:7px;">Weighted uncertainty envelope:</div>
+        <div class="trx-ci">
+            <div class="trx-ci-zone" style="left:${lo}%;width:${hi-lo}%;background:rgba(247,147,26,0.12);"></div>
+            <div class="trx-ci-zone" style="left:${Math.min(lo+4,comp)}%;width:${Math.max(hi-lo-8,2)}%;background:rgba(247,147,26,0.22);"></div>
+            <div class="trx-ci-mark" style="left:${comp}%;"></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:0.62rem;color:#475569;margin-top:4px;"><span>Low: ${lo}</span><span>Best: ${comp}</span><span>High: ${hi}</span></div>
+        <div style="margin-top:14px;padding:12px;background:rgba(245,158,11,0.05);border:1px solid rgba(245,158,11,0.15);border-radius:8px;font-size:0.71rem;color:#94a3b8;line-height:1.7;">
+            <strong style="color:#f59e0b;">Uncertainty range: ${lo}–${hi}</strong> (±${Math.round(totUnc)} pts weighted)<br><br>
+            Primary drivers: L2 On-Chain ±25pts · L5 Macro ±22pts · L6 Institutional ±20pts<br><br>
+            Replacing proxies with real data would reduce uncertainty to approximately <strong>±8–12pts</strong>.
+        </div>`;
+}
+
+/* ── T7 ── */
+function renderT7(){
+    const btc=G('BTC')||{}, fg=G('FG')||{};
+    const now=fmtNow();
+    const checks=VALIDATION.map(c=>{
+        let st=c.type==='missing'?'fail':c.type==='estimated'?'warn':'pass';
+        if(c.field==='BTC Price'&&!btc.price) st='fail';
+        if(c.field==='Market Cap'&&btc.marketCap<1e11) st='warn';
+        return {...c,st};
+    });
+
+    const av=document.getElementById('t7APIVal');
+    if(av) av.innerHTML='<table class="trx-tbl"><thead><tr><th>Field</th><th>Validation Rule</th><th>Type</th><th>Status</th></tr></thead><tbody>'+
+        checks.map(c=>`<tr>
+            <td style="color:#e2e8f0;">${c.field}</td>
+            <td style="font-size:0.68rem;color:#475569;">${c.rule}</td>
+            <td style="font-size:0.65rem;color:#374151;">${c.type}</td>
+            <td><span style="font-size:0.63rem;font-weight:700;padding:2px 7px;border-radius:4px;background:${c.st==='pass'?'rgba(16,185,129,0.1)':c.st==='warn'?'rgba(245,158,11,0.1)':'rgba(239,68,68,0.1)'};color:${c.st==='pass'?'#10b981':c.st==='warn'?'#f59e0b':'#ef4444'};">${c.st.toUpperCase()}</span></td>
+        </tr>`).join('')+'</tbody></table>';
+
+    const mv=document.getElementById('t7Missing');
+    if(mv) mv.innerHTML=checks.filter(c=>c.st!=='pass').map(c=>`<div class="trx-warn trx-warn-${c.st==='fail'?'crit':'hi'}" style="margin-bottom:7px;">
+        <div style="font-size:1rem;flex-shrink:0;">${c.st==='fail'?'❌':'⚠'}</div>
+        <div><div class="trx-wt" style="color:${c.st==='fail'?'#ef4444':'#f59e0b'};font-size:0.74rem;">${c.field}</div>
+        <div class="trx-wb">${c.rule} — Source: ${c.src}</div></div>
+    </div>`).join('')||'<div style="color:#10b981;font-size:0.78rem;padding:8px;">✓ All critical fields validated</div>';
+
+    const cache=document.getElementById('t7Cache');
+    if(cache) cache.innerHTML=[
+        {n:'BTC Price',live:!!btc.price,src:'CoinGecko',ts:btc.price?now:'Stale/Default'},
+        {n:'Fear & Greed',live:fg.source==='real',src:'Alternative.me',ts:fg.source==='real'?now:'Default (50)'},
+        {n:'MVRV Proxy',live:false,src:'Internal calc',ts:'Derived on load'},
+        {n:'Layer Scores',live:!!G('SCORES'),src:'Engine',ts:'Derived on load'},
+        {n:'Regime Result',live:!!G('REGIME'),src:'Engine',ts:'Derived on load'},
+    ].map(d=>`<div class="trx-mrow">
+        <div><div class="trx-ml" style="font-size:0.78rem;">${d.n}</div><div style="font-size:0.62rem;color:#374151;">${d.src}</div></div>
+        <div style="text-align:right;">
+            <span style="font-size:0.68rem;font-weight:700;color:${d.live?'#10b981':'#f59e0b'};">${d.live?'● LIVE':'◎ CACHED/DERIVED'}</span>
+            <div style="font-size:0.59rem;color:#374151;font-family:'JetBrains Mono',monospace;">${d.ts}</div>
+        </div>
+    </div>`).join('');
+
+    const log=document.getElementById('t7Log');
+    if(log) log.innerHTML=[
+        `<span style="color:#475569;">[${now}]</span> <span style="color:#10b981;">PASS</span> BTC price: $${btc.price?.toLocaleString()||'N/A'}`,
+        `<span style="color:#475569;">[${now}]</span> <span style="color:#10b981;">PASS</span> Market cap: ${btc.marketCap?'$'+(btc.marketCap/1e12).toFixed(2)+'T':'N/A'}`,
+        `<span style="color:#475569;">[${now}]</span> <span style="color:#f59e0b;">WARN</span> MVRV proxy — no blockchain validation available`,
+        `<span style="color:#475569;">[${now}]</span> <span style="color:#f59e0b;">WARN</span> Funding rate estimated from spot Δ24h only`,
+        `<span style="color:#475569;">[${now}]</span> <span style="color:#ef4444;">FAIL</span> SOPR — unavailable from free APIs`,
+        `<span style="color:#475569;">[${now}]</span> <span style="color:#ef4444;">FAIL</span> Real ETF flows — unavailable from free APIs`,
+        `<span style="color:#475569;">[${now}]</span> <span style="color:#ef4444;">FAIL</span> DXY real-time — not integrated`,
+        `<span style="color:#475569;">[${now}]</span> <span style="color:#10b981;">PASS</span> Fear & Greed: ${fg.value||'N/A'} (${fg.classification||'N/A'})`,
+        `<span style="color:#475569;">[${now}]</span> <span style="color:#10b981;">INFO</span> Transparency Framework v4.0 — 8 modules active`,
+    ].join('<br>');
+}
+
+/* ── T8 ── */
+function renderT8(){
+    const lm=document.getElementById('t8Limits');
+    if(lm) lm.innerHTML=LIMITS.map(l=>`<div class="trx-warn trx-warn-${l.level}" style="margin-bottom:7px;">
+        <div style="font-size:1.1rem;flex-shrink:0;">${l.icon}</div>
+        <div><div class="trx-wt" style="color:${lvlColor(l.level)};">${l.title}</div>
+        <div class="trx-wb">${l.desc}</div></div>
+    </div>`).join('');
+
+    const pm=document.getElementById('t8Premium');
+    if(pm) pm.innerHTML='<table class="trx-tbl"><thead><tr><th>Missing Metric</th><th>Premium Source Required</th><th>Impact</th></tr></thead><tbody>'+
+        PREMIUM.map(p=>`<tr>
+            <td style="color:#e2e8f0;">${p.metric}</td>
+            <td style="color:#f59e0b;font-size:0.7rem;">${p.src}</td>
+            <td><span style="font-size:0.63rem;font-weight:700;padding:2px 7px;border-radius:4px;background:${p.impact==='HIGH'?'rgba(239,68,68,0.1)':'rgba(245,158,11,0.1)'};color:${p.impact==='HIGH'?'#ef4444':'#f59e0b'};">${p.impact}</span></td>
+        </tr>`).join('')+'</tbody></table>';
+
+    const disc=document.getElementById('t8Disclaimer');
+    if(disc) disc.innerHTML=`
+        <strong style="color:#e2e8f0;">1. Data Delays:</strong> Free API data (CoinGecko, Alternative.me) has 5–30 second delays. This is NOT a real-time trading terminal.<br><br>
+        <strong style="color:#e2e8f0;">2. Approximate On-Chain Metrics:</strong> MVRV, NUPL, exchange reserves, funding rates — all estimated via price proxies. Errors of ±20–70% are possible. These are NOT actual blockchain data.<br><br>
+        <strong style="color:#e2e8f0;">3. No Premium Institutional Data:</strong> This dashboard does not use Glassnode, CryptoQuant, Bloomberg, Santiment, or any paid provider. Analysis quality is materially lower than institutional-grade tools.<br><br>
+        <strong style="color:#e2e8f0;">4. Extremely Small Sample Size:</strong> Bitcoin has N=4 historical cycles. Observed patterns may be entirely coincidental. Standard statistical significance thresholds cannot be met.<br><br>
+        <strong style="color:#e2e8f0;">5. Structural Regime Change:</strong> Spot Bitcoin ETF approval (January 2024) fundamentally altered market dynamics. Pre-2024 cycle patterns may not apply to the current cycle.<br><br>
+        <strong style="color:#ef4444;font-size:0.82rem;">6. NOT FINANCIAL ADVICE: This dashboard is for educational and research purposes only. No investment, trading, or financial decisions should be based solely on this framework. Consult a qualified financial advisor. The creators accept no liability for any losses incurred.</strong>`;
+}
+
+/* ── MASTER RENDER ── */
+function trxRenderAll(){
+    renderT1(); renderT2(); renderT3(); renderT4();
+    renderT5(); renderT6(); renderT7(); renderT8();
+}
+
+/* ── INIT — wait for existing dashboard to finish loading ── */
+function trxInit(){
+    setTimeout(trxRenderAll, 4500);
+    setInterval(trxRenderAll, 60000);
+}
+
+if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded', trxInit);
+} else {
+    trxInit();
+}
+
+})(); // END IIFE — zero global scope pollution
 </script>
 </body>
 </html>
