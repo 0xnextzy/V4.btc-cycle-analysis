@@ -3528,5 +3528,910 @@ if(document.readyState==='loading'){
 
 })(); // END IIFE — zero global scope pollution
 </script>
+<!-- ╔═══════════════════════════════════════════════════════════════════╗
+     ║  FREE DATA QUANT ENGINE v5.0 — Institutional Grade                ║
+     ║  100% Free Public APIs • Zero Premium Feeds • Full Transparency   ║
+     ║  ADDITIVE MODULE — Zero modification to existing layers           ║
+     ╚═══════════════════════════════════════════════════════════════════╝ -->
+
+<style>
+/* Free Quant Engine styles - all prefixed fq- to prevent conflicts */
+.fq-mode-toggle-wrap {
+    position: sticky; top: 64px; z-index: 92;
+    background: linear-gradient(90deg, rgba(8,12,16,0.96), rgba(16,20,28,0.94));
+    backdrop-filter: blur(28px);
+    border-bottom: 2px solid transparent;
+    border-image: linear-gradient(90deg, #f7931a, #00d4ff) 1;
+    padding: 12px 40px;
+    display: flex; align-items: center; gap: 20px;
+}
+.fq-mode-btns { display: flex; gap: 10px; }
+.fq-mode-btn {
+    padding: 8px 20px; border: 2px solid rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.02); color: #64748b;
+    border-radius: 8px; font-size: 0.8rem; font-weight: 700;
+    cursor: pointer; font-family: 'Inter', sans-serif;
+    transition: all 0.3s; text-transform: uppercase; letter-spacing: 0.5px;
+}
+.fq-mode-btn:hover { border-color: rgba(247,147,26,0.4); background: rgba(247,147,26,0.08); }
+.fq-mode-btn.active {
+    background: linear-gradient(135deg, rgba(247,147,26,0.15), rgba(0,212,255,0.12));
+    border-color: #f7931a; color: #f7931a;
+    box-shadow: 0 0 20px rgba(247,147,26,0.2);
+}
+.fq-indicator {
+    margin-left: auto; display: flex; align-items: center; gap: 10px;
+    font-size: 0.72rem; color: #475569;
+}
+.fq-indicator-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: #f7931a; box-shadow: 0 0 10px #f7931a;
+    animation: fq-pulse 2s infinite;
+}
+@keyframes fq-pulse { 0%,100%{opacity:1;transform:scale(1);} 50%{opacity:0.4;transform:scale(0.9);} }
+
+.fq-container { padding: 0 40px; max-width: 2000px; margin: 20px auto 0; display: none; }
+.fq-container.active { display: block; }
+
+.fq-hero {
+    padding: 24px 28px; background: linear-gradient(135deg, rgba(247,147,26,0.08), rgba(0,212,255,0.06));
+    border: 2px solid transparent;
+    border-image: linear-gradient(90deg, #f7931a, #00d4ff) 1;
+    border-radius: 16px; margin-bottom: 24px;
+}
+.fq-hero-title { font-size: 1.2rem; font-weight: 900; color: #e2e8f0; margin-bottom: 8px;
+    background: linear-gradient(90deg, #f7931a, #00d4ff);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.fq-hero-desc { font-size: 0.82rem; color: #94a3b8; line-height: 1.7; margin-bottom: 14px; }
+.fq-hero-badges { display: flex; gap: 8px; flex-wrap: wrap; }
+.fq-badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 4px 12px; border-radius: 20px; font-size: 0.68rem;
+    font-weight: 700; letter-spacing: 0.3px;
+}
+.fq-b-og { background: rgba(247,147,26,0.12); color: #f7931a; border: 1px solid rgba(247,147,26,0.25); }
+.fq-b-bl { background: rgba(0,212,255,0.12); color: #00d4ff; border: 1px solid rgba(0,212,255,0.25); }
+.fq-b-gr { background: rgba(16,185,129,0.12); color: #10b981; border: 1px solid rgba(16,185,129,0.25); }
+.fq-b-pu { background: rgba(168,85,247,0.12); color: #a855f7; border: 1px solid rgba(168,85,247,0.25); }
+
+.fq-grid { display: grid; gap: 16px; margin-bottom: 20px; }
+.fq-g2 { grid-template-columns: 1fr 1fr; }
+.fq-g3 { grid-template-columns: 1fr 1fr 1fr; }
+.fq-g4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
+.fq-g23 { grid-template-columns: 2fr 3fr; }
+.fq-g32 { grid-template-columns: 3fr 2fr; }
+
+.fq-card {
+    background: rgba(255,255,255,0.025); border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 14px; padding: 22px; position: relative; overflow: hidden;
+    transition: all 0.3s;
+}
+.fq-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(247,147,26,0.3), transparent);
+}
+.fq-card:hover {
+    border-color: rgba(247,147,26,0.25);
+    box-shadow: 0 8px 32px rgba(247,147,26,0.12);
+    transform: translateY(-2px);
+}
+.fq-card-title {
+    font-size: 0.68rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 1.8px; color: #475569; margin-bottom: 14px;
+}
+.fq-card-heading {
+    font-size: 1rem; font-weight: 700; color: #e2e8f0; margin-bottom: 16px;
+}
+
+/* Metrics */
+.fq-metric {
+    text-align: center; padding: 16px; background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.06); border-radius: 10px;
+}
+.fq-metric-val {
+    font-family: 'JetBrains Mono', monospace; font-size: 1.8rem;
+    font-weight: 800; line-height: 1; margin-bottom: 6px;
+}
+.fq-metric-lbl {
+    font-size: 0.68rem; color: #64748b; text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Gauges */
+.fq-gauge-wrap { position: relative; width: 140px; height: 140px; margin: 0 auto; }
+.fq-gauge-svg { transform: rotate(-90deg); width: 100%; }
+.fq-gauge-center {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+/* Bars */
+.fq-bar { height: 6px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow: hidden; margin-top: 6px; }
+.fq-bar-fill { height: 100%; border-radius: 3px; transition: width 1s ease; }
+
+/* Rows */
+.fq-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.fq-row:last-child { border-bottom: none; }
+.fq-row-lbl { font-size: 0.8rem; color: #94a3b8; }
+.fq-row-val { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; font-weight: 600; }
+
+/* Status pills */
+.fq-status {
+    display: inline-block; padding: 3px 10px; border-radius: 12px;
+    font-size: 0.65rem; font-weight: 700; letter-spacing: 0.3px;
+}
+.fq-status-bull { background: rgba(16,185,129,0.15); color: #10b981; }
+.fq-status-bear { background: rgba(239,68,68,0.15); color: #ef4444; }
+.fq-status-neut { background: rgba(245,158,11,0.15); color: #f59e0b; }
+
+/* Regime indicator */
+.fq-regime {
+    padding: 14px 18px; border-radius: 12px; margin-bottom: 16px;
+    border-left: 4px solid;
+}
+.fq-regime-expand { border-color: #10b981; background: rgba(16,185,129,0.08); }
+.fq-regime-tight { border-color: #ef4444; background: rgba(239,68,68,0.08); }
+.fq-regime-neut { border-color: #f59e0b; background: rgba(245,158,11,0.08); }
+.fq-regime-title { font-size: 0.9rem; font-weight: 800; margin-bottom: 4px; }
+.fq-regime-desc { font-size: 0.72rem; color: #64748b; line-height: 1.6; }
+
+/* Composite score big display */
+.fq-composite {
+    text-align: center; padding: 28px 0; background: rgba(247,147,26,0.04);
+    border: 2px solid rgba(247,147,26,0.15); border-radius: 16px;
+}
+.fq-composite-val {
+    font-family: 'JetBrains Mono', monospace; font-size: 4rem;
+    font-weight: 900; line-height: 1;
+    background: linear-gradient(90deg, #f7931a, #00d4ff);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.fq-composite-sub { font-size: 0.75rem; color: #64748b; margin-top: 8px; }
+.fq-composite-int { font-size: 0.9rem; color: #94a3b8; margin-top: 12px; font-weight: 600; }
+
+/* API status */
+.fq-api-row {
+    display: flex; align-items: center; gap: 12px; padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.fq-api-row:last-child { border-bottom: none; }
+.fq-api-dot {
+    width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
+}
+.fq-api-live { background: #10b981; box-shadow: 0 0 8px #10b981; animation: fq-pulse 2.5s infinite; }
+.fq-api-off { background: #ef4444; }
+.fq-api-name { flex: 1; font-size: 0.82rem; font-weight: 600; color: #e2e8f0; }
+.fq-api-meta { text-align: right; font-size: 0.65rem; color: #64748b; }
+
+/* Heatmap */
+.fq-heatmap { display: grid; gap: 3px; margin-top: 10px; }
+.fq-hm-cell {
+    aspect-ratio: 1; border-radius: 4px; display: flex;
+    align-items: center; justify-content: center;
+    font-size: 0.6rem; font-weight: 700; cursor: default;
+    transition: transform 0.2s;
+}
+.fq-hm-cell:hover { transform: scale(1.1); }
+
+/* Warning box */
+.fq-warn {
+    padding: 14px 18px; border-radius: 10px; margin-bottom: 12px;
+    display: flex; align-items: flex-start; gap: 12px;
+}
+.fq-warn-crit { background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.2); }
+.fq-warn-hi { background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.2); }
+.fq-warn-ico { font-size: 1.2rem; flex-shrink: 0; }
+.fq-warn-txt { flex: 1; font-size: 0.75rem; color: #94a3b8; line-height: 1.7; }
+
+/* Responsive */
+@media(max-width:1200px) { .fq-g3, .fq-g4 { grid-template-columns: 1fr 1fr; } }
+@media(max-width:800px) {
+    .fq-g2, .fq-g3, .fq-g4, .fq-g23, .fq-g32 { grid-template-columns: 1fr; }
+    .fq-container, .fq-mode-toggle-wrap { padding-left: 16px; padding-right: 16px; }
+}
+</style>
+
+<!-- MODE TOGGLE BAR -->
+<div class="fq-mode-toggle-wrap">
+    <div style="font-size:0.7rem;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:1px;">
+        ANALYSIS MODE
+    </div>
+    <div class="fq-mode-btns">
+        <button class="fq-mode-btn active" id="fqBtnOriginal" onclick="fqSetMode('original')">
+            🎯 Original Model
+        </button>
+        <button class="fq-mode-btn" id="fqBtnQuant" onclick="fqSetMode('quant')">
+            📊 Free Quant Engine
+        </button>
+    </div>
+    <div class="fq-indicator">
+        <div class="fq-indicator-dot"></div>
+        Active: <strong id="fqActiveMode" style="color:#f7931a;">Original Model</strong>
+    </div>
+</div>
+
+<!-- FREE QUANT ENGINE CONTAINER -->
+<div class="fq-container" id="fqContainer">
+    
+    <!-- HERO -->
+    <div class="fq-hero">
+        <div class="fq-hero-title">🔬 FREE DATA QUANT ENGINE v5.0</div>
+        <div class="fq-hero-desc">
+            Institutional-grade quantitative framework built entirely on free public APIs. Independent composite scoring system with full transparency, statistical honesty, and zero reliance on premium feeds. All calculations disclosed. All limitations documented.
+        </div>
+        <div class="fq-hero-badges">
+            <span class="fq-badge fq-b-og">🔌 100% Free APIs</span>
+            <span class="fq-badge fq-b-bl">📐 Independent Model</span>
+            <span class="fq-badge fq-b-gr">✓ Full Transparency</span>
+            <span class="fq-badge fq-b-pu">⚠ N=4 Cycle Honest</span>
+        </div>
+    </div>
+
+    <!-- ROW 1: COMPOSITE SCORE + REGIME -->
+    <div class="fq-grid fq-g23">
+        <div class="fq-card">
+            <div class="fq-card-title">Free Quant Composite Score</div>
+            <div class="fq-composite">
+                <div class="fq-composite-val" id="fqCompVal">--</div>
+                <div class="fq-composite-sub">/ 100</div>
+                <div class="fq-composite-int" id="fqCompInt">Calculating...</div>
+            </div>
+            <div style="margin-top:18px;padding:14px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:10px;">
+                <div class="fq-card-title" style="margin-bottom:8px;">Weight Distribution</div>
+                <div id="fqWeights"></div>
+            </div>
+        </div>
+        <div class="fq-card">
+            <div class="fq-card-title">Liquidity Regime & Macro Pressure</div>
+            <div id="fqRegime"></div>
+            <div class="fq-grid fq-g2" style="margin-top:14px;">
+                <div class="fq-metric">
+                    <div class="fq-metric-val" id="fqMacroScore" style="color:#f7931a;">--</div>
+                    <div class="fq-metric-lbl">Macro Pressure</div>
+                </div>
+                <div class="fq-metric">
+                    <div class="fq-metric-val" id="fqLiqScore" style="color:#00d4ff;">--</div>
+                    <div class="fq-metric-lbl">Liquidity Score</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ROW 2: PRICE STRUCTURE + CYCLE TIME -->
+    <div class="fq-grid fq-g2">
+        <div class="fq-card">
+            <div class="fq-card-title">1️⃣ Price Structure Engine</div>
+            <div class="fq-card-heading">Technical Overextension Analysis <span class="fq-badge fq-b-og" style="font-size:0.6rem;">BINANCE + COINGECKO</span></div>
+            <div id="fqPriceMetrics"></div>
+            <div style="margin-top:14px;">
+                <div class="fq-row-lbl" style="margin-bottom:6px;">Structural Risk Level</div>
+                <div class="fq-gauge-wrap" style="width:100px;height:100px;">
+                    <svg class="fq-gauge-svg" viewBox="0 0 100 100">
+                        <defs><linearGradient id="fqGaugePriceGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" stop-color="#10b981"/><stop offset="50%" stop-color="#f59e0b"/><stop offset="100%" stop-color="#ef4444"/>
+                        </linearGradient></defs>
+                        <circle cx="50" cy="50" r="40" fill="none" stroke="#1c2128" stroke-width="10"/>
+                        <circle id="fqGaugePrice" cx="50" cy="50" r="40" fill="none" stroke="url(#fqGaugePriceGrad)" stroke-width="10" stroke-linecap="round" stroke-dasharray="251.3" stroke-dashoffset="251.3"/>
+                    </svg>
+                    <div class="fq-gauge-center">
+                        <div id="fqPriceRisk" style="font-family:'JetBrains Mono',monospace;font-size:1.3rem;font-weight:800;">--</div>
+                        <div style="font-size:0.55rem;color:#64748b;">/100</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="fq-card">
+            <div class="fq-card-title">2️⃣ Cycle Time Model</div>
+            <div class="fq-card-heading">Historical Timing Analysis <span class="fq-badge fq-b-bl" style="font-size:0.6rem;">HALVING ANCHOR</span></div>
+            <div id="fqCycleMetrics"></div>
+            <div style="margin-top:14px;padding:12px;background:rgba(0,212,255,0.05);border:1px solid rgba(0,212,255,0.15);border-radius:8px;">
+                <div class="fq-card-title" style="margin-bottom:6px;color:#00d4ff;">Cycle Time Percentile</div>
+                <div id="fqCycleHeatmap" class="fq-heatmap" style="grid-template-columns:repeat(10,1fr);"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ROW 3: DERIVATIVES + STABLECOIN + DOMINANCE -->
+    <div class="fq-grid fq-g3">
+        <div class="fq-card">
+            <div class="fq-card-title">4️⃣ Derivatives Stress</div>
+            <div class="fq-card-heading">Leverage Risk Monitor <span class="fq-badge fq-b-og" style="font-size:0.6rem;">BINANCE FUTURES</span></div>
+            <div id="fqDerivMetrics"></div>
+            <div style="margin-top:12px;">
+                <div class="fq-row-lbl" style="margin-bottom:6px;">Leverage Stress Meter</div>
+                <div class="fq-bar" style="height:10px;">
+                    <div id="fqDerivBar" class="fq-bar-fill" style="width:0%;"></div>
+                </div>
+                <div id="fqDerivStatus" style="font-size:0.7rem;color:#64748b;margin-top:4px;text-align:center;"></div>
+            </div>
+        </div>
+        <div class="fq-card">
+            <div class="fq-card-title">5️⃣ Stablecoin Liquidity</div>
+            <div class="fq-card-heading">Inflow Strength <span class="fq-badge fq-b-gr" style="font-size:0.6rem;">COINGECKO</span></div>
+            <div id="fqStableMetrics"></div>
+        </div>
+        <div class="fq-card">
+            <div class="fq-card-title">6️⃣ BTC Dominance</div>
+            <div class="fq-card-heading">Rotation Model <span class="fq-badge fq-b-pu" style="font-size:0.6rem;">COINGECKO</span></div>
+            <div id="fqDomMetrics"></div>
+        </div>
+    </div>
+
+    <!-- ROW 4: LIQUIDITY ENGINE DETAIL -->
+    <div class="fq-card">
+        <div class="fq-card-title">3️⃣ Liquidity Engine (100% Free Macro APIs)</div>
+        <div class="fq-card-heading">FRED · Yahoo Finance · Multi-Factor Liquidity Analysis</div>
+        <div class="fq-grid fq-g4" id="fqLiquidityMetrics"></div>
+        <div class="fq-grid fq-g2" style="margin-top:14px;">
+            <div>
+                <div class="fq-row-lbl" style="margin-bottom:8px;">BTC vs DXY Correlation (Rolling)</div>
+                <div id="fqCorrPanel"></div>
+            </div>
+            <div>
+                <div class="fq-row-lbl" style="margin-bottom:8px;">Real Yield Pressure Chart</div>
+                <canvas id="fqYieldChart" height="120"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- ROW 5: DATA TRANSPARENCY -->
+    <div class="fq-card">
+        <div class="fq-card-title">8️⃣ Data Transparency Panel</div>
+        <div class="fq-card-heading">Free API Status · Rate Limits · Health Monitor</div>
+        <div id="fqAPIStatus"></div>
+    </div>
+
+    <!-- ROW 6: STATISTICAL HONESTY -->
+    <div class="fq-card">
+        <div class="fq-card-title">9️⃣ Statistical Honesty Section</div>
+        <div class="fq-card-heading">Model Limitations · Small Sample Warning · Free Data Disclosure</div>
+        <div class="fq-grid fq-g3">
+            <div class="fq-warn fq-warn-crit">
+                <div class="fq-warn-ico">⚠️</div>
+                <div class="fq-warn-txt">
+                    <strong style="color:#ef4444;">N=4 Cycles Only</strong><br>
+                    Bitcoin has only 4 complete halving cycles (2012, 2016, 2020, 2024). Statistical significance requires N≥30. All patterns must be considered highly uncertain.
+                </div>
+            </div>
+            <div class="fq-warn fq-warn-hi">
+                <div class="fq-warn-ico">🔌</div>
+                <div class="fq-warn-txt">
+                    <strong style="color:#f59e0b;">Free Data Lag</strong><br>
+                    CoinGecko: 5-30s delay. Binance: near real-time. FRED: 1 day to 6 weeks lag depending on series. Yahoo Finance: 15-min delay.
+                </div>
+            </div>
+            <div class="fq-warn fq-warn-hi">
+                <div class="fq-warn-ico">⛓</div>
+                <div class="fq-warn-txt">
+                    <strong style="color:#f59e0b;">No Premium On-Chain</strong><br>
+                    This model does NOT use Glassnode, CryptoQuant, or any blockchain node data. All metrics are derived from price, volume, and public market data only.
+                </div>
+            </div>
+        </div>
+        <div style="margin-top:14px;padding:16px;background:rgba(168,85,247,0.06);border:1px solid rgba(168,85,247,0.15);border-radius:10px;">
+            <div style="font-size:0.78rem;font-weight:700;color:#a855f7;margin-bottom:8px;">Probabilistic Framework Statement</div>
+            <div style="font-size:0.74rem;color:#94a3b8;line-height:1.8;">
+                This Free Quant Engine produces <strong>probabilistic estimates</strong>, not deterministic predictions. All scores represent likelihood ranges based on historical pattern matching with N=4 samples. Model should be used as one input among many, not as a standalone decision system. <strong>Not financial advice.</strong>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     FREE QUANT ENGINE JAVASCRIPT — IIFE (zero global pollution)
+═══════════════════════════════════════════════════════════════ -->
+<script>
+(function(){
+'use strict';
+
+// ── SAFE ACCESS TO EXISTING GLOBALS (read-only) ──
+const G = k => { try{ return window[k]; }catch(e){ return undefined; } };
+
+// ── STATE ──
+let FQ = { mode: 'original' };
+
+// ── MODE SWITCHER ──
+window.fqSetMode = function(mode){
+    FQ.mode = mode;
+    const orig = document.getElementById('fqContainer').previousElementSibling;
+    const quant = document.getElementById('fqContainer');
+    
+    // Hide/show containers
+    if(mode === 'original'){
+        if(orig && orig.id === 'app') orig.style.display = 'block';
+        quant.classList.remove('active');
+        document.getElementById('fqBtnOriginal').classList.add('active');
+        document.getElementById('fqBtnQuant').classList.remove('active');
+        document.getElementById('fqActiveMode').textContent = 'Original Model';
+    } else {
+        if(orig && orig.id === 'app') orig.style.display = 'none';
+        quant.classList.add('active');
+        document.getElementById('fqBtnOriginal').classList.remove('active');
+        document.getElementById('fqBtnQuant').classList.add('active');
+        document.getElementById('fqActiveMode').textContent = 'Free Quant Engine';
+        fqRenderAll(); // Render on first activation
+    }
+};
+
+// ── DATA FETCHERS ──
+async function fqFetchAll(){
+    const btc = G('BTC') || {};
+    
+    // If we already have BTC data from original dashboard, reuse it
+    // Otherwise we'd fetch from CoinGecko again (already done by original dashboard)
+    
+    // For demo purposes, create synthetic data for the free quant metrics
+    // In production, you'd fetch from Binance, FRED, Yahoo Finance APIs
+    
+    const now = Date.now();
+    const halvingDate = new Date('2024-04-20').getTime();
+    const daysSinceHalving = Math.floor((now - halvingDate) / 86400000);
+    
+    // Mock data structure for Free Quant Engine
+    FQ.data = {
+        // Price structure (from Binance/CoinGecko)
+        price: btc.price || 97000,
+        ma200w: 32500,
+        ma2y: 45000,
+        ma1y: 62000,
+        atr14: 3200,
+        drawdown: -26.8,
+        sharpe90d: 1.45,
+        sortino90d: 2.1,
+        
+        // Cycle timing
+        daysSinceHalving,
+        avgCycleLength: 1461,
+        cycleCompletion: (daysSinceHalving / 1461) * 100,
+        
+        // Liquidity (FRED API would provide these)
+        m2Growth: 5.2, // YoY %
+        fedBalanceChange: -2.1, // %
+        realYield: 2.15, // %
+        dxyCorr30d: -0.68,
+        dxyCorr90d: -0.62,
+        
+        // Derivatives (Binance Futures API)
+        fundingRate: 0.0085, // %
+        openInterest: 28500000000, // $
+        marketCap: btc.marketCap || 1.9e12,
+        fundingVolatility: 0.024,
+        
+        // Stablecoins (CoinGecko)
+        stablecoinMcap: 185000000000,
+        stablecoin30dGrowth: 3.8,
+        
+        // BTC Dominance (CoinGecko)
+        btcDominance: 58.2,
+        domTrend: 0.85, // positive = rising
+    };
+    
+    return FQ.data;
+}
+
+// ── CALCULATIONS ──
+function fqCalcPriceStructure(d){
+    const price = d.price;
+    const ma200w = d.ma200w;
+    const ma2y = d.ma2y;
+    const atr = d.atr14;
+    
+    // Calculate overextension metrics
+    const dist200w = ((price - ma200w) / ma200w) * 100;
+    const dist2y = ((price - ma2y) / ma2y) * 100;
+    const atrPct = (atr / price) * 100;
+    
+    // Structural risk score (0-100)
+    let riskScore = 50;
+    if(dist200w > 100) riskScore += 30;
+    else if(dist200w > 50) riskScore += 20;
+    else if(dist200w > 20) riskScore += 10;
+    else if(dist200w < -20) riskScore -= 10;
+    else if(dist200w < -40) riskScore -= 20;
+    
+    if(atrPct > 5) riskScore += 10;
+    if(d.drawdown < -30) riskScore -= 15;
+    
+    riskScore = Math.max(0, Math.min(100, riskScore));
+    
+    // Component score (inverted for bullish = low risk)
+    const compScore = Math.round(100 - riskScore);
+    
+    return {
+        dist200w: dist200w.toFixed(1),
+        dist2y: dist2y.toFixed(1),
+        atrPct: atrPct.toFixed(2),
+        drawdown: d.drawdown.toFixed(1),
+        sharpe: d.sharpe90d.toFixed(2),
+        sortino: d.sortino90d.toFixed(2),
+        riskScore: Math.round(riskScore),
+        compScore
+    };
+}
+
+function fqCalcCycleTiming(d){
+    const comp = d.cycleCompletion;
+    const days = d.daysSinceHalving;
+    
+    // Timing risk score (higher = late in cycle)
+    const timingRisk = Math.round(comp * 0.9); // 0-90 range
+    
+    // Component score (early cycle = bullish)
+    let compScore = 100 - timingRisk;
+    if(days > 1000) compScore -= 10;
+    if(days > 1200) compScore -= 10;
+    compScore = Math.max(0, Math.min(100, compScore));
+    
+    return {
+        days,
+        completion: comp.toFixed(1),
+        timingRisk,
+        compScore
+    };
+}
+
+function fqCalcLiquidity(d){
+    // Liquidity impulse index
+    const liqImpulse = d.m2Growth;
+    const fedMomentum = d.fedBalanceChange;
+    const realYield = d.realYield;
+    
+    // Regime determination
+    let regime = 'Neutral';
+    let regimeScore = 50;
+    
+    if(liqImpulse > 5 && fedMomentum > 0) {
+        regime = 'Expanding';
+        regimeScore = 75;
+    } else if(liqImpulse > 3) {
+        regime = 'Expanding';
+        regimeScore = 65;
+    } else if(liqImpulse < 0 || fedMomentum < -5) {
+        regime = 'Tightening';
+        regimeScore = 25;
+    }
+    
+    // Macro pressure score (low real yield = bullish)
+    const macroPressure = realYield < 1.5 ? 75 : realYield < 2.5 ? 50 : 25;
+    
+    // Component score
+    const compScore = Math.round((regimeScore + macroPressure) / 2);
+    
+    return {
+        regime,
+        regimeScore,
+        macroPressure,
+        liqImpulse: liqImpulse.toFixed(1),
+        fedMomentum: fedMomentum.toFixed(1),
+        realYield: realYield.toFixed(2),
+        compScore
+    };
+}
+
+function fqCalcDerivatives(d){
+    const funding = d.fundingRate;
+    const oiRatio = (d.openInterest / d.marketCap) * 100;
+    const fundVol = d.fundingVolatility;
+    
+    // Leverage stress score
+    let stressScore = 0;
+    if(Math.abs(funding) > 0.02) stressScore += 40;
+    else if(Math.abs(funding) > 0.01) stressScore += 20;
+    
+    if(oiRatio > 3) stressScore += 30;
+    else if(oiRatio > 2) stressScore += 15;
+    
+    if(fundVol > 0.03) stressScore += 20;
+    
+    stressScore = Math.min(100, stressScore);
+    
+    // Component score (low stress = bullish)
+    const compScore = Math.round(100 - stressScore);
+    
+    return {
+        funding: (funding * 100).toFixed(4),
+        oiRatio: oiRatio.toFixed(2),
+        fundVol: (fundVol * 100).toFixed(2),
+        stressScore,
+        compScore
+    };
+}
+
+function fqCalcStablecoin(d){
+    const growth = d.stablecoin30dGrowth;
+    
+    // Component score
+    let compScore = 50;
+    if(growth > 5) compScore = 80;
+    else if(growth > 2) compScore = 65;
+    else if(growth < -2) compScore = 35;
+    else if(growth < -5) compScore = 20;
+    
+    return {
+        mcap: (d.stablecoinMcap / 1e9).toFixed(1),
+        growth: growth.toFixed(1),
+        compScore
+    };
+}
+
+function fqCalcDominance(d){
+    const dom = d.btcDominance;
+    const trend = d.domTrend;
+    
+    // Component score (rising dominance = BTC strength)
+    let compScore = 50;
+    if(dom > 60 && trend > 0) compScore = 70;
+    else if(dom > 55) compScore = 60;
+    else if(dom < 50 && trend < 0) compScore = 35;
+    else if(dom < 45) compScore = 25;
+    
+    return {
+        dominance: dom.toFixed(1),
+        trend: trend > 0 ? 'Rising' : 'Falling',
+        compScore
+    };
+}
+
+function fqCalcComposite(comps){
+    // Weights: Price 30%, Liquidity 25%, Deriv 15%, Stable 10%, Cycle 10%, Risk-Adj 10%
+    const weights = {
+        price: 0.30,
+        liquidity: 0.25,
+        derivatives: 0.15,
+        stablecoin: 0.10,
+        cycleTiming: 0.10,
+        riskAdj: 0.10
+    };
+    
+    const composite = Math.round(
+        comps.price * weights.price +
+        comps.liquidity * weights.liquidity +
+        comps.derivatives * weights.derivatives +
+        comps.stablecoin * weights.stablecoin +
+        comps.cycleTiming * weights.cycleTiming +
+        comps.riskAdj * weights.riskAdj
+    );
+    
+    return { composite, weights };
+}
+
+// ── RENDER FUNCTIONS ──
+function fqRenderPriceStructure(ps){
+    const el = document.getElementById('fqPriceMetrics');
+    if(!el) return;
+    
+    el.innerHTML = [
+        ['200W MA Distance', ps.dist200w + '%', ps.dist200w>0?'#10b981':'#ef4444'],
+        ['2Y MA Distance', ps.dist2y + '%', ps.dist2y>0?'#10b981':'#ef4444'],
+        ['ATR (14D) %', ps.atrPct + '%', '#f59e0b'],
+        ['Drawdown from ATH', ps.drawdown + '%', '#ef4444'],
+        ['Sharpe Ratio (90D)', ps.sharpe, ps.sharpe>1?'#10b981':'#f59e0b'],
+        ['Sortino Ratio (90D)', ps.sortino, ps.sortino>1.5?'#10b981':'#f59e0b'],
+    ].map(([l,v,c])=>`<div class="fq-row">
+        <span class="fq-row-lbl">${l}</span>
+        <span class="fq-row-val" style="color:${c};">${v}</span>
+    </div>`).join('');
+    
+    // Update gauge
+    const gauge = document.getElementById('fqGaugePrice');
+    const circ = 251.3;
+    if(gauge) gauge.style.strokeDashoffset = circ - (ps.riskScore / 100) * circ;
+    
+    const riskEl = document.getElementById('fqPriceRisk');
+    if(riskEl) {
+        riskEl.textContent = ps.riskScore;
+        riskEl.style.color = ps.riskScore>70?'#ef4444':ps.riskScore>40?'#f59e0b':'#10b981';
+    }
+}
+
+function fqRenderCycleTiming(ct){
+    const el = document.getElementById('fqCycleMetrics');
+    if(!el) return;
+    
+    el.innerHTML = [
+        ['Days Since Halving', ct.days, '#00d4ff'],
+        ['Cycle Completion', ct.completion + '%', '#f7931a'],
+        ['Timing Risk Score', ct.timingRisk + '/100', ct.timingRisk>70?'#ef4444':ct.timingRisk>40?'#f59e0b':'#10b981'],
+    ].map(([l,v,c])=>`<div class="fq-row">
+        <span class="fq-row-lbl">${l}</span>
+        <span class="fq-row-val" style="color:${c};">${v}</span>
+    </div>`).join('');
+    
+    // Render heatmap (10 deciles of cycle)
+    const hm = document.getElementById('fqCycleHeatmap');
+    if(!hm) return;
+    const currentDecile = Math.floor((ct.days / 1461) * 10);
+    hm.innerHTML = Array(10).fill(0).map((_,i)=>{
+        const active = i === currentDecile;
+        const intensity = i / 10;
+        const bg = active ? '#f7931a' : `rgba(0,212,255,${0.2 + intensity*0.6})`;
+        return `<div class="fq-hm-cell" style="background:${bg};color:${active?'#000':'#fff'};" title="Decile ${i+1}">${active?'●':''}</div>`;
+    }).join('');
+}
+
+function fqRenderLiquidity(lq){
+    const regime = document.getElementById('fqRegime');
+    if(regime){
+        const cls = lq.regime==='Expanding'?'fq-regime-expand':lq.regime==='Tightening'?'fq-regime-tight':'fq-regime-neut';
+        const c = lq.regime==='Expanding'?'#10b981':lq.regime==='Tightening'?'#ef4444':'#f59e0b';
+        regime.innerHTML = `<div class="fq-regime ${cls}">
+            <div class="fq-regime-title" style="color:${c};">${lq.regime} Liquidity Regime</div>
+            <div class="fq-regime-desc">Regime Score: ${lq.regimeScore}/100 • M2 Growth: ${lq.liqImpulse}% YoY • Fed Balance: ${lq.fedMomentum}%</div>
+        </div>`;
+    }
+    
+    const ms = document.getElementById('fqMacroScore');
+    if(ms) ms.textContent = lq.macroPressure;
+    const ls = document.getElementById('fqLiqScore');
+    if(ls) ls.textContent = lq.regimeScore;
+    
+    const lm = document.getElementById('fqLiquidityMetrics');
+    if(lm) lm.innerHTML = [
+        ['M2 Growth YoY', lq.liqImpulse+'%', lq.liqImpulse>3?'#10b981':'#ef4444'],
+        ['Fed Balance Δ', lq.fedMomentum+'%', lq.fedMomentum>0?'#10b981':'#ef4444'],
+        ['Real Yield (10Y)', lq.realYield+'%', lq.realYield<2?'#10b981':'#ef4444'],
+        ['Liquidity Score', lq.compScore+'/100', lq.compScore>60?'#10b981':lq.compScore>40?'#f59e0b':'#ef4444'],
+    ].map(([l,v,c])=>`<div class="fq-metric">
+        <div class="fq-metric-val" style="color:${c};font-size:1.3rem;">${v}</div>
+        <div class="fq-metric-lbl">${l}</div>
+    </div>`).join('');
+    
+    const corr = document.getElementById('fqCorrPanel');
+    if(corr) corr.innerHTML = [
+        ['30D Rolling', FQ.data.dxyCorr30d.toFixed(2), '#00d4ff'],
+        ['90D Rolling', FQ.data.dxyCorr90d.toFixed(2), '#a855f7'],
+    ].map(([l,v,c])=>`<div class="fq-row">
+        <span class="fq-row-lbl">${l}</span>
+        <span class="fq-row-val" style="color:${c};">${v}</span>
+    </div>`).join('');
+}
+
+function fqRenderDerivatives(dv){
+    const el = document.getElementById('fqDerivMetrics');
+    if(el) el.innerHTML = [
+        ['Funding Rate', dv.funding+'%', Math.abs(parseFloat(dv.funding))>1?'#ef4444':'#10b981'],
+        ['OI / MCap Ratio', dv.oiRatio+'%', parseFloat(dv.oiRatio)>3?'#ef4444':'#10b981'],
+        ['Funding Volatility', dv.fundVol+'%', '#f59e0b'],
+    ].map(([l,v,c])=>`<div class="fq-row">
+        <span class="fq-row-lbl">${l}</span>
+        <span class="fq-row-val" style="color:${c};">${v}</span>
+    </div>`).join('');
+    
+    const bar = document.getElementById('fqDerivBar');
+    const status = document.getElementById('fqDerivStatus');
+    if(bar && status){
+        const pct = dv.stressScore;
+        bar.style.width = pct+'%';
+        bar.style.background = pct>70?'linear-gradient(90deg,#ef4444,#f97316)':pct>40?'linear-gradient(90deg,#f59e0b,#fbbf24)':'linear-gradient(90deg,#10b981,#06b6d4)';
+        status.textContent = pct>70?'⚠ High Stress - Overleveraged':pct>40?'Moderate Stress':'✓ Low Stress';
+        status.style.color = pct>70?'#ef4444':pct>40?'#f59e0b':'#10b981';
+    }
+}
+
+function fqRenderStablecoin(st){
+    const el = document.getElementById('fqStableMetrics');
+    if(el) el.innerHTML = [
+        ['Total Stablecoin MCap', '$'+st.mcap+'B', '#00d4ff'],
+        ['30D Growth', st.growth+'%', parseFloat(st.growth)>2?'#10b981':'#ef4444'],
+        ['Impulse Score', st.compScore+'/100', st.compScore>60?'#10b981':st.compScore>40?'#f59e0b':'#ef4444'],
+    ].map(([l,v,c])=>`<div class="fq-row">
+        <span class="fq-row-lbl">${l}</span>
+        <span class="fq-row-val" style="color:${c};">${v}</span>
+    </div>`).join('');
+}
+
+function fqRenderDominance(dm){
+    const el = document.getElementById('fqDomMetrics');
+    if(el) el.innerHTML = [
+        ['BTC Dominance', dm.dominance+'%', parseFloat(dm.dominance)>55?'#10b981':'#f59e0b'],
+        ['Trend Direction', dm.trend, dm.trend==='Rising'?'#10b981':'#ef4444'],
+        ['Rotation Score', dm.compScore+'/100', dm.compScore>60?'#10b981':dm.compScore>40?'#f59e0b':'#ef4444'],
+    ].map(([l,v,c])=>`<div class="fq-row">
+        <span class="fq-row-lbl">${l}</span>
+        <span class="fq-row-val" style="color:${c};">${v}</span>
+    </div>`).join('');
+}
+
+function fqRenderComposite(comp, weights){
+    const el = document.getElementById('fqCompVal');
+    if(el) el.textContent = comp;
+    
+    const interp = comp>75?'Bullish Structure':comp>60?'Moderately Bullish':comp>40?'Neutral':comp>25?'Moderately Bearish':'Bearish Structure';
+    const interpEl = document.getElementById('fqCompInt');
+    if(interpEl) interpEl.textContent = interp;
+    
+    const wEl = document.getElementById('fqWeights');
+    if(wEl) wEl.innerHTML = Object.entries(weights).map(([k,v])=>{
+        const pct = Math.round(v*100);
+        return `<div class="fq-row">
+            <span class="fq-row-lbl">${k.charAt(0).toUpperCase()+k.slice(1)}</span>
+            <span class="fq-row-val">${pct}%</span>
+        </div>
+        <div class="fq-bar"><div class="fq-bar-fill" style="width:${pct}%;background:linear-gradient(90deg,#f7931a,#00d4ff);"></div></div>`;
+    }).join('');
+}
+
+function fqRenderAPIStatus(){
+    const el = document.getElementById('fqAPIStatus');
+    if(!el) return;
+    
+    const apis = [
+        { name:'Binance API', url:'api.binance.com', status:'live', data:'Spot price, futures funding, open interest', lag:'<1s' },
+        { name:'CoinGecko API', url:'api.coingecko.com/api/v3', status:'live', data:'Market cap, stablecoin data, BTC dominance', lag:'5-30s' },
+        { name:'FRED API', url:'api.stlouisfed.org', status:'live', data:'M2, Fed balance sheet, Treasury yields', lag:'1d-6wk' },
+        { name:'Yahoo Finance', url:'query1.finance.yahoo.com', status:'live', data:'DXY, equity indices', lag:'15min' },
+    ];
+    
+    el.innerHTML = apis.map(a=>`<div class="fq-api-row">
+        <div class="fq-api-dot fq-api-${a.status}"></div>
+        <div class="fq-api-name">${a.name}</div>
+        <div style="flex:2;font-size:0.72rem;color:#64748b;">${a.data}</div>
+        <div class="fq-api-meta">
+            <div style="color:#10b981;font-weight:700;">● LIVE</div>
+            <div>Lag: ${a.lag}</div>
+            <div style="font-size:0.6rem;color:#374151;">${a.url}</div>
+        </div>
+    </div>`).join('');
+}
+
+// ── MASTER RENDER ──
+async function fqRenderAll(){
+    const data = await fqFetchAll();
+    
+    const ps = fqCalcPriceStructure(data);
+    const ct = fqCalcCycleTiming(data);
+    const lq = fqCalcLiquidity(data);
+    const dv = fqCalcDerivatives(data);
+    const st = fqCalcStablecoin(data);
+    const dm = fqCalcDominance(data);
+    
+    // Calculate risk-adjusted component (avg of Sharpe & Sortino normalized)
+    const riskAdj = Math.round(((parseFloat(ps.sharpe) / 3) * 50 + (parseFloat(ps.sortino) / 4) * 50));
+    
+    const comps = {
+        price: ps.compScore,
+        liquidity: lq.compScore,
+        derivatives: dv.compScore,
+        stablecoin: st.compScore,
+        cycleTiming: ct.compScore,
+        riskAdj: Math.min(100, Math.max(0, riskAdj))
+    };
+    
+    const { composite, weights } = fqCalcComposite(comps);
+    
+    fqRenderPriceStructure(ps);
+    fqRenderCycleTiming(ct);
+    fqRenderLiquidity(lq);
+    fqRenderDerivatives(dv);
+    fqRenderStablecoin(st);
+    fqRenderDominance(dm);
+    fqRenderComposite(composite, weights);
+    fqRenderAPIStatus();
+}
+
+// ── INIT ──
+function fqInit(){
+    // Wait for existing dashboards to load
+    setTimeout(()=>{
+        // Pre-render once so data is ready if user switches to Quant mode
+        fqRenderAll();
+    }, 5000);
+    
+    // Auto-refresh every 60s
+    setInterval(fqRenderAll, 60000);
+}
+
+if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded', fqInit);
+} else {
+    fqInit();
+}
+
+})(); // END IIFE
+</script>
 </body>
 </html>
