@@ -305,6 +305,25 @@
     </div>
 </div>
 
+<!-- ═══ ANALYSIS MODE TOGGLE (MOVED TO TOP) ═══ -->
+<div class="fq-mode-toggle-wrap" style="top:0;z-index:9998;">
+    <div style="font-size:0.7rem;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:1px;">
+        ANALYSIS MODE
+    </div>
+    <div class="fq-mode-btns">
+        <button class="fq-mode-btn active" id="fqBtnOriginal" onclick="fqSetMode('original')">
+            🎯 Original Model
+        </button>
+        <button class="fq-mode-btn" id="fqBtnQuant" onclick="fqSetMode('quant')">
+            📊 Free Quant Engine
+        </button>
+    </div>
+    <div class="fq-indicator">
+        <div class="fq-indicator-dot"></div>
+        Active: <strong id="fqActiveMode" style="color:#f7931a;">Original Model</strong>
+    </div>
+</div>
+
 <div id="app">
     <!-- ROW 1: HERO -->
     <div class="grid g-3col">
@@ -1355,23 +1374,52 @@ document.addEventListener('DOMContentLoaded', init);
 <style>
 /* ---- INSTITUTIONAL MODULE STYLES ---- */
 .inst-divider { margin: 32px 40px; border: none; border-top: 1px solid rgba(255,255,255,0.06); }
-.inst-section { padding: 0 40px 32px; max-width: 2000px; margin: 0 auto; }
+.inst-section { 
+    padding: 0 40px 32px; 
+    max-width: 2000px; 
+    margin: 0 auto;
+    position: relative;
+    z-index: 10 !important;
+    pointer-events: auto !important;
+}
 .inst-section-header {
     display: flex; align-items: center; justify-content: space-between;
     margin-bottom: 20px; cursor: pointer; user-select: none;
     padding: 14px 20px; background: rgba(255,255,255,0.02);
     border: 1px solid rgba(255,255,255,0.06); border-radius: 12px;
     transition: all 0.2s;
+    position: relative;
+    z-index: 100 !important;  /* CRITICAL: Must be above everything */
+    pointer-events: auto !important;  /* CRITICAL: Force clickable */
+    min-height: 44px;
 }
-.inst-section-header:hover { border-color: rgba(247,147,26,0.2); background: rgba(247,147,26,0.03); }
+.inst-section-header:hover { 
+    border-color: rgba(247,147,26,0.2); 
+    background: rgba(247,147,26,0.03); 
+    transform: translateX(2px);
+}
+.inst-section-header:active {
+    transform: scale(0.98);
+    background: rgba(247,147,26,0.08);
+}
 .inst-section-title { display: flex; align-items: center; gap: 12px; }
 .inst-section-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1rem; }
 .inst-section-name { font-size: 0.875rem; font-weight: 700; color: #e2e8f0; }
 .inst-section-sub { font-size: 0.7rem; color: #64748b; margin-top: 2px; }
 .inst-chevron { color: #475569; font-size: 0.75rem; transition: transform 0.3s; }
 .inst-chevron.open { transform: rotate(180deg); }
-.inst-body { overflow: hidden; transition: max-height 0.4s ease, opacity 0.3s ease; max-height: 0; opacity: 0; }
-.inst-body.open { max-height: 4000px; opacity: 1; }
+.inst-body { 
+    overflow: hidden; 
+    transition: max-height 0.4s ease, opacity 0.3s ease; 
+    max-height: 0; 
+    opacity: 0;
+    pointer-events: auto;
+}
+.inst-body.open { 
+    max-height: 5000px; 
+    opacity: 1;
+    margin-bottom: 20px;
+}
 .inst-grid { display: grid; gap: 16px; margin-top: 16px; }
 .inst-g3 { grid-template-columns: 1fr 1fr 1fr; }
 .inst-g2 { grid-template-columns: 1fr 1fr; }
@@ -1463,7 +1511,10 @@ document.addEventListener('DOMContentLoaded', init);
                 <div style="font-size:1rem;font-weight:800;color:#e2e8f0;">Institutional Research Framework</div>
                 <div style="font-size:0.7rem;color:#475569;">Quantitative transparency & research-grade analytics — all modules additive, non-destructive</div>
             </div>
-            <div style="margin-left:auto;display:flex;gap:8px;">
+            <div style="margin-left:auto;display:flex;gap:8px;align-items:center;">
+                <button id="instExpandAllBtn" onclick="instToggleAll()" style="padding:6px 14px;background:rgba(247,147,26,0.08);border:1px solid rgba(247,147,26,0.25);color:#f7931a;border-radius:8px;font-size:0.72rem;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.2s;white-space:nowrap;">
+                    ⊞ Expand All
+                </button>
                 <span style="font-size:0.65rem;padding:3px 10px;border-radius:10px;background:rgba(16,185,129,0.1);color:#10b981;border:1px solid rgba(16,185,129,0.2);font-weight:700;">INSTITUTIONAL GRADE</span>
                 <span style="font-size:0.65rem;padding:3px 10px;border-radius:10px;background:rgba(0,212,255,0.1);color:#00d4ff;border:1px solid rgba(0,212,255,0.2);font-weight:700;">NON-DESTRUCTIVE</span>
             </div>
@@ -1761,6 +1812,147 @@ document.addEventListener('DOMContentLoaded', init);
     </div>
 </div>
 
+<!-- ═══════════════════════════════════════════════════════════════════
+     IMMEDIATE ACCORDION FIX - RUNS FIRST, NO DEPENDENCIES
+     This script ensures institutional accordions work immediately
+═══════════════════════════════════════════════════════════════════ -->
+<script>
+// IMMEDIATE GLOBAL TOGGLE FUNCTION - NO IIFE, NO DELAYS
+window.toggleInst = function(id) {
+    console.log('[IMMEDIATE toggleInst] Called with ID:', id);
+    
+    const body = document.getElementById('body-' + id);
+    const chev = document.getElementById('chev-' + id);
+    
+    if (!body || !chev) {
+        console.error('[IMMEDIATE toggleInst] Elements not found:', { body: !!body, chev: !!chev });
+        return;
+    }
+    
+    // Toggle with visual feedback
+    const wasOpen = body.classList.contains('open');
+    body.classList.toggle('open');
+    chev.classList.toggle('open');
+    
+    // Update aria
+    const header = chev.closest('.inst-section-header');
+    if (header) {
+        header.setAttribute('aria-expanded', !wasOpen ? 'true' : 'false');
+        // Flash effect to show it worked
+        header.style.transform = 'scale(0.98)';
+        setTimeout(() => { header.style.transform = ''; }, 100);
+    }
+    
+    console.log('[IMMEDIATE toggleInst] Section', id, 'is now:', wasOpen ? 'CLOSED' : 'OPEN');
+};
+
+// IMMEDIATE TOGGLE ALL FUNCTION
+window.instToggleAll = function() {
+    console.log('[IMMEDIATE instToggleAll] Called');
+    const sections = ['datasrc', 'methodology', 'backtest', 'confidence', 'rawdata', 'macro', 'performance', 'limitations', 'whitepaper'];
+    const firstBody = document.getElementById('body-' + sections[0]);
+    const shouldExpand = !firstBody || !firstBody.classList.contains('open');
+    
+    sections.forEach(id => {
+        const body = document.getElementById('body-' + id);
+        const chev = document.getElementById('chev-' + id);
+        if (!body || !chev) return;
+        
+        if (shouldExpand) {
+            body.classList.add('open');
+            chev.classList.add('open');
+        } else {
+            body.classList.remove('open');
+            chev.classList.remove('open');
+        }
+        
+        const header = chev.closest('.inst-section-header');
+        if (header) header.setAttribute('aria-expanded', shouldExpand ? 'true' : 'false');
+    });
+    
+    const btn = document.getElementById('instExpandAllBtn');
+    if (btn) {
+        btn.textContent = shouldExpand ? '⊟ Collapse All' : '⊞ Expand All';
+        btn.style.color = shouldExpand ? '#00d4ff' : '#f7931a';
+    }
+    
+    console.log('[IMMEDIATE instToggleAll] All sections', shouldExpand ? 'EXPANDED' : 'COLLAPSED');
+};
+
+// IMMEDIATE INITIALIZATION - NO DELAYS
+(function() {
+    console.log('[IMMEDIATE INIT] Starting accordion initialization...');
+    
+    function init() {
+        const headers = document.querySelectorAll('.inst-section-header');
+        console.log('[IMMEDIATE INIT] Found', headers.length, 'accordion headers');
+        
+        if (headers.length === 0) {
+            console.warn('[IMMEDIATE INIT] No headers found, retrying in 100ms...');
+            setTimeout(init, 100);
+            return;
+        }
+        
+        headers.forEach((header, i) => {
+            // Force interactive
+            header.style.pointerEvents = 'auto !important';
+            header.style.cursor = 'pointer';
+            header.style.zIndex = '100';
+            
+            // Accessibility
+            header.setAttribute('role', 'button');
+            header.setAttribute('tabindex', '0');
+            
+            // AGGRESSIVE click handler (captures phase, prevents nothing)
+            header.addEventListener('click', function(e) {
+                // Extract ID from onclick attribute
+                const onclick = header.getAttribute('onclick');
+                if (onclick) {
+                    const match = onclick.match(/toggleInst\(['"](.+?)['"]\)/);
+                    if (match) {
+                        console.log('[IMMEDIATE CLICK]', match[1]);
+                        window.toggleInst(match[1]);
+                    }
+                }
+            }, true); // TRUE = capture phase, runs before anything else
+            
+            // Keyboard
+            header.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    const onclick = header.getAttribute('onclick');
+                    if (onclick) {
+                        const match = onclick.match(/toggleInst\(['"](.+?)['"]\)/);
+                        if (match) window.toggleInst(match[1]);
+                    }
+                }
+            });
+            
+            console.log('[IMMEDIATE INIT] Header', i + 1, 'initialized');
+        });
+        
+        // Force all sections interactive
+        document.querySelectorAll('.inst-section').forEach(section => {
+            section.style.pointerEvents = 'auto';
+        });
+        
+        console.log('[IMMEDIATE INIT] ✅ COMPLETE - All accordions should now work!');
+    }
+    
+    // Run immediately
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+    
+    // Also try after 100ms, 500ms, 1s just to be sure
+    setTimeout(init, 100);
+    setTimeout(init, 500);
+    setTimeout(init, 1000);
+})();
+</script>
+
 <!-- FLOATING ADV TOGGLE -->
 <div class="adv-toggle-wrap">
     <button class="adv-toggle" onclick="toggleAdvMode()" title="Toggle Advanced/Institutional Mode" id="advToggleBtn">🏛</button>
@@ -1793,12 +1985,180 @@ function safeGet(key, fallback) {
 
 // ---- TOGGLE COLLAPSE ----
 window.toggleInst = function(id) {
+    console.log(`[toggleInst] Toggling section: ${id}`);
+    
     const body = document.getElementById('body-' + id);
     const chev = document.getElementById('chev-' + id);
-    if (!body || !chev) return;
+    
+    if (!body) {
+        console.error(`[toggleInst] Body element not found: body-${id}`);
+        return;
+    }
+    if (!chev) {
+        console.error(`[toggleInst] Chevron element not found: chev-${id}`);
+        return;
+    }
+    
+    // Toggle classes
+    const isOpen = body.classList.contains('open');
     body.classList.toggle('open');
     chev.classList.toggle('open');
+    
+    console.log(`[toggleInst] Section ${id} is now: ${isOpen ? 'closed' : 'open'}`);
+    
+    // Update aria-expanded for accessibility
+    const header = chev.closest('.inst-section-header');
+    if (header) {
+        header.setAttribute('aria-expanded', !isOpen ? 'true' : 'false');
+    }
+    
+    // Add visual feedback
+    if (!isOpen) {
+        // Opening - scroll into view if needed
+        setTimeout(() => {
+            const rect = header ? header.getBoundingClientRect() : null;
+            if (rect && rect.top < 100) {
+                header.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }, 100);
+    }
 };
+
+// ---- TOGGLE ALL ACCORDIONS ----
+window.instToggleAll = function() {
+    console.log('[instToggleAll] Toggling all institutional sections...');
+    
+    const sectionIds = ['datasrc', 'methodology', 'backtest', 'confidence', 'rawdata', 'macro', 'performance', 'limitations', 'whitepaper'];
+    const button = document.getElementById('instExpandAllBtn');
+    
+    // Check if first section is open to determine action
+    const firstBody = document.getElementById('body-' + sectionIds[0]);
+    const shouldExpand = firstBody && !firstBody.classList.contains('open');
+    
+    console.log(`[instToggleAll] Action: ${shouldExpand ? 'Expanding' : 'Collapsing'} all sections`);
+    
+    sectionIds.forEach(id => {
+        const body = document.getElementById('body-' + id);
+        const chev = document.getElementById('chev-' + id);
+        
+        if (body && chev) {
+            const isOpen = body.classList.contains('open');
+            
+            if (shouldExpand && !isOpen) {
+                // Expand
+                body.classList.add('open');
+                chev.classList.add('open');
+                const header = chev.closest('.inst-section-header');
+                if (header) header.setAttribute('aria-expanded', 'true');
+            } else if (!shouldExpand && isOpen) {
+                // Collapse
+                body.classList.remove('open');
+                chev.classList.remove('open');
+                const header = chev.closest('.inst-section-header');
+                if (header) header.setAttribute('aria-expanded', 'false');
+            }
+        }
+    });
+    
+    // Update button text
+    if (button) {
+        button.textContent = shouldExpand ? '⊟ Collapse All' : '⊞ Expand All';
+        button.style.background = shouldExpand ? 'rgba(0,212,255,0.08)' : 'rgba(247,147,26,0.08)';
+        button.style.borderColor = shouldExpand ? 'rgba(0,212,255,0.25)' : 'rgba(247,147,26,0.25)';
+        button.style.color = shouldExpand ? '#00d4ff' : '#f7931a';
+    }
+    
+    console.log('[instToggleAll] All sections toggled successfully');
+};
+
+// ---- ENHANCED ACCORDION INITIALIZATION ----
+function initInstitutionalAccordions() {
+    console.log('[Institutional] Initializing accordion sections...');
+    
+    // Get all institutional section headers
+    const headers = document.querySelectorAll('.inst-section-header');
+    console.log(`[Institutional] Found ${headers.length} accordion headers`);
+    
+    if (headers.length === 0) {
+        console.warn('[Institutional] No accordion headers found. Retrying in 500ms...');
+        setTimeout(initInstitutionalAccordions, 500);
+        return;
+    }
+    
+    headers.forEach((header, index) => {
+        // Ensure header is interactive
+        if (!header.hasAttribute('role')) {
+            header.setAttribute('role', 'button');
+            header.setAttribute('tabindex', '0');
+            header.setAttribute('aria-expanded', 'false');
+        }
+        
+        // Ensure proper pointer events and styling
+        header.style.pointerEvents = 'auto';
+        header.style.cursor = 'pointer';
+        
+        // Add click listener as backup to onclick attribute
+        header.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            // Extract ID from onclick attribute
+            const onclick = header.getAttribute('onclick');
+            if (onclick) {
+                const match = onclick.match(/toggleInst\(['"](.+?)['"]\)/);
+                if (match && match[1]) {
+                    console.log(`[Institutional] Accordion clicked: ${match[1]}`);
+                    window.toggleInst(match[1]);
+                }
+            }
+        }, { passive: false });
+        
+        // Add keyboard support
+        header.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                const onclick = header.getAttribute('onclick');
+                if (onclick) {
+                    const match = onclick.match(/toggleInst\(['"](.+?)['"]\)/);
+                    if (match && match[1]) {
+                        console.log(`[Institutional] Accordion activated via keyboard: ${match[1]}`);
+                        window.toggleInst(match[1]);
+                    }
+                }
+            }
+        });
+        
+        // Ensure minimum touch target size for mobile
+        const currentHeight = parseInt(window.getComputedStyle(header).height);
+        if (currentHeight < 44) {
+            header.style.minHeight = '44px';
+        }
+        
+        console.log(`[Institutional] Header ${index + 1} initialized`);
+    });
+    
+    // Fix any pointer-events issues on parent containers
+    const sections = document.querySelectorAll('.inst-section');
+    sections.forEach(section => {
+        section.style.pointerEvents = 'auto';
+        section.style.position = 'relative';
+    });
+    
+    console.log('[Institutional] Accordion initialization complete!');
+}
+
+// Run initialization after DOM is ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initInstitutionalAccordions);
+} else {
+    // DOM already loaded
+    initInstitutionalAccordions();
+}
+
+// Also run after a short delay to ensure all elements are rendered
+setTimeout(initInstitutionalAccordions, 1000);
+// And another attempt after 2 seconds for safety
+setTimeout(initInstitutionalAccordions, 2000);
 
 // ---- FORCE REFRESH (calls existing init or re-triggers fetch) ----
 window.instForceRefresh = async function() {
@@ -3733,25 +4093,6 @@ if(document.readyState==='loading'){
     .fq-container, .fq-mode-toggle-wrap { padding-left: 16px; padding-right: 16px; }
 }
 </style>
-
-<!-- MODE TOGGLE BAR -->
-<div class="fq-mode-toggle-wrap">
-    <div style="font-size:0.7rem;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:1px;">
-        ANALYSIS MODE
-    </div>
-    <div class="fq-mode-btns">
-        <button class="fq-mode-btn active" id="fqBtnOriginal" onclick="fqSetMode('original')">
-            🎯 Original Model
-        </button>
-        <button class="fq-mode-btn" id="fqBtnQuant" onclick="fqSetMode('quant')">
-            📊 Free Quant Engine
-        </button>
-    </div>
-    <div class="fq-indicator">
-        <div class="fq-indicator-dot"></div>
-        Active: <strong id="fqActiveMode" style="color:#f7931a;">Original Model</strong>
-    </div>
-</div>
 
 <!-- FREE QUANT ENGINE CONTAINER -->
 <div class="fq-container" id="fqContainer">
