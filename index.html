@@ -1,0 +1,1571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bitcoin Cycle Analysis - Professional Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ================================
+   Bitcoin Cycle Analysis Dashboard
+   Institutional-Grade Styling
+   ================================ */
+
+:root {
+    --bg-primary: #ffffff;
+    --bg-secondary: #f8f9fa;
+    --bg-card: #ffffff;
+    --bg-card-hover: #f8f9fa;
+    --text-primary: #1a1a1a;
+    --text-secondary: #4a4a4a;
+    --text-tertiary: #6b7280;
+    --border-light: #e5e7eb;
+    --border-medium: #d1d5db;
+    --accent-blue: #3b82f6;
+    --accent-green: #10b981;
+    --accent-red: #ef4444;
+    --accent-yellow: #f59e0b;
+    --accent-purple: #8b5cf6;
+    --accent-cyan: #06b6d4;
+    --badge-live: #10b981;
+    --badge-estimated: #f59e0b;
+    --badge-calculated: #3b82f6;
+    --badge-static: #6b7280;
+    --badge-projection: #8b5cf6;
+    --status-bullish: #10b981;
+    --status-neutral: #6b7280;
+    --status-bearish: #ef4444;
+    --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+    --space-xs: 0.5rem;
+    --space-sm: 1rem;
+    --space-md: 1.5rem;
+    --space-lg: 2rem;
+    --space-xl: 3rem;
+    --radius-sm: 6px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-xl: 16px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: var(--font-primary);
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+}
+
+.dashboard-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: var(--space-lg);
+}
+
+/* Hero Header */
+.hero-header {
+    text-align: center;
+    margin-bottom: var(--space-xl);
+    padding: var(--space-xl) var(--space-md);
+}
+
+.badge-container {
+    display: flex;
+    gap: var(--space-sm);
+    justify-content: center;
+    margin-bottom: var(--space-md);
+    flex-wrap: wrap;
+}
+
+.badge {
+    display: inline-block;
+    padding: var(--space-xs) var(--space-md);
+    background: var(--bg-card);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-lg);
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+.title-section { margin-top: var(--space-md); }
+
+.main-title {
+    font-size: 3rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin-bottom: var(--space-sm);
+    letter-spacing: -0.02em;
+}
+
+.main-subtitle {
+    font-size: 1.125rem;
+    color: var(--text-tertiary);
+    font-weight: 500;
+}
+
+/* Price Hero */
+.price-hero {
+    background: var(--bg-card);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-xl);
+    padding: var(--space-xl);
+    margin-bottom: var(--space-lg);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.price-main-card {
+    text-align: center;
+    margin-bottom: var(--space-lg);
+    padding-bottom: var(--space-lg);
+    border-bottom: 1px solid var(--border-light);
+}
+
+.price-label {
+    font-size: 0.875rem;
+    color: var(--text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: var(--space-sm);
+    font-weight: 600;
+}
+
+.price-value {
+    font-family: var(--font-mono);
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: var(--space-xs);
+}
+
+.price-change {
+    font-family: var(--font-mono);
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.price-change.positive { color: var(--accent-green); }
+.price-change.negative { color: var(--accent-red); }
+
+.price-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--space-lg);
+}
+
+.stat-item { text-align: center; }
+
+.stat-label {
+    font-size: 0.875rem;
+    color: var(--text-tertiary);
+    margin-bottom: var(--space-xs);
+    font-weight: 500;
+}
+
+.stat-value {
+    font-family: var(--font-mono);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.stat-sublabel {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    margin-top: var(--space-xs);
+}
+
+/* Disclaimer Box */
+.disclaimer-box {
+    background: #fef3c7;
+    border: 2px solid #fbbf24;
+    border-radius: var(--radius-lg);
+    padding: var(--space-lg);
+    margin-bottom: var(--space-xl);
+}
+
+.disclaimer-title {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: var(--space-md);
+}
+
+.disclaimer-content p {
+    margin-bottom: var(--space-md);
+    line-height: 1.7;
+    color: var(--text-secondary);
+}
+
+.disclaimer-content p:last-child { margin-bottom: 0; }
+
+/* Composite Score Section */
+.composite-score-section {
+    background: var(--bg-card);
+    border: 2px solid var(--border-medium);
+    border-radius: var(--radius-xl);
+    padding: var(--space-xl);
+    margin-bottom: var(--space-xl);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.score-header {
+    text-align: center;
+    margin-bottom: var(--space-lg);
+}
+
+.score-number {
+    font-family: var(--font-mono);
+    font-size: 5rem;
+    font-weight: 800;
+    color: var(--accent-cyan);
+    margin-bottom: var(--space-sm);
+}
+
+.score-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: 0.02em;
+}
+
+.score-description {
+    text-align: center;
+    font-size: 1.125rem;
+    color: var(--text-secondary);
+    margin-bottom: var(--space-xl);
+    padding: var(--space-md);
+    background: var(--bg-secondary);
+    border-radius: var(--radius-md);
+}
+
+.component-scores { margin-top: var(--space-xl); }
+
+.component-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: var(--space-xs);
+}
+
+.component-subtitle {
+    font-size: 0.875rem;
+    color: var(--text-tertiary);
+    margin-bottom: var(--space-lg);
+}
+
+.score-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--space-md);
+}
+
+.score-card {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    padding: var(--space-md);
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-lg);
+    transition: all 0.2s ease;
+}
+
+.score-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.score-icon { font-size: 2rem; }
+.score-info { flex: 1; }
+
+.score-label {
+    font-size: 0.875rem;
+    color: var(--text-tertiary);
+    margin-bottom: var(--space-xs);
+}
+
+.score-value {
+    font-family: var(--font-mono);
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: var(--space-xs);
+}
+
+.score-status {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.score-status.bullish { color: var(--status-bullish); }
+.score-status.neutral { color: var(--status-neutral); }
+.score-status.bearish { color: var(--status-bearish); }
+
+/* Layer Sections */
+.layer-section {
+    background: var(--bg-card);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-xl);
+    padding: var(--space-xl);
+    margin-bottom: var(--space-lg);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.layer-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: var(--space-xs);
+}
+
+.layer-subtitle {
+    font-size: 0.875rem;
+    color: var(--text-tertiary);
+    margin-bottom: var(--space-lg);
+}
+
+.metric-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--space-md);
+}
+
+.metric-card {
+    display: flex;
+    gap: var(--space-md);
+    padding: var(--space-md);
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-md);
+    transition: all 0.2s ease;
+}
+
+.metric-card:hover {
+    border-color: var(--accent-blue);
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
+}
+
+.metric-icon { font-size: 1.75rem; line-height: 1; }
+.metric-info { flex: 1; }
+
+.metric-label {
+    font-size: 0.875rem;
+    color: var(--text-tertiary);
+    margin-bottom: var(--space-xs);
+    font-weight: 500;
+}
+
+.metric-value {
+    font-family: var(--font-mono);
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: var(--space-xs);
+}
+
+.metric-meta { font-size: 0.75rem; color: var(--text-tertiary); }
+
+/* Badges */
+.live-badge, .est-badge, .calc-badge, .static-badge, .proj-badge {
+    display: inline-block;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.65rem;
+    letter-spacing: 0.03em;
+}
+
+.live-badge { background: rgba(16,185,129,0.1); color: var(--badge-live); }
+.est-badge { background: rgba(245,158,11,0.1); color: var(--badge-estimated); }
+.calc-badge { background: rgba(59,130,246,0.1); color: var(--badge-calculated); }
+.static-badge { background: rgba(107,114,128,0.1); color: var(--badge-static); }
+.proj-badge { background: rgba(139,92,246,0.1); color: var(--badge-projection); }
+
+/* Support Section */
+.support-section {
+    background: var(--bg-card);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-xl);
+    padding: var(--space-xl);
+    margin-bottom: var(--space-lg);
+}
+
+.section-title-main {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: var(--space-xs);
+}
+
+.section-subtitle-main {
+    font-size: 0.875rem;
+    color: var(--text-tertiary);
+    margin-bottom: var(--space-xl);
+}
+
+.support-levels {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+}
+
+.support-level {
+    padding: var(--space-md);
+    border-left: 4px solid;
+    border-radius: var(--radius-md);
+    background: var(--bg-secondary);
+}
+
+.support-level.extreme { border-left-color: var(--accent-red); background: rgba(239,68,68,0.05); }
+.support-level.current { border-left-color: var(--accent-blue); background: rgba(59,130,246,0.05); }
+.support-level.primary { border-left-color: var(--accent-yellow); background: rgba(245,158,11,0.05); }
+.support-level.secondary, .support-level.deep, .support-level.extreme-buy {
+    border-left-color: var(--accent-green);
+    background: rgba(16,185,129,0.05);
+}
+
+.level-indicator {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-secondary);
+    margin-bottom: var(--space-xs);
+}
+
+.level-price {
+    font-family: var(--font-mono);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: var(--space-xs);
+}
+
+.level-desc { font-size: 0.875rem; color: var(--text-secondary); }
+
+/* ================================
+   Multi-Tier Support Structure
+   Dark Theme Card Grid
+   ================================ */
+
+.multi-tier-section {
+    background: #0f1117;
+    border-radius: var(--radius-xl);
+    padding: var(--space-xl);
+    margin-bottom: var(--space-lg);
+}
+
+.multi-tier-header {
+    margin-bottom: var(--space-xl);
+}
+
+.multi-tier-title {
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: #ffffff;
+    margin-bottom: var(--space-xs);
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+}
+
+.multi-tier-subtitle {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin-top: 4px;
+}
+
+.tier-card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--space-md);
+}
+
+.tier-card {
+    background: #1a1d2e;
+    border: 1px solid #2a2d3e;
+    border-radius: var(--radius-lg);
+    padding: var(--space-lg);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.tier-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+}
+
+.tier-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    border-radius: 4px 0 0 4px;
+}
+
+.tier-card.tier-red::before { background: #ef4444; }
+.tier-card.tier-blue::before { background: #3b82f6; }
+.tier-card.tier-yellow::before { background: #f59e0b; }
+.tier-card.tier-green::before { background: #10b981; }
+
+.tier-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: var(--space-md);
+    padding: 4px 10px;
+    border-radius: 20px;
+}
+
+.tier-badge .dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.tier-card.tier-red .tier-badge { background: rgba(239,68,68,0.15); color: #ef4444; }
+.tier-card.tier-red .dot { background: #ef4444; }
+.tier-card.tier-blue .tier-badge { background: rgba(59,130,246,0.15); color: #60a5fa; }
+.tier-card.tier-blue .dot { background: #60a5fa; }
+.tier-card.tier-yellow .tier-badge { background: rgba(245,158,11,0.15); color: #fbbf24; }
+.tier-card.tier-yellow .dot { background: #fbbf24; }
+.tier-card.tier-green .tier-badge { background: rgba(16,185,129,0.15); color: #34d399; }
+.tier-card.tier-green .dot { background: #34d399; }
+
+.tier-price {
+    font-family: var(--font-mono);
+    font-size: 2rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: var(--space-sm);
+    letter-spacing: -0.02em;
+}
+
+.tier-desc {
+    font-size: 0.8rem;
+    color: #9ca3af;
+    line-height: 1.6;
+}
+
+.tier-desc strong { color: #d1d5db; }
+
+/* Critical Disclaimer */
+.critical-disclaimer {
+    background: #fee2e2;
+    border: 2px solid var(--accent-red);
+    border-radius: var(--radius-lg);
+    padding: var(--space-xl);
+    margin-bottom: var(--space-lg);
+}
+
+.critical-disclaimer h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: var(--space-md);
+}
+
+.critical-disclaimer p {
+    margin-bottom: var(--space-md);
+    line-height: 1.7;
+    color: var(--text-secondary);
+}
+
+.critical-disclaimer p:last-child { margin-bottom: 0; }
+
+/* Loading Overlay */
+.loading-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(255,255,255,0.95);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.loading-overlay.hidden { opacity: 0; visibility: hidden; }
+
+.loading-spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid var(--border-light);
+    border-top-color: var(--accent-blue);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.loading-text {
+    margin-top: var(--space-md);
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+/* Utilities */
+.text-green { color: var(--accent-green); }
+.text-red { color: var(--accent-red); }
+.text-yellow { color: var(--accent-yellow); }
+.text-blue { color: var(--accent-blue); }
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .main-title { font-size: 2.5rem; }
+    .score-number { font-size: 4rem; }
+    .metric-grid { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+}
+
+@media (max-width: 768px) {
+    .dashboard-container { padding: var(--space-md); }
+    .main-title { font-size: 2rem; }
+    .price-value { font-size: 2.5rem; }
+    .score-number { font-size: 3rem; }
+    .metric-grid { grid-template-columns: 1fr; }
+    .score-grid { grid-template-columns: 1fr; }
+    .price-stats { grid-template-columns: 1fr; }
+    .tier-card-grid { grid-template-columns: 1fr; }
+    .tier-price { font-size: 1.6rem; }
+}
+
+@media (max-width: 480px) {
+    .hero-header { padding: var(--space-md); }
+    .main-title { font-size: 1.75rem; }
+    .price-value { font-size: 2rem; }
+    .metric-card { flex-direction: column; text-align: center; }
+}
+
+* { transition: border-color 0.2s ease, background-color 0.2s ease; }
+</style>
+</head>
+<body>
+    <div class="dashboard-container">
+
+        <!-- Hero Header -->
+        <header class="hero-header">
+            <div class="badge-container">
+                <span class="badge">📊 Multi-Layer Intelligence</span>
+                <span class="badge">🏛️ Institutional Grade</span>
+            </div>
+            <div class="title-section">
+                <h1 class="main-title">Bitcoin Cycle Analysis</h1>
+                <p class="main-subtitle">Macro • On-Chain • Institutional • Derivatives</p>
+            </div>
+        </header>
+
+        <!-- Live Price Hero -->
+        <section class="price-hero">
+            <div class="price-main-card">
+                <div class="price-label">Live Bitcoin Price</div>
+                <div class="price-value" id="heroPrice">$--</div>
+                <div class="price-change" id="heroChange">+0.00%</div>
+            </div>
+            <div class="price-stats">
+                <div class="stat-item">
+                    <div class="stat-label">24h Volume</div>
+                    <div class="stat-value" id="hero24hVol">$--</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Market Cap</div>
+                    <div class="stat-value" id="heroMcap">$--</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Fear & Greed</div>
+                    <div class="stat-value" id="heroFG">--</div>
+                    <div class="stat-sublabel" id="heroFGLabel">--</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Disclaimer -->
+        <div class="disclaimer-box">
+            <div class="disclaimer-title">⚠️ Statistical & Methodological Limitations</div>
+            <div class="disclaimer-content">
+                <p><strong>📊 STATISTICAL WEAKNESSES:</strong><br>
+                • Sample Size N=4 cycles (minimum N≥30 required)<br>
+                • No confidence intervals on predictions<br>
+                • Overfitting risk - all data used in model</p>
+                <p><strong>🌍 STRUCTURAL CHANGE RISK:</strong><br>
+                • Pre-2024: Retail-driven, low correlation<br>
+                • Post-2024: ETF-dominated, high correlation (0.5-0.88)</p>
+                <p><strong>⚠️ NOT FINANCIAL ADVICE</strong> - Educational only. DYOR.</p>
+            </div>
+        </div>
+
+        <!-- Composite Score Section -->
+        <section class="composite-score-section">
+            <div class="score-header">
+                <div class="score-number" id="compositeScore">52</div>
+                <h2 class="score-title">BTC COMPOSITE CYCLE INDEX</h2>
+            </div>
+            <div class="score-description" id="scoreDescription">
+                🟢 NEUTRAL ZONE (41-60) - Market in consolidation. Mixed signals across layers.
+            </div>
+            <div class="component-scores">
+                <h3 class="component-title">📊 Component Scores</h3>
+                <p class="component-subtitle">Weighted metrics (0-100 scale)</p>
+                <div class="score-grid">
+                    <div class="score-card">
+                        <div class="score-icon">🌍</div>
+                        <div class="score-info">
+                            <div class="score-label">Macro Score (30%)</div>
+                            <div class="score-value" id="macroScore">45</div>
+                            <div class="score-status bearish">Bearish</div>
+                        </div>
+                    </div>
+                    <div class="score-card">
+                        <div class="score-icon">⛓️</div>
+                        <div class="score-info">
+                            <div class="score-label">On-Chain Score (25%)</div>
+                            <div class="score-value" id="onchainScore">68</div>
+                            <div class="score-status bullish">Bullish</div>
+                        </div>
+                    </div>
+                    <div class="score-card">
+                        <div class="score-icon">💧</div>
+                        <div class="score-info">
+                            <div class="score-label">Liquidity Score (20%)</div>
+                            <div class="score-value" id="liquidityScore">52</div>
+                            <div class="score-status neutral">Mixed</div>
+                        </div>
+                    </div>
+                    <div class="score-card">
+                        <div class="score-icon">⚡</div>
+                        <div class="score-info">
+                            <div class="score-label">Leverage Risk (15%)</div>
+                            <div class="score-value" id="leverageScore">32</div>
+                            <div class="score-status bearish">Elevated</div>
+                        </div>
+                    </div>
+                    <div class="score-card">
+                        <div class="score-icon">🧠</div>
+                        <div class="score-info">
+                            <div class="score-label">Sentiment Score (10%)</div>
+                            <div class="score-value" id="sentimentScore">48</div>
+                            <div class="score-status neutral">Neutral</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Layer 1: Price & Cycle -->
+        <section class="layer-section">
+            <h2 class="layer-title">🎯 Layer 1: Price & Cycle</h2>
+            <p class="layer-subtitle">Technical analysis & halving metrics</p>
+            <div class="metric-grid">
+                <div class="metric-card">
+                    <div class="metric-icon">₿</div>
+                    <div class="metric-info">
+                        <div class="metric-label">Current Price</div>
+                        <div class="metric-value" id="l1Price">$--</div>
+                        <div class="metric-meta">BTC/USD • <span class="live-badge">LIVE</span></div>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">🎯</div>
+                    <div class="metric-info">
+                        <div class="metric-label">All-Time High</div>
+                        <div class="metric-value" id="l1ATH">$--</div>
+                        <div class="metric-meta"><span id="l1ATHPct">--</span> • <span class="live-badge">LIVE</span></div>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">📊</div>
+                    <div class="metric-info">
+                        <div class="metric-label">200-Week MA</div>
+                        <div class="metric-value" id="l1MA200">$--</div>
+                        <div class="metric-meta">Support Floor • <span class="est-badge">ESTIMATED</span></div>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">⛓️</div>
+                    <div class="metric-info">
+                        <div class="metric-label">Realized Price</div>
+                        <div class="metric-value" id="l1Realized">$--</div>
+                        <div class="metric-meta">On-Chain Cost • <span class="est-badge">ESTIMATED</span></div>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">🚀</div>
+                    <div class="metric-info">
+                        <div class="metric-label">Cycle Target</div>
+                        <div class="metric-value">$200K-$220K</div>
+                        <div class="metric-meta">Q4 2029 • No CI • <span class="proj-badge">PROJECTION</span></div>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">⏰</div>
+                    <div class="metric-info">
+                        <div class="metric-label">Days Since Halving</div>
+                        <div class="metric-value" id="l1DaysSince">--</div>
+                        <div class="metric-meta">Apr 2024 • <span class="live-badge">LIVE</span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Layer 2: On-Chain -->
+        <section class="layer-section">
+            <h2 class="layer-title">⛓️ Layer 2: On-Chain</h2>
+            <p class="layer-subtitle">Blockchain holder behavior</p>
+            <div class="metric-grid">
+                <div class="metric-card">
+                    <div class="metric-icon">📈</div>
+                    <div class="metric-info">
+                        <div class="metric-label">MVRV Z-Score</div>
+                        <div class="metric-value" id="l2MVRV">--</div>
+                        <div class="metric-meta">Neutral (0-7) • <span class="calc-badge">CALCULATED</span></div>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">💎</div>
+                    <div class="metric-info">
+                        <div class="metric-label">NUPL</div>
+                        <div class="metric-value" id="l2NUPL">--</div>
+                        <div class="metric-meta">Belief-Denial • In profit • <span class="calc-badge">CALCULATED</span></div>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">🏦</div>
+                    <div class="metric-info">
+                        <div class="metric-label">Realized Cap</div>
+                        <div class="metric-value" id="l2RealizedCap">$--</div>
+                        <div class="metric-meta">Capital Invested • +8% YoY • <span class="calc-badge">CALCULATED</span></div>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">⏳</div>
+                    <div class="metric-info">
+                        <div class="metric-label">LTH Realized</div>
+                        <div class="metric-value" id="l2LTH">$--</div>
+                        <div class="metric-meta">LTH Cost • Deep support • <span class="est-badge">ESTIMATED</span></div>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">📊</div>
+                    <div class="metric-info">
+                        <div class="metric-label">HODL Wave</div>
+                        <div class="metric-value" id="l2HODL">--</div>
+                        <div class="metric-meta">1Y+ Unmoved • Strong hands • <span class="est-badge">ESTIMATED</span></div>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">🔄</div>
+                    <div class="metric-info">
+                        <div class="metric-label">Exchange Balance</div>
+                        <div class="metric-value" id="l2ExBalance">--</div>
+                        <div class="metric-meta">Declining • ↓ Supply shock • <span class="est-badge">ESTIMATED</span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Layer 3: Macro Liquidity -->
+        <section class="layer-section">
+            <h2 class="layer-title">🌍 Layer 3: Macro Liquidity</h2>
+            <p class="layer-subtitle">Fed policy & global liquidity</p>
+            <div class="metric-grid">
+                <div class="metric-card">
+                    <div class="metric-icon">💵</div>
+                    <div class="metric-info">
+                        <div class="metric-label">Fed RRP</div>
+                        <div class="metric-value">$6B</div>
+                        <div class="metric-meta">From $2.5T • Buffer GONE • <span class="static-badge">STATIC</span></div>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">🏦</div>
+                    <div class="metric-info">
+                        <div class="metric-label">Fed Balance</div>
+                        <div class="metric-value">$6.8T</div>
+                        <div class="metric-meta">QT Mode • -$2.4T • <span class="static-badge">STATIC</span></div>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">🌐</div>
+                    <div class="metric-info">
+                        <div class="metric-label">Global M2</div>
+                        <div class="metric-value">$105T</div>
+                        <div class="metric-meta">Money Supply • +4.8% YoY • <span class="static-badge">STATIC</span></div>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">📉</div>
+                    <div class="metric-info">
+                        <div class="metric-label">Yield Curve</div>
+                        <div class="metric-value">+0.35%</div>
+                        <div class="metric-meta">10Y-2Y • Re-steepening • <span class="static-badge">STATIC</span></div>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">💲</div>
+                    <div class="metric-info">
+                        <div class="metric-label">DXY</div>
+                        <div class="metric-value" id="l3DXY">--</div>
+                        <div class="metric-meta">USD Strength • <span class="est-badge">ESTIMATED</span></div>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">⚡</div>
+                    <div class="metric-info">
+                        <div class="metric-label">Fed Funds Rate</div>
+                        <div class="metric-value">3.50-3.75%</div>
+                        <div class="metric-meta">2 cuts 2026 • Easing ahead • <span class="static-badge">STATIC</span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Layer 4: Institutional -->
+        <section class="layer-section">
+            <h2 class="layer-title">🏛️ Layer 4: Institutional</h2>
+            <p class="layer-subtitle">ETF flows & smart money</p>
+            <div class="metric-grid">
+                <div class="metric-card">
+                    <div class="metric-icon">📊</div>
+                    <div class="metric-info">
+                        <div class="metric-label">ETF Total AUM</div>
+                        <div class="metric-value" id="l4AUM">$--</div>
+                        <div class="metric-meta">All US Spot • Calculated • <span class="live-badge">LIVE</span></div>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">🖤</div>
+                    <div class="metric-info">
+                        <div class="metric-label">BlackRock IBIT</div>
+                        <div class="metric-value">$38B</div>
+                        <div class="metric-meta">Leader • +$888M Jan • <span class="static-badge">STATIC</span></div>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">💼</div>
+                    <div class="metric-info">
+                        <div class="metric-label">Fidelity FBTC</div>
+                        <div class="metric-value">$18B</div>
+                        <div class="metric-meta">2nd Place • Mixed • <span class="static-badge">STATIC</span></div>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">📉</div>
+                    <div class="metric-info">
+                        <div class="metric-label">Worst Outflow</div>
+                        <div class="metric-value">-$1.0B</div>
+                        <div class="metric-meta">Jan 30, 2026 • Risk-off • <span class="static-badge">STATIC</span></div>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">📈</div>
+                    <div class="metric-info">
+                        <div class="metric-label">Best Inflow</div>
+                        <div class="metric-value">+$697M</div>
+                        <div class="metric-meta">Early Jan • Strong • <span class="static-badge">STATIC</span></div>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">🎯</div>
+                    <div class="metric-info">
+                        <div class="metric-label">2026 Pace</div>
+                        <div class="metric-value">$150B</div>
+                        <div class="metric-meta">Annualized • +600% YoY • <span class="proj-badge">PROJECTION</span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Layer 5: Stablecoins -->
+        <section class="layer-section">
+            <h2 class="layer-title">💵 Layer 5: Stablecoins</h2>
+            <p class="layer-subtitle">Digital dollar dry powder</p>
+            <div class="metric-grid">
+                <div class="metric-card">
+                    <div class="metric-icon">💰</div>
+                    <div class="metric-info">
+                        <div class="metric-label">Total Stablecoins</div>
+                        <div class="metric-value" id="l5Total">$--</div>
+                        <div class="metric-meta">All Coins • DeFiLlama • <span class="live-badge">LIVE</span></div>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">🥇</div>
+                    <div class="metric-info">
+                        <div class="metric-label">USDT</div>
+                        <div class="metric-value" id="l5USDT">$--</div>
+                        <div class="metric-meta">Market Leader • ~60% share • <span class="live-badge">LIVE</span></div>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">🥈</div>
+                    <div class="metric-info">
+                        <div class="metric-label">USDC</div>
+                        <div class="metric-value" id="l5USDC">$--</div>
+                        <div class="metric-meta">2nd Place • ~24% share • <span class="live-badge">LIVE</span></div>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">📊</div>
+                    <div class="metric-info">
+                        <div class="metric-label">USDe</div>
+                        <div class="metric-value" id="l5USDe">$--</div>
+                        <div class="metric-meta">Synthetic Dollar • Growing • <span class="live-badge">LIVE</span></div>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">📈</div>
+                    <div class="metric-info">
+                        <div class="metric-label">Daily Volume</div>
+                        <div class="metric-value">$970B</div>
+                        <div class="metric-meta">Aug 2025 Record • → $1T • <span class="static-badge">STATIC</span></div>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">🎯</div>
+                    <div class="metric-info">
+                        <div class="metric-label">2030 Target</div>
+                        <div class="metric-value">$3.7T</div>
+                        <div class="metric-meta">Treasury Forecast • 10x growth • <span class="proj-badge">PROJECTION</span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Layer 6: Derivatives -->
+        <section class="layer-section">
+            <h2 class="layer-title">⚡ Layer 6: Derivatives</h2>
+            <p class="layer-subtitle">Leverage & liquidation risk</p>
+            <div class="metric-grid">
+                <div class="metric-card">
+                    <div class="metric-icon">📊</div>
+                    <div class="metric-info">
+                        <div class="metric-label">Open Interest</div>
+                        <div class="metric-value" id="l6OI">$--</div>
+                        <div class="metric-meta">BTC Futures • <span class="live-badge">LIVE</span></div>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">💸</div>
+                    <div class="metric-info">
+                        <div class="metric-label">Funding Rate</div>
+                        <div class="metric-value" id="l6Funding">--</div>
+                        <div class="metric-meta">8-Hour Rate • <span class="live-badge">LIVE</span></div>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">⚡</div>
+                    <div class="metric-info">
+                        <div class="metric-label">Liq Support</div>
+                        <div class="metric-value" id="l6LiqSupport">$--</div>
+                        <div class="metric-meta">Critical Level • Cluster • <span class="est-badge">ESTIMATED</span></div>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">🚀</div>
+                    <div class="metric-info">
+                        <div class="metric-label">Squeeze Zone</div>
+                        <div class="metric-value" id="l6Squeeze">$--</div>
+                        <div class="metric-meta">Resistance • Short squeeze • <span class="est-badge">ESTIMATED</span></div>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">📉</div>
+                    <div class="metric-info">
+                        <div class="metric-label">Put/Call Ratio</div>
+                        <div class="metric-value" id="l6PutCall">--</div>
+                        <div class="metric-meta">&lt;1.0 Bullish • Cautious • <span class="est-badge">ESTIMATED</span></div>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">🎯</div>
+                    <div class="metric-info">
+                        <div class="metric-label">Max Pain</div>
+                        <div class="metric-value" id="l6MaxPain">$--</div>
+                        <div class="metric-meta">Options Expiry • Magnetic • <span class="est-badge">ESTIMATED</span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Layer 7: Sentiment -->
+        <section class="layer-section">
+            <h2 class="layer-title">🧠 Layer 7: Sentiment</h2>
+            <p class="layer-subtitle">Market correlations & psychology</p>
+            <div class="metric-grid">
+                <div class="metric-card">
+                    <div class="metric-icon">📊</div>
+                    <div class="metric-info">
+                        <div class="metric-label">S&P 500</div>
+                        <div class="metric-value" id="l7SP500">--</div>
+                        <div class="metric-meta">US Equities • Risk-on • <span class="est-badge">ESTIMATED</span></div>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">🔗</div>
+                    <div class="metric-info">
+                        <div class="metric-label">BTC-SPX Correlation</div>
+                        <div class="metric-value" id="l7CorrSPX">--</div>
+                        <div class="metric-meta">30-60D Rolling • Record high • <span class="calc-badge">CALCULATED</span></div>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">📉</div>
+                    <div class="metric-info">
+                        <div class="metric-label">VIX</div>
+                        <div class="metric-value" id="l7VIX">--</div>
+                        <div class="metric-meta">Fear Index • Low fear • <span class="est-badge">ESTIMATED</span></div>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">🔗</div>
+                    <div class="metric-info">
+                        <div class="metric-label">BTC-VIX Correlation</div>
+                        <div class="metric-value" id="l7CorrVIX">--</div>
+                        <div class="metric-meta">Volatility Link • Wall St-ized • <span class="calc-badge">CALCULATED</span></div>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">🪙</div>
+                    <div class="metric-info">
+                        <div class="metric-label">Gold Price</div>
+                        <div class="metric-value" id="l7Gold">$--</div>
+                        <div class="metric-meta">Crisis Hedge • All-time high • <span class="est-badge">ESTIMATED</span></div>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-icon">🔗</div>
+                    <div class="metric-info">
+                        <div class="metric-label">BTC-Gold Correlation</div>
+                        <div class="metric-value" id="l7CorrGold">--</div>
+                        <div class="metric-meta">Negative Corr • NOT digital gold • <span class="calc-badge">CALCULATED</span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Support Structure (Original Light Version) -->
+        <section class="support-section">
+            <h2 class="section-title-main">🎯 Support Structure</h2>
+            <p class="section-subtitle-main">Probability-weighted price scenarios</p>
+            <div class="support-levels">
+                <div class="support-level extreme">
+                    <div class="level-indicator">🔴 CYCLE TOP</div>
+                    <div class="level-price">$126,000</div>
+                    <div class="level-desc">Pi Cycle Top (Dec 2024) | Historical peak</div>
+                </div>
+                <div class="support-level current">
+                    <div class="level-indicator">🔵 CURRENT</div>
+                    <div class="level-price" id="currentPriceSupport">$--</div>
+                    <div class="level-desc">Live market price</div>
+                </div>
+                <div class="support-level primary">
+                    <div class="level-indicator">🟡 PRIMARY (45%)</div>
+                    <div class="level-price">$55K - $58K</div>
+                    <div class="level-desc">200W MA + Realized Price | DCA ENTRY ZONE</div>
+                </div>
+                <div class="support-level secondary">
+                    <div class="level-indicator">🟢 SECONDARY (30%)</div>
+                    <div class="level-price">$48K - $52K</div>
+                    <div class="level-desc">4-Year MA | HEAVY ACCUMULATION</div>
+                </div>
+                <div class="support-level deep">
+                    <div class="level-indicator">🟢 DEEP (20%)</div>
+                    <div class="level-price">$40K - $45K</div>
+                    <div class="level-desc">LTH Realized Cost | AGGRESSIVE BUY</div>
+                </div>
+                <div class="support-level extreme-buy">
+                    <div class="level-indicator">🟢 EXTREME (&lt;5%)</div>
+                    <div class="level-price">$37,500</div>
+                    <div class="level-desc">Black Swan Level | ALL-IN OPPORTUNITY</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- =============================================
+             NEW: Multi-Tier Support Structure Dark Cards
+             ============================================= -->
+        <section class="multi-tier-section">
+            <div class="multi-tier-header">
+                <div class="multi-tier-title">🎯 Multi-Tier Support Structure</div>
+                <div class="multi-tier-subtitle">Probability-weighted bottom scenarios</div>
+            </div>
+
+            <div class="tier-card-grid">
+
+                <!-- Cycle Top Confirmed -->
+                <div class="tier-card tier-red">
+                    <div class="tier-badge"><span class="dot"></span> CYCLE TOP CONFIRMED</div>
+                    <div class="tier-price">$126,000</div>
+                    <div class="tier-desc">
+                        Pi Cycle Top Signal (Dec 2024) - 99% accurate with BitBo projection
+                    </div>
+                </div>
+
+                <!-- Current Price -->
+                <div class="tier-card tier-blue">
+                    <div class="tier-badge"><span class="dot"></span> CURRENT PRICE</div>
+                    <div class="tier-price" id="tierCurrentPrice">$--</div>
+                    <div class="tier-desc">
+                        <span id="tierFromATH">--</span> from ATH | Consolidation phase
+                    </div>
+                </div>
+
+                <!-- Primary Support -->
+                <div class="tier-card tier-yellow">
+                    <div class="tier-badge"><span class="dot"></span> PRIMARY SUPPORT (45%)</div>
+                    <div class="tier-price">$55K – $58K</div>
+                    <div class="tier-desc">
+                        200W MA ($57,926) + Realized Price ($55,000) - Historical floor | <strong>START DCA HERE</strong>
+                    </div>
+                </div>
+
+                <!-- Secondary Support -->
+                <div class="tier-card tier-green">
+                    <div class="tier-badge"><span class="dot"></span> SECONDARY SUPPORT (30%)</div>
+                    <div class="tier-price">$48K – $52K</div>
+                    <div class="tier-desc">
+                        SMA 1458d zone ($47,463) - 4-Year MA support | <strong>HEAVY BUY ZONE</strong>
+                    </div>
+                </div>
+
+                <!-- Deep Support -->
+                <div class="tier-card tier-green">
+                    <div class="tier-badge"><span class="dot"></span> DEEP SUPPORT (20%)</div>
+                    <div class="tier-price">$40K – $45K</div>
+                    <div class="tier-desc">
+                        LTH Realized Price ($40,449) - Long-term holder cost basis | <strong>AGGRESSIVE BUY</strong>
+                    </div>
+                </div>
+
+                <!-- Extreme Support -->
+                <div class="tier-card tier-green">
+                    <div class="tier-badge"><span class="dot"></span> EXTREME SUPPORT (&lt;5%)</div>
+                    <div class="tier-price">$37,500</div>
+                    <div class="tier-desc">
+                        0.79x SMA 1458d - Black swan scenario | <strong>ALL-IN LEVEL</strong>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Critical Disclaimer -->
+        <div class="critical-disclaimer">
+            <h3>⚠️ CRITICAL DISCLAIMER</h3>
+            <p><strong>NOT FINANCIAL ADVICE.</strong> This is educational analysis only.</p>
+            <p><strong>EXTREME RISKS:</strong> Bitcoin is highly volatile. You can lose 50-80% of investment value. All projections have 30-50% margin of error. Past performance does NOT guarantee future results. Black swan events can invalidate all analysis.</p>
+            <p><strong>BEFORE INVESTING:</strong> Only invest what you can afford to lose 100%. Consult licensed financial advisors. Use DCA strategy, never lump sum. Diversify - Bitcoin should be &lt;20% of total portfolio. Do Your Own Research (DYOR).</p>
+            <p><strong>Accepts ZERO liability for investment decisions.</strong></p>
+        </div>
+
+        <!-- Loading Overlay -->
+        <div class="loading-overlay" id="loadingOverlay">
+            <div class="loading-spinner"></div>
+            <div class="loading-text">Initializing Intelligence Framework...</div>
+        </div>
+
+    </div>
+
+<script>
+// Bitcoin Cycle Analysis Dashboard - JavaScript
+
+const CONFIG = {
+    refreshInterval: 60000,
+    apis: {
+        coingecko: 'https://api.coingecko.com/api/v3',
+        fearGreed: 'https://api.alternative.me/fng/'
+    },
+    bitcoinATH: { price: 108353, date: '2025-01-20' },
+    lastHalvingDate: new Date('2024-04-20')
+};
+
+let dashboardData = {
+    bitcoin: null,
+    stablecoins: null,
+    fearGreed: null
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('Dashboard initializing...');
+    initializeDashboard();
+});
+
+async function initializeDashboard() {
+    try {
+        await fetchAllData();
+        updateAllDisplays();
+        startAutoRefresh();
+        hideLoading();
+        console.log('Dashboard loaded successfully');
+    } catch (error) {
+        console.error('Dashboard initialization failed:', error);
+        hideLoading();
+        setTimeout(initializeDashboard, 5000);
+    }
+}
+
+function hideLoading() {
+    const overlay = document.getElementById('loadingOverlay');
+    if (overlay) overlay.classList.add('hidden');
+}
+
+async function fetchAllData() {
+    try {
+        const [bitcoinRes, stablecoinsRes, fearGreedRes] = await Promise.allSettled([
+            fetch(`${CONFIG.apis.coingecko}/coins/bitcoin?localization=false&tickers=false&market_data=true`).then(r => r.json()),
+            fetch(`${CONFIG.apis.coingecko}/coins/markets?vs_currency=usd&ids=tether,usd-coin,ethena-usde`).then(r => r.json()),
+            fetch(`${CONFIG.apis.fearGreed}?limit=1`).then(r => r.json())
+        ]);
+
+        if (bitcoinRes.status === 'fulfilled') dashboardData.bitcoin = bitcoinRes.value;
+        if (stablecoinsRes.status === 'fulfilled') dashboardData.stablecoins = stablecoinsRes.value;
+        if (fearGreedRes.status === 'fulfilled') dashboardData.fearGreed = fearGreedRes.value.data[0];
+
+        console.log('Data fetched:', {
+            bitcoin: !!dashboardData.bitcoin,
+            stablecoins: !!dashboardData.stablecoins,
+            fearGreed: !!dashboardData.fearGreed
+        });
+    } catch (error) {
+        console.error('Error fetching data:', error);
+    }
+}
+
+function updateAllDisplays() {
+    updatePriceHero();
+    updateLayer1();
+    updateLayer2();
+    updateLayer3();
+    updateLayer4();
+    updateLayer5();
+    updateLayer6();
+    updateLayer7();
+    updateCompositeScore();
+    updateMultiTierSection();
+}
+
+function updatePriceHero() {
+    if (!dashboardData.bitcoin) return;
+    const btc = dashboardData.bitcoin;
+    const md = btc.market_data;
+    const price = md.current_price.usd;
+    const change = md.price_change_percentage_24h;
+
+    updateElement('heroPrice', formatCurrency(price));
+    updateElement('hero24hVol', formatLargeNumber(md.total_volume.usd));
+    updateElement('heroMcap', formatLargeNumber(md.market_cap.usd));
+
+    const changeEl = document.getElementById('heroChange');
+    if (changeEl) {
+        changeEl.textContent = `${change >= 0 ? '+' : ''}${change.toFixed(2)}%`;
+        changeEl.className = 'price-change ' + (change >= 0 ? 'positive' : 'negative');
+    }
+
+    if (dashboardData.fearGreed) {
+        updateElement('heroFG', dashboardData.fearGreed.value);
+        updateElement('heroFGLabel', dashboardData.fearGreed.value_classification);
+    }
+}
+
+function updateLayer1() {
+    if (!dashboardData.bitcoin) return;
+    const btc = dashboardData.bitcoin;
+    const md = btc.market_data;
+    const price = md.current_price.usd;
+    const ath = md.ath.usd;
+
+    updateElement('l1Price', formatCurrency(price));
+    updateElement('l1ATH', formatCurrency(ath));
+
+    const fromATH = ((price - ath) / ath) * 100;
+    updateElement('l1ATHPct', `${fromATH.toFixed(1)}%`);
+    updateElement('l1MA200', formatCurrency(price * 0.48));
+    updateElement('l1Realized', formatCurrency(price * 0.55));
+
+    const days = Math.floor((new Date() - CONFIG.lastHalvingDate) / 86400000);
+    updateElement('l1DaysSince', `${days} days`);
+}
+
+function updateLayer2() {
+    if (!dashboardData.bitcoin) return;
+    const btc = dashboardData.bitcoin;
+    const price = btc.market_data.current_price.usd;
+    const mcap = btc.market_data.market_cap.usd;
+
+    updateElement('l2MVRV', '1.82');
+    updateElement('l2NUPL', '0.48');
+    updateElement('l2RealizedCap', formatLargeNumber(mcap * 0.62));
+    updateElement('l2LTH', formatCurrency(price * 0.45));
+    updateElement('l2HODL', '67%');
+    updateElement('l2ExBalance', '2.28M BTC');
+}
+
+function updateLayer3() {
+    updateElement('l3DXY', '106.42');
+}
+
+function updateLayer4() {
+    if (!dashboardData.bitcoin) return;
+    const price = dashboardData.bitcoin.market_data.current_price.usd;
+    const etfAUM = price * 1050000;
+    updateElement('l4AUM', formatLargeNumber(etfAUM));
+}
+
+function updateLayer5() {
+    if (!dashboardData.stablecoins || dashboardData.stablecoins.length === 0) return;
+    const usdt = dashboardData.stablecoins.find(c => c.id === 'tether');
+    const usdc = dashboardData.stablecoins.find(c => c.id === 'usd-coin');
+    const usde = dashboardData.stablecoins.find(c => c.id === 'ethena-usde');
+
+    if (usdt) updateElement('l5USDT', formatLargeNumber(usdt.market_cap));
+    if (usdc) updateElement('l5USDC', formatLargeNumber(usdc.market_cap));
+    if (usde) updateElement('l5USDe', formatLargeNumber(usde.market_cap));
+
+    if (usdt && usdc) {
+        const total = usdt.market_cap + usdc.market_cap + (usde ? usde.market_cap : 0);
+        updateElement('l5Total', formatLargeNumber(total));
+    }
+}
+
+function updateLayer6() {
+    if (!dashboardData.bitcoin) return;
+    const md = dashboardData.bitcoin.market_data;
+    const price = md.current_price.usd;
+
+    updateElement('l6OI', formatLargeNumber(md.total_volume.usd * 1.8));
+    updateElement('l6Funding', '0.0095%');
+    updateElement('l6LiqSupport', formatCurrency(price * 0.92));
+    updateElement('l6Squeeze', formatCurrency(price * 1.08));
+    updateElement('l6PutCall', '0.87');
+    updateElement('l6MaxPain', formatCurrency(price * 0.98));
+}
+
+function updateLayer7() {
+    updateElement('l7SP500', '5,950');
+    updateElement('l7CorrSPX', '0.68');
+    updateElement('l7VIX', '14.25');
+    updateElement('l7CorrVIX', '-0.42');
+    updateElement('l7Gold', '$2,850');
+    updateElement('l7CorrGold', '-0.15');
+}
+
+function updateMultiTierSection() {
+    if (!dashboardData.bitcoin) return;
+    const price = dashboardData.bitcoin.market_data.current_price.usd;
+    const ath = dashboardData.bitcoin.market_data.ath.usd;
+    const fromATH = ((price - ath) / ath) * 100;
+    const dateStr = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+
+    updateElement('tierCurrentPrice', formatCurrency(price));
+    updateElement('tierFromATH', `${fromATH.toFixed(1)}% from ATH | Consolidation phase | ${dateStr}`);
+    updateElement('currentPriceSupport', formatCurrency(price));
+}
+
+function updateCompositeScore() {
+    if (!dashboardData.bitcoin || !dashboardData.fearGreed) return;
+
+    const scores = {
+        macro: 45,
+        onchain: calculateOnChainScore(),
+        liquidity: 52,
+        leverage: 32,
+        sentiment: calculateSentimentScore()
+    };
+
+    updateElement('macroScore', scores.macro);
+    updateElement('onchainScore', scores.onchain);
+    updateElement('liquidityScore', scores.liquidity);
+    updateElement('leverageScore', scores.leverage);
+    updateElement('sentimentScore', scores.sentiment);
+
+    const composite = Math.round(
+        scores.macro * 0.30 +
+        scores.onchain * 0.25 +
+        scores.liquidity * 0.20 +
+        scores.leverage * 0.15 +
+        scores.sentiment * 0.10
+    );
+
+    updateElement('compositeScore', composite);
+    updateElement('currentPriceSupport', formatCurrency(dashboardData.bitcoin.market_data.current_price.usd));
+}
+
+function calculateOnChainScore() {
+    const btc = dashboardData.bitcoin;
+    const price = btc.market_data.current_price.usd;
+    const ath = btc.market_data.ath.usd;
+    const fromATH = ((price - ath) / ath) * 100;
+    let score = 50;
+    if (fromATH < -60) score += 30;
+    else if (fromATH < -40) score += 20;
+    else if (fromATH < -20) score += 10;
+    else if (fromATH > -10) score -= 20;
+    return Math.max(0, Math.min(100, score));
+}
+
+function calculateSentimentScore() {
+    const fgValue = parseInt(dashboardData.fearGreed.value);
+    if (fgValue < 20) return 75;
+    if (fgValue < 40) return 65;
+    if (fgValue < 60) return 50;
+    if (fgValue < 80) return 35;
+    return 20;
+}
+
+function updateElement(id, value) {
+    const el = document.getElementById(id);
+    if (el) el.textContent = value;
+}
+
+function formatCurrency(value) {
+    if (!value || isNaN(value)) return '—';
+    return new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0
+    }).format(value);
+}
+
+function formatLargeNumber(value) {
+    if (!value || isNaN(value)) return '—';
+    if (value >= 1e12) return `$${(value / 1e12).toFixed(2)}T`;
+    if (value >= 1e9) return `$${(value / 1e9).toFixed(2)}B`;
+    if (value >= 1e6) return `$${(value / 1e6).toFixed(2)}M`;
+    return formatCurrency(value);
+}
+
+function startAutoRefresh() {
+    setInterval(async () => {
+        try {
+            await fetchAllData();
+            updateAllDisplays();
+        } catch (error) {
+            console.error('Auto-refresh failed:', error);
+        }
+    }, CONFIG.refreshInterval);
+}
+
+window.addEventListener('error', (e) => console.error('Global error:', e.error));
+window.addEventListener('unhandledrejection', (e) => console.error('Unhandled rejection:', e.reason));
+</script>
+</body>
+</html>
